@@ -34,4 +34,4 @@
 *.wav filter=lfs diff=lfs merge=lfs -text
 *.mp3 filter=lfs diff=lfs merge=lfs -text
 *.ogg filter=lfs diff=lfs merge=lfs -text
-*.mp4 filter=lfs diff=l*
+*.mp4 filter=lfs diff=lfs merge=lfs -text
