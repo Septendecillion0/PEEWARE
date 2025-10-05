@@ -16,13 +16,13 @@ public class PeeMeterUpdate : MonoBehaviour
     void Start()
     {
         peeMeter.value = 0;
+        fillImage = peeMeter.fillRect.GetComponent<Image>();
     }
 
     // Update is called once per frame
     void Update()
     {
         peeMeter.value += deltaPee * Time.deltaTime;
-        fillImage = peeMeter.fillRect.GetComponent<Image>();
         fillImage.color = Color.Lerp(startPee, endPee, peeMeter.value / 100);
     }
 }
