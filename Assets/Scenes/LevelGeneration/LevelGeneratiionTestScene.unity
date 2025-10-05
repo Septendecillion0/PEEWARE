@@ -149,9 +149,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   seed: 0
-  maxRow: 0
-  maxCol: 0
-  maxRoom: 0
+  maxRow: 10
+  maxCol: 10
+  maxRoom: 80
+  maxPath: 20
   roomMaxW: 0
   roomMaxH: 0
   roomMinW: 0
