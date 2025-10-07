@@ -1,0 +1,19 @@
+fileFormatVersion: 2
+guid: ec72980442fddac4d86e75ab24b4d027
+timeCreated: 1513577414
+licenseType: Store
+MonoImporter:
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174710
+  packageName: Mini First Person Controller
+  packageVersion: 1.1.0
+  assetPath: Assets/Mini First Person Controller/Scripts/FirstPersonLook.cs
+  uploadId: 442605
