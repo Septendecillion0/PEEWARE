@@ -1,0 +1,59 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &7907845071546034378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5264555877443789402}
+  - component: {fileID: 6981544016605285605}
+  m_Layer: 0
+  m_Name: MapGenerationManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5264555877443789402
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907845071546034378}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6981544016605285605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907845071546034378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d342d3dac2588af48b47e304323246a8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
+  seed: 0
+  maxRow: 10
+  maxCol: 10
+  maxRoom: 80
+  maxPath: 20
+  roomMaxW: 0
+  roomMaxH: 0
+  roomMinW: 0
+  roomMinH: 0
+  roomDis: 0
+  floorPrefab: {fileID: 4726624753131102276, guid: fbddd7dc71f04904fa0ef333bf9b1141, type: 3}
+  roadHoriPrefab: {fileID: 6325731933341883980, guid: 71f368efe9c28d342b84610a65a15d1c, type: 3}
+  roadVertiPrefab: {fileID: 529167077162993667, guid: ad015d88066fac7419a4835e4fd779bb, type: 3}
