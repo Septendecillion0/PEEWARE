@@ -20,16 +20,16 @@ public class DrawGameOver : MonoBehaviour
     {
         if (fadingIn)
         {
-            fadeTimer += Time.deltaTime / fadeDuration;
-            SetAlpha(Mathf.Lerp(0f, 1f, fadeTimer));
-            if (fadeTimer >= 1f) fadingIn = false;
+            fadeTimer += Time.unscaledDeltaTime;
+            SetAlpha(Mathf.Lerp(0f, 1f, fadeTimer / fadeDuration));
+            if (fadeTimer >= fadeDuration) fadingIn = false;
         }
     }
 
     public void Show()
     {
         // Make image fully transparent
-        SetAlpha(Mathf.Lerp(0f, 1f, 0f));
+        SetAlpha(0f);
         // Show the image
         YOU_PEED.gameObject.SetActive(true);
         // Fade the image in
