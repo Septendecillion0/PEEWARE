@@ -41,19 +41,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 7907845071546034378}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d342d3dac2588af48b47e304323246a8, type: 3}
+  m_Script: {fileID: 11500000, guid: c33073cc78d7ee84fb8b2ada4c8b8b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
   seed: 0
-  maxRow: 10
-  maxCol: 10
-  maxRoom: 80
-  maxPath: 20
+  maxRow: 0
+  maxCol: 0
+  maxRoom: 0
+  maxPath: 0
   roomMaxW: 0
   roomMaxH: 0
   roomMinW: 0
   roomMinH: 0
   roomDis: 0
-  floorPrefab: {fileID: 4726624753131102276, guid: fbddd7dc71f04904fa0ef333bf9b1141, type: 3}
-  roadHoriPrefab: {fileID: 6325731933341883980, guid: 71f368efe9c28d342b84610a65a15d1c, type: 3}
-  roadVertiPrefab: {fileID: 529167077162993667, guid: ad015d88066fac7419a4835e4fd779bb, type: 3}
+  floorPrefab: {fileID: 0}
+  rooms:
+  - {fileID: 4726624753131102276, guid: fbddd7dc71f04904fa0ef333bf9b1141, type: 3}
+  - {fileID: 4726624753131102276, guid: 1826001a0f3fd6b4bbe96a1fc61884cf, type: 3}
+  - {fileID: 4726624753131102276, guid: d2f73970e0ce7ea40b86f35476c40ee0, type: 3}
+  roadHoriPrefab: {fileID: 0}
+  roadVertiPrefab: {fileID: 0}

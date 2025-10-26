@@ -1,5 +1,5 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class GenerateMap : MonoBehaviour
 {
     [Header("Map Seed")]
@@ -24,6 +24,7 @@ public class GenerateMap : MonoBehaviour
     public int roomDis;
     [Header("Floor Prefab")]
     public GameObject floorPrefab;
+    public List<GameObject> rooms;
     [Header("Horizontal Road Prefab")]
     public GameObject roadHoriPrefab;
     [Header("Vertical Road Prefab")]
@@ -64,10 +65,11 @@ public class GenerateMap : MonoBehaviour
         //CurrentRoom
         currentRoomNum ++;
         Vector3Int pos = new Vector3Int(currentPoint.x * 10, 0, currentPoint.z * 10);
-        GameObject floorObject = Instantiate(floorPrefab, pos, Quaternion.identity);
+        GameObject toDraw = rooms[Random.Range(0, rooms.Count)];
+        GameObject floorObject = Instantiate(toDraw, pos, Quaternion.identity);
         //Keep drawing until we run out of rooms
         Vector3Int newPoint;
-        for(int i = 0; i < 4; i++){
+        for(int i = 0; i < 8; i++){
             if (currentRoomNum <= maxRoom && pathLength <= maxPath){
                 newPoint = GetNextRoom(currentPoint);
                 if (roomMap[newPoint.x, newPoint.z] == 1) continue;
@@ -78,6 +80,7 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
+    //This function might not be needed once the actual implementation of DrawRoom is ready
     private void DrawRoad(int room1X, int room1Z, int room2X, int room2Z)
     {
         //Horizontal
