@@ -28,7 +28,7 @@ public class GenerateMap : MonoBehaviour
 
     [Header("List of existing rooms")]
     public List<Room> rooms;
-    
+
     [Header("Horizontal Road Prefab")]
     public GameObject roadHoriPrefab;
     [Header("Vertical Road Prefab")]
@@ -39,6 +39,9 @@ public class GenerateMap : MonoBehaviour
 
     //Int array keeping track of where rooms are located in unit blocks
     private int[,] roomMap;
+
+    //List of room bounds to avoid overlap
+    private List<Bounds> placedBounds = new List<Bounds>();
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -65,32 +68,49 @@ public class GenerateMap : MonoBehaviour
         Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity);
         DrawRoom(startRoom.GetComponent<Room>().exits[0].transform.position, 0);
         //Also we are initializing by the location of the level generation managers
+
+        placedBounds.Add(GetRoomBounds(startRoom));
     }
 
     private void DrawRoom(Vector3 newPos, int pathLength)
     {
         //CurrentRoom number increase
-        currentRoomNum ++;
+        currentRoomNum++;
         //Vector3Int pos = new Vector3Int(currentPoint.x * 10, 0, currentPoint.z * 10);
         Room toDraw;
         //Draw any room other than starting room and ending room if not hitting max path
-        if (pathLength == maxPath){
+        if (pathLength == maxPath)
+        {
             //End room
             toDraw = rooms[rooms.Count - 1];
         }
-        else{
+        else
+        {
             //Other rooms
-            toDraw = rooms[Random.Range(1, rooms.Count -1)];
+            toDraw = rooms[Random.Range(1, rooms.Count - 1)];
         }
         Room newRoom = Instantiate(toDraw, newPos, Quaternion.identity);
         //Generate new rooms based on exits
-        foreach (Room.Exit exit in newRoom.GetAvailableExits()){
-            if (currentRoomNum <= maxRoom && pathLength < maxPath){
+        foreach (Room.Exit exit in newRoom.GetAvailableExits())
+        {
+            if (currentRoomNum <= maxRoom && pathLength < maxPath)
+            {
                 //newPoint = GetNextRoom(currentPoint);
                 //if (roomMap[newPoint.x, newPoint.z] == 1) continue;
                 //roomMap[newPoint.x, newPoint.z] = 1;
                 //Not preventing overlap
+
+
                 DrawRoom(exit.transform.position, pathLength + 1);
+                
+                Bounds newBounds = GetRoomBounds(newRoom);
+                placedBounds.Add(newBounds);
+
+                if (RoomOverlaps(newBounds, placedBounds))
+                {
+                    Destroy(newRoom.gameObject);
+                    continue; // skip this attempt
+                }
             }
         }
     }
@@ -113,16 +133,18 @@ public class GenerateMap : MonoBehaviour
 
     }
 
-    private Vector3Int GetNextRoom(Vector3Int currentPoint){
-        while(true)
+    private Vector3Int GetNextRoom(Vector3Int currentPoint)
+    {
+        while (true)
         {
             Vector3Int dummy = currentPoint;
             //4 possible direction
-            switch(Random.Range(0,4)){
+            switch (Random.Range(0, 4))
+            {
                 case 0:
                     dummy.x += 1;
                     break;
-                case 1: 
+                case 1:
                     dummy.z += 1;
                     break;
                 case 2:
@@ -133,9 +155,34 @@ public class GenerateMap : MonoBehaviour
                     break;
             }
             //If it is a valid room
-            if (dummy.x >= 0 && dummy.z >= 0 && dummy.x < maxRow && dummy.z < maxCol){
+            if (dummy.x >= 0 && dummy.z >= 0 && dummy.x < maxRow && dummy.z < maxCol)
+            {
                 return dummy;
-        }
+            }
         }
     }
+
+    Bounds GetRoomBounds(Room room)
+    {
+        Renderer[] renderers = room.GetComponentsInChildren<Renderer>();
+        if (renderers.Length == 0)
+            return new Bounds(room.transform.position, Vector3.zero);
+
+        Bounds combined = renderers[0].bounds;
+        for (int i = 1; i < renderers.Length; i++)
+            combined.Encapsulate(renderers[i].bounds);
+        return combined;
+    }
+
+    //naive way to check room intersection
+    bool RoomOverlaps(Bounds newBounds, List<Bounds> existing)
+    {
+        foreach (var b in existing)
+        {
+            if (b.Intersects(newBounds))
+                return true;
+        }
+        return false;
+    }
+
 }
