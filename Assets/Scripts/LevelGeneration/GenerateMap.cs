@@ -24,7 +24,10 @@ public class GenerateMap : MonoBehaviour
     public int roomDis;
     [Header("Floor Prefab")]
     public GameObject floorPrefab;
+
+    [Header("List of existing rooms")]
     public List<GameObject> rooms;
+    
     [Header("Horizontal Road Prefab")]
     public GameObject roadHoriPrefab;
     [Header("Vertical Road Prefab")]
@@ -75,7 +78,7 @@ public class GenerateMap : MonoBehaviour
                 if (roomMap[newPoint.x, newPoint.z] == 1) continue;
                 roomMap[newPoint.x, newPoint.z] = 1;
                 DrawRoom(newPoint, pathLength + 1);
-                DrawRoad(currentPoint.x, currentPoint.z, newPoint.x, newPoint.z);
+
             }
         }
     }
