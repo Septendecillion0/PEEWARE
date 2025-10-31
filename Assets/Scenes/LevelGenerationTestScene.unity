@@ -237,7 +237,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.99575
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalPosition.y
@@ -245,7 +245,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 1.99154
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalRotation.w
@@ -299,6 +299,18 @@ PrefabInstance:
       propertyPath: roadVertiPrefab
       value: 
       objectReference: {fileID: 529167077162993667, guid: ad015d88066fac7419a4835e4fd779bb, type: 3}
+    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+      propertyPath: 'rooms.Array.data[0]'
+      value: 
+      objectReference: {fileID: 6424388425332684920, guid: 1b88644c654e42e4295fc5167af74937, type: 3}
+    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+      propertyPath: 'rooms.Array.data[1]'
+      value: 
+      objectReference: {fileID: 3578311336349595109, guid: 7b051cbe283eab144a9dba6ee1c707ef, type: 3}
+    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+      propertyPath: 'rooms.Array.data[2]'
+      value: 
+      objectReference: {fileID: 7474797681015522027, guid: c0e462c96585a8947bccdd952f386f69, type: 3}
     - target: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_Name
       value: MapGenerationManager

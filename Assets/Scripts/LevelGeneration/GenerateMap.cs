@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+
 public class GenerateMap : MonoBehaviour
 {
     [Header("Map Seed")]
@@ -26,7 +27,7 @@ public class GenerateMap : MonoBehaviour
     public GameObject floorPrefab;
 
     [Header("List of existing rooms")]
-    public List<GameObject> rooms;
+    public List<Room> rooms;
     
     [Header("Horizontal Road Prefab")]
     public GameObject roadHoriPrefab;
@@ -42,7 +43,6 @@ public class GenerateMap : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Debug.Log("Total Rooms" + maxRoom);
         DrawMap();
     }
 
@@ -55,30 +55,42 @@ public class GenerateMap : MonoBehaviour
     private void DrawMap()
     {
         //Initialize spawn point
-        Vector3Int currentPoint = Vector3Int.zero;
+        //Vector3Int currentPoint = Vector3Int.zero;
         currentRoomNum = 0;
-        roomMap = new int[maxRow, maxCol];
-        roomMap[currentPoint.x, currentPoint.z] = 1;
-        DrawRoom(currentPoint, 0);
+        //roomMap = new int[maxRow, maxCol];
+        //roomMap[currentPoint.x, currentPoint.z] = 1;
+
+        //Instantiate the starting room. Make sure to put the starting room
+        //At the beginning of the rooms
+        Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity);
+        DrawRoom(startRoom.GetComponent<Room>().exits[0].transform.position, 0);
+        //Also we are initializing by the location of the level generation managers
     }
 
-    private void DrawRoom(Vector3Int currentPoint, int pathLength)
+    private void DrawRoom(Vector3 newPos, int pathLength)
     {
-        Debug.Log("New Room Finished" + currentRoomNum);
-        //CurrentRoom
+        //CurrentRoom number increase
         currentRoomNum ++;
-        Vector3Int pos = new Vector3Int(currentPoint.x * 10, 0, currentPoint.z * 10);
-        GameObject toDraw = rooms[Random.Range(0, rooms.Count)];
-        GameObject floorObject = Instantiate(toDraw, pos, Quaternion.identity);
-        //Keep drawing until we run out of rooms
-        Vector3Int newPoint;
-        for(int i = 0; i < 8; i++){
-            if (currentRoomNum <= maxRoom && pathLength <= maxPath){
-                newPoint = GetNextRoom(currentPoint);
-                if (roomMap[newPoint.x, newPoint.z] == 1) continue;
-                roomMap[newPoint.x, newPoint.z] = 1;
-                DrawRoom(newPoint, pathLength + 1);
-
+        //Vector3Int pos = new Vector3Int(currentPoint.x * 10, 0, currentPoint.z * 10);
+        Room toDraw;
+        //Draw any room other than starting room and ending room if not hitting max path
+        if (pathLength == maxPath){
+            //End room
+            toDraw = rooms[rooms.Count - 1];
+        }
+        else{
+            //Other rooms
+            toDraw = rooms[Random.Range(1, rooms.Count -1)];
+        }
+        Room newRoom = Instantiate(toDraw, newPos, Quaternion.identity);
+        //Generate new rooms based on exits
+        foreach (Room.Exit exit in newRoom.GetAvailableExits()){
+            if (currentRoomNum <= maxRoom && pathLength < maxPath){
+                //newPoint = GetNextRoom(currentPoint);
+                //if (roomMap[newPoint.x, newPoint.z] == 1) continue;
+                //roomMap[newPoint.x, newPoint.z] = 1;
+                //Not preventing overlap
+                DrawRoom(exit.transform.position, pathLength + 1);
             }
         }
     }
