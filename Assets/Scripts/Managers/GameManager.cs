@@ -9,12 +9,15 @@ public class GameManager : MonoBehaviour
 
     public DrawGameOver drawGameOver;
 
+    public GameObject firstPersonAudio;
+
     // track whether the game is over、
     public bool IsGameOver { get; private set; } = false;
 
 
     private void Awake()
     {
+        // enforce singleton pattern
         if (_instance != null && _instance != this)
         {
             // multiple instances detected, destroy this one
@@ -23,8 +26,35 @@ public class GameManager : MonoBehaviour
         }
         _instance = this;
         DontDestroyOnLoad(gameObject);
+
         // ensure timescale is normal when starting
         Time.timeScale = 1f;
+
+        // enable player jump and crouch
+        Jump.canJump = true;
+        Crouch.canCrouch = true;
+
+        // ensure camera and audio work at start
+        FirstPersonLook.canLook = true;
+        firstPersonAudio.SetActive(true);
+    }
+
+    public void PauseGame()
+    {
+        Time.timeScale = 0f;
+        Jump.canJump = false;
+        Crouch.canCrouch = false;
+        FirstPersonLook.canLook = false;
+        firstPersonAudio.SetActive(false);
+    }
+
+    public void ResumeGame()
+    {
+        Time.timeScale = 1f;
+        Jump.canJump = true;
+        Crouch.canCrouch = true;
+        FirstPersonLook.canLook = true;
+        firstPersonAudio.SetActive(true);
     }
 
     public void GameOver()
@@ -35,16 +65,18 @@ public class GameManager : MonoBehaviour
         {
             drawGameOver.Show();
         }
-        // pause the game
-        Time.timeScale = 0f;
+
+        PauseGame();
     }
 
-    // optional: resume the game (useful for restart or testing)
-    public void ResumeGame()
+    public void RestartGame()
     {
         if (!IsGameOver) return;
+        // Reload the current scene
+        UnityEngine.SceneManagement.SceneManager.LoadScene(
+            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
         IsGameOver = false;
-        Time.timeScale = 1f;
+        ResumeGame();
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created

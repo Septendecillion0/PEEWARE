@@ -27,6 +27,7 @@ public class Crouch : MonoBehaviour
 
     public GroundCheck groundCheck;
 
+    public static bool canCrouch = true;
 
     void Reset()
     {
@@ -38,7 +39,7 @@ public class Crouch : MonoBehaviour
 
     void LateUpdate()
     {
-        if (Input.GetKey(key) && (!groundCheck || groundCheck.isGrounded))
+        if (Input.GetKey(key) && canCrouch && (!groundCheck || groundCheck.isGrounded))
         {
             // Enforce a low head.
             if (headToLower)
