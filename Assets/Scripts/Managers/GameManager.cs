@@ -42,8 +42,11 @@ public class GameManager : MonoBehaviour
     public void PauseGame()
     {
         Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
+        // disable player jump and crouch
         Jump.canJump = false;
         Crouch.canCrouch = false;
+        // disable camera look and audio
         FirstPersonLook.canLook = false;
         firstPersonAudio.SetActive(false);
     }
@@ -51,8 +54,11 @@ public class GameManager : MonoBehaviour
     public void ResumeGame()
     {
         Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.Locked;
+        // enable player jump and crouch
         Jump.canJump = true;
         Crouch.canCrouch = true;
+        // enable camera look and audio
         FirstPersonLook.canLook = true;
         firstPersonAudio.SetActive(true);
     }
