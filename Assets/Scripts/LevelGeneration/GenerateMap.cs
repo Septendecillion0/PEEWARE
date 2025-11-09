@@ -3,8 +3,8 @@ using System.Collections.Generic;
 
 public class GenerateMap : MonoBehaviour
 {
-    [Header("Map Seed")]
-    public int seed;
+    [Header("Map Seed (set -1 for random)")]
+    public int seed = -1;
     [Header("Total Rows")]
     public int maxRow;
     [Header("Total Cols")]
@@ -34,138 +34,127 @@ public class GenerateMap : MonoBehaviour
     [Header("Vertical Road Prefab")]
     public GameObject roadVertiPrefab;
 
-    //Current room numbers
+    // Current room numbers (counts only successfully placed rooms)
     private int currentRoomNum = 0;
 
-    //Int array keeping track of where rooms are located in unit blocks
-    private int[,] roomMap;
-
-    //List of room bounds to avoid overlap
+    // List of room bounds to avoid overlap
     private List<Bounds> placedBounds = new List<Bounds>();
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
+        if (seed >= 0)
+            Random.InitState(seed);
+        else
+            seed = Random.Range(0, int.MaxValue);  // generate a new seed
+        
+        Debug.Log($"Using seed: {seed}");
         DrawMap();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-    //Main Map Generation
+    // Main Map Generation
     private void DrawMap()
     {
-        //Initialize spawn point
-        //Vector3Int currentPoint = Vector3Int.zero;
         currentRoomNum = 0;
-        //roomMap = new int[maxRow, maxCol];
-        //roomMap[currentPoint.x, currentPoint.z] = 1;
+        placedBounds.Clear();
 
-        //Instantiate the starting room. Make sure to put the starting room
-        //At the beginning of the rooms
+        if (rooms == null || rooms.Count == 0)
+        {
+            Debug.LogError("No room prefabs assigned to GenerateMap.rooms");
+            return;
+        }
+
+        // Instantiate the starting room and commit it immediately
         Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity);
-        DrawRoom(startRoom.GetComponent<Room>().exits[0].transform.position, 0);
-        //Also we are initializing by the location of the level generation managers
-
-        placedBounds.Add(GetRoomBounds(startRoom));
-    }
-
-    private void DrawRoom(Vector3 newPos, int pathLength)
-    {
-        //CurrentRoom number increase
+        Bounds startBounds = GetRoomBounds(startRoom);
+        placedBounds.Add(startBounds);
         currentRoomNum++;
-        //Vector3Int pos = new Vector3Int(currentPoint.x * 10, 0, currentPoint.z * 10);
+
+        // Expand from each available exit on the start room
+        foreach (var exit in startRoom.GetAvailableExits())
+        {
+            TryPlaceRoomAtExit(exit, 0);
+            if (currentRoomNum >= maxRoom) break;
+        }
+    }
+
+    // Try to place a room attached at `fromExit`. If placement succeeds we recurse from that room's exits.
+    private void TryPlaceRoomAtExit(Room.Exit fromExit, int pathLength)
+    {
+        if (currentRoomNum >= maxRoom) return;
+        if (pathLength >= maxPath) return;
+
         Room toDraw;
-        //Draw any room other than starting room and ending room if not hitting max path
-        if (pathLength == maxPath)
-        {
-            //End room
+        if (pathLength + 1 == maxPath)
             toDraw = rooms[rooms.Count - 1];
-        }
         else
+            toDraw = rooms[Random.Range(1, Mathf.Max(2, rooms.Count - 1))];
+
+        Room newRoom = Instantiate(toDraw, Vector3.zero, Quaternion.identity);
+
+        Room.Exit newExit = newRoom.GetRandomAvailableExit();
+        if (newExit == null)
         {
-            //Other rooms
-            toDraw = rooms[Random.Range(1, rooms.Count - 1)];
+            Destroy(newRoom.gameObject);
+            return;
         }
-        Room newRoom = Instantiate(toDraw, newPos, Quaternion.identity);
-        //Generate new rooms based on exits
-        foreach (Room.Exit exit in newRoom.GetAvailableExits())
+
+        // Correct variable usage here
+        AlignRoomToExit(newRoom, newExit, fromExit);
+
+        Bounds newBounds = GetRoomBounds(newRoom);
+        if (RoomOverlaps(newBounds))
         {
-            if (currentRoomNum <= maxRoom && pathLength < maxPath)
+            Debug.Log($"[COLLISION] Prevented placing room '{toDraw.roomName}' when connecting from exit '{fromExit.tag}'");
+            Destroy(newRoom.gameObject);
+            return; // not continue
+        }
+
+        // Placement succeeded
+        placedBounds.Add(newBounds);
+        currentRoomNum++;
+
+        fromExit.isConnected = true;
+        newExit.isConnected = true;
+
+        // Recurse from THIS room
+        foreach (var nextExit in newRoom.GetAvailableExits())
+        {
+            if (currentRoomNum >= maxRoom || pathLength + 1 >= maxPath)
+                break;
+
+            TryPlaceRoomAtExit(nextExit, pathLength + 1);
+        }
+    }
+
+
+    // Returns the specific Room that overlaps, instead of just true/false
+    private Room GetOverlappingRoom(Bounds candidateBounds)
+    {
+        foreach (var existingRoomBounds in placedBounds)
+        {
+            if (existingRoomBounds.Intersects(candidateBounds))
             {
-                //newPoint = GetNextRoom(currentPoint);
-                //if (roomMap[newPoint.x, newPoint.z] == 1) continue;
-                //roomMap[newPoint.x, newPoint.z] = 1;
-                //Not preventing overlap
-
-
-                DrawRoom(exit.transform.position, pathLength + 1);
-                
-                Bounds newBounds = GetRoomBounds(newRoom);
-                placedBounds.Add(newBounds);
-
-                if (RoomOverlaps(newBounds, placedBounds))
+                // We need to return the actual Room object that owns this Bounds.
+                // The easiest way is to do a Physics.OverlapBox check to locate it.
+                Collider[] hits = Physics.OverlapBox(existingRoomBounds.center, existingRoomBounds.extents * 0.5f);
+                foreach (var hit in hits)
                 {
-                    Destroy(newRoom.gameObject);
-                    continue; // skip this attempt
+                    Room r = hit.GetComponentInParent<Room>();
+                    if (r != null)
+                        return r;
                 }
+                return null; // fallback if no collider is found, but bounds still intersect
             }
         }
+        return null;
     }
 
-    //This function might not be needed once the actual implementation of DrawRoom is ready
-    private void DrawRoad(int room1X, int room1Z, int room2X, int room2Z)
-    {
-        //Horizontal
-        if (room1X == room2X)
-        {
-            Vector3Int posHori = new Vector3Int(room1X * 10, 0, (room1Z + room2Z) * 5);
-            GameObject horiRoad = Instantiate(roadHoriPrefab, posHori, Quaternion.identity);
-        }
-        //Vertical
-        else if (room1Z == room2Z)
-        {
-            Vector3Int posVerti = new Vector3Int((room1X + room2X) * 5, 0, room1Z * 10);
-            GameObject vertiRoad = Instantiate(roadVertiPrefab, posVerti, Quaternion.identity);
-        }
 
-    }
-
-    private Vector3Int GetNextRoom(Vector3Int currentPoint)
-    {
-        while (true)
-        {
-            Vector3Int dummy = currentPoint;
-            //4 possible direction
-            switch (Random.Range(0, 4))
-            {
-                case 0:
-                    dummy.x += 1;
-                    break;
-                case 1:
-                    dummy.z += 1;
-                    break;
-                case 2:
-                    dummy.x -= 1;
-                    break;
-                default:
-                    dummy.z -= 1;
-                    break;
-            }
-            //If it is a valid room
-            if (dummy.x >= 0 && dummy.z >= 0 && dummy.x < maxRow && dummy.z < maxCol)
-            {
-                return dummy;
-            }
-        }
-    }
-
+    // Compute world-space bounds for a room by combining all child renderers
     Bounds GetRoomBounds(Room room)
     {
         Renderer[] renderers = room.GetComponentsInChildren<Renderer>();
-        if (renderers.Length == 0)
+        if (renderers == null || renderers.Length == 0)
             return new Bounds(room.transform.position, Vector3.zero);
 
         Bounds combined = renderers[0].bounds;
@@ -174,10 +163,10 @@ public class GenerateMap : MonoBehaviour
         return combined;
     }
 
-    //naive way to check room intersection
-    bool RoomOverlaps(Bounds newBounds, List<Bounds> existing)
+    // Check candidate bounds against already committed placed rooms
+    bool RoomOverlaps(Bounds newBounds)
     {
-        foreach (var b in existing)
+        foreach (var b in placedBounds)
         {
             if (b.Intersects(newBounds))
                 return true;
@@ -185,4 +174,35 @@ public class GenerateMap : MonoBehaviour
         return false;
     }
 
+
+
+    private void AlignRoomToExit(Room newRoom, Room.Exit newExit, Room.Exit fromExit)
+    {
+        Transform rt = newRoom.transform;
+
+        // Rotate so newExit.forward points opposite fromExit.forward
+        Quaternion rotation = Quaternion.FromToRotation(newExit.transform.forward, -fromExit.transform.forward);
+        rt.rotation = rotation * rt.rotation;
+
+        // Move so exit positions overlap
+        Vector3 offset = fromExit.transform.position - newExit.transform.position;
+        rt.position += offset;
+    }
+
+
+    // Optional: draw placed room bounds in the Scene view for debugging
+    // Uncomment to visualize
+    /*
+    void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        if (placedBounds != null)
+        {
+            foreach (var b in placedBounds)
+            {
+                Gizmos.DrawWireCube(b.center, b.size);
+            }
+        }
+    }
+    */
 }

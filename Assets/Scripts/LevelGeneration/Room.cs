@@ -24,4 +24,16 @@ public class Room : MonoBehaviour
             if (!e.isConnected)
                 yield return e;
     }
+
+    public Exit GetRandomAvailableExit()
+    {
+        List<Exit> available = new List<Exit>();
+        foreach (var e in exits)
+            if (!e.isConnected)
+                available.Add(e);
+
+        if (available.Count == 0) return null;
+        return available[Random.Range(0, available.Count)];
+    }
+
 }
