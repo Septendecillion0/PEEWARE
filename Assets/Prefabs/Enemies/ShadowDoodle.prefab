@@ -82,8 +82,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -9095717837082945937, guid: 207ee8102dd4143d288186ef0be518ee, type: 3}
-  m_Color: {r: 0.34535462, g: 0.3233357, b: 0.3962264, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 183b4c3fcd2c8944981d8e363e9b89c6, type: 3}
+  m_Color: {r: 0.39650992, g: 0.23553754, b: 0.745283, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -106,6 +106,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShadowDoodleScript
   deathSound: {fileID: 0}
+  peeMeter: {fileID: 0}
+  naturalDespawnTime: 10
 --- !u!54 &6814242546728190072
 Rigidbody:
   m_ObjectHideFlags: 0
