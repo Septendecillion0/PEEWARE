@@ -865,7 +865,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7328557506039659316, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
       propertyPath: deltaPee
-      value: 50
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7585641121208191581, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
       propertyPath: m_AnchorMax.y

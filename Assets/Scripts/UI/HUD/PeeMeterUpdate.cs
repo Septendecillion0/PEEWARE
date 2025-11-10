@@ -31,4 +31,9 @@ public class PeeMeterUpdate : MonoBehaviour
             GameManager.Instance.GameOver();
         }
     }
+
+    //A sudden PeeMeter increase due to scare
+    public void Scare(float drink){
+        peeMeter.value += drink;
+    }
 }
