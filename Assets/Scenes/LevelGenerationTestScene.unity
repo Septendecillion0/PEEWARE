@@ -401,11 +401,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: maxPath
-      value: 10
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: maxRoom
-      value: 80
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: roadHoriPrefab
