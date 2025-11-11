@@ -41,6 +41,7 @@ public class GameManager : MonoBehaviour
 
     public void PauseGame()
     {
+        if (IsGameOver) return;
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
         // disable player jump and crouch
@@ -53,6 +54,7 @@ public class GameManager : MonoBehaviour
 
     public void ResumeGame()
     {
+        if (IsGameOver) return;
         Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.Locked;
         // enable player jump and crouch
@@ -66,13 +68,12 @@ public class GameManager : MonoBehaviour
     public void GameOver()
     {
         if (IsGameOver) return;
+        PauseGame();
         IsGameOver = true;
         if (drawGameOver != null)
         {
             drawGameOver.Show();
         }
-
-        PauseGame();
     }
 
     public void RestartGame()
