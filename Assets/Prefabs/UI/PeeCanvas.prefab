@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
       propertyPath: deltaPee
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
       propertyPath: drawGameOver
@@ -228,6 +228,10 @@ PrefabInstance:
     - target: {fileID: 4108704486725865697, guid: 5dda743750e6c50428d9bed1d10a09a9, type: 3}
       propertyPath: m_Name
       value: YOU_PEED
+      objectReference: {fileID: 0}
+    - target: {fileID: 4108704486725865697, guid: 5dda743750e6c50428d9bed1d10a09a9, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7379371246287443511, guid: 5dda743750e6c50428d9bed1d10a09a9, type: 3}
       propertyPath: m_Pivot.x

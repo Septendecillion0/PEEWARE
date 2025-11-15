@@ -25,19 +25,22 @@ public class GameManager : MonoBehaviour
             return;
         }
         _instance = this;
-        DontDestroyOnLoad(gameObject);
 
-        // ensure timescale is normal when starting
+        ResetGameState();
+    }
+
+    public void ResetGameState()
+    {
+        IsGameOver = false;
         Time.timeScale = 1f;
 
-        // enable player jump and crouch
         Jump.canJump = true;
         Crouch.canCrouch = true;
 
-        // ensure camera and audio work at start
         FirstPersonLook.canLook = true;
         firstPersonAudio.SetActive(true);
     }
+
 
     public void PauseGame()
     {
