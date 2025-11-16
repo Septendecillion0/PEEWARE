@@ -44,20 +44,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c33073cc78d7ee84fb8b2ada4c8b8b95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  seed: 0
-  maxRow: 0
-  maxCol: 0
-  maxRoom: 0
-  maxPath: 0
-  roomMaxW: 0
-  roomMaxH: 0
-  roomMinW: 0
-  roomMinH: 0
-  roomDis: 0
-  floorPrefab: {fileID: 0}
+  seed: -1
+  maxRoom: 50
+  maxPath: 15
   rooms:
-  - {fileID: 4726624753131102276, guid: fbddd7dc71f04904fa0ef333bf9b1141, type: 3}
-  - {fileID: 4726624753131102276, guid: 1826001a0f3fd6b4bbe96a1fc61884cf, type: 3}
-  - {fileID: 4726624753131102276, guid: d2f73970e0ce7ea40b86f35476c40ee0, type: 3}
-  roadHoriPrefab: {fileID: 0}
-  roadVertiPrefab: {fileID: 0}
+  - {fileID: 5019586497278297931, guid: 39e4e58ac6d5b5e4da064f39df1fb977, type: 3}
+  - {fileID: 9196056730261407114, guid: df9bd3ef1b5ab2547af5b83155487d61, type: 3}
+  - {fileID: 391051715416169896, guid: 2a103a4743a6d354499710ac2611f340, type: 3}
+  - {fileID: 3578311336349595109, guid: 7b051cbe283eab144a9dba6ee1c707ef, type: 3}
+  - {fileID: 7119312431611081236, guid: fc2771449e2a9d64f94ab5a65532d54f, type: 3}
+  - {fileID: 4961380382294343879, guid: 362077bed33dafd42825a84e821bdb1c, type: 3}
+  - {fileID: 6319662985125725795, guid: 1a0fb0fd9b078e74da1417e6095d6927, type: 3}
+  - {fileID: 1647046715833979716, guid: 8358eed47a4424445807d297aa018832, type: 3}

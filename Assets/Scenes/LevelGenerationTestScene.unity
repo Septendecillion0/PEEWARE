@@ -339,7 +339,7 @@ MonoBehaviour:
   moveSpeed: 10
   lookSpeed: 10
   sprintMultiplier: 2
---- !u!1001 &1139466890
+--- !u!1001 &729712557
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -349,15 +349,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -5.54548
       objectReference: {fileID: 0}
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 0
+      value: -0.24578
       objectReference: {fileID: 0}
     - target: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_LocalRotation.w
@@ -387,62 +387,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: seed
-      value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxCol
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxRow
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxPath
-      value: 12
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxRoom
-      value: 50
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: roadHoriPrefab
-      value: 
-      objectReference: {fileID: 6325731933341883980, guid: 71f368efe9c28d342b84610a65a15d1c, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: roadVertiPrefab
-      value: 
-      objectReference: {fileID: 529167077162993667, guid: ad015d88066fac7419a4835e4fd779bb, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[0]'
-      value: 
-      objectReference: {fileID: 6424388425332684920, guid: 1b88644c654e42e4295fc5167af74937, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[1]'
-      value: 
-      objectReference: {fileID: 3578311336349595109, guid: 7b051cbe283eab144a9dba6ee1c707ef, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[2]'
-      value: 
-      objectReference: {fileID: 7474797681015522027, guid: c0e462c96585a8947bccdd952f386f69, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: roomPrefabs.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'roomPrefabs.Array.data[0]'
-      value: 
-      objectReference: {fileID: 6424388425332684920, guid: 1b88644c654e42e4295fc5167af74937, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'roomPrefabs.Array.data[1]'
-      value: 
-      objectReference: {fileID: 3578311336349595109, guid: 7b051cbe283eab144a9dba6ee1c707ef, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'roomPrefabs.Array.data[2]'
-      value: 
-      objectReference: {fileID: 7474797681015522027, guid: c0e462c96585a8947bccdd952f386f69, type: 3}
     - target: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_Name
       value: MapGenerationManager
@@ -555,5 +499,5 @@ SceneRoots:
   m_Roots:
   - {fileID: 547822396}
   - {fileID: 2102305569}
-  - {fileID: 1139466890}
   - {fileID: 152954912}
+  - {fileID: 729712557}

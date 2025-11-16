@@ -64,19 +64,17 @@ public class GenerateMap : MonoBehaviour
         if (currentRoomNum >= maxRoom) return;
         if (pathLength >= maxPath) return;
 
-        // Build a randomized list of prefab indices to try (skip index 0 - start)
-        List<int> prefabIndices = new List<int>();
-        for (int i = 1; i < rooms.Count; i++) prefabIndices.Add(i);
-        Shuffle(prefabIndices);
+        // Build weighted list of prefab indices to try (skip index 0 - start room)
+        List<int> prefabIndices = BuildDepthBiasedPrefabList(pathLength);
 
-        // If this placement would be at terminal depth, prefer the final prefab (end room).
+        // If this placement would be at terminal depth, force end room first
         bool mustPlaceEndRoom = (pathLength + 1 == maxPath);
         if (mustPlaceEndRoom)
         {
-            // only try the last prefab (end) first, then others if you want fallback (optional).
             prefabIndices.Remove(rooms.Count - 1);
             prefabIndices.Insert(0, rooms.Count - 1);
         }
+
 
         foreach (int prefabIndex in prefabIndices)
         {
@@ -169,6 +167,69 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Returns a randomized, depth-biased ordering of room prefabs.
+    /// Prefers high-exit-count rooms at low depth, and low-exit-count rooms at high depth.
+    /// </summary>
+    private List<int> BuildDepthBiasedPrefabList(int depth)
+    {
+        List<int> result = new List<int>();
+        List<(int prefabIndex, float weight)> weighted = new();
+
+        float t = Mathf.Clamp01((float)depth / (float)maxPath);
+        // t = 0   → very early depth → want high exit count
+        // t = 1   → at/near end     → want low exit count
+
+        for (int i = 1; i < rooms.Count; i++) // skip start room
+        {
+            Room r = rooms[i];
+            int exitCount = Mathf.Max(1, r.exits.Count);
+
+            // Normalize exitCount across all rooms for fairness
+            // (optional but helps equalize variations in prefab design)
+            float minExits = 1f;
+            float maxExits = 1f;
+            foreach (var rm in rooms)
+                maxExits = Mathf.Max(maxExits, rm.exits.Count);
+
+            float norm = (exitCount - minExits) / (maxExits - minExits + 0.001f);
+
+            // ★ Depth-biased weighting ★
+            // At low depth (t=0): weight = norm      → prefer high-exit rooms
+            // At high depth (t=1): weight = 1-norm   → prefer low-exit rooms
+            float weight = Mathf.Lerp(norm, 1f - norm, t);
+
+            // Add a small constant to avoid zero weights
+            weight = Mathf.Max(0.01f, weight);
+
+            weighted.Add((i, weight));
+        }
+
+        // Weighted random ordering (roulette-wheel style)
+        while (weighted.Count > 0)
+        {
+            float total = 0f;
+            foreach (var w in weighted) total += w.weight;
+
+            float pick = Random.value * total;
+            float acc = 0f;
+
+            for (int i = 0; i < weighted.Count; i++)
+            {
+                acc += weighted[i].weight;
+                if (acc >= pick)
+                {
+                    result.Add(weighted[i].prefabIndex);
+                    weighted.RemoveAt(i);
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+
     // Compute world-space bounds for a room by combining all child renderers
     private Bounds GetRoomBounds(Room room)
     {
@@ -197,10 +258,22 @@ public class GenerateMap : MonoBehaviour
     {
         Transform rt = newRoom.transform;
 
-        // Rotate so newExit.forward points opposite fromExit.forward
-        rt.rotation = Quaternion.FromToRotation(newExit.transform.forward, -fromExit.transform.forward) * rt.rotation;
+        // Step 1: compute the target forward (pointing out of the new room)
+        Vector3 targetForward = -fromExit.transform.forward;  
 
-        // Move so exit positions overlap
+        // Step 2: compute the target up (keep the room upright)
+        Vector3 targetUp = fromExit.transform.up;            
+
+        // Step 3: build a rotation that matches BOTH directions
+        Quaternion targetRotation = Quaternion.LookRotation(targetForward, targetUp);
+
+        // Step 4: rotate the ROOM so that newExit.forward and newExit.up align with target
+        Quaternion delta = targetRotation * Quaternion.Inverse(newExit.transform.rotation);
+
+        rt.rotation = delta * rt.rotation;
+
+        // Step 5: move so exit positions overlap exactly
         rt.position += (fromExit.transform.position - newExit.transform.position);
     }
+
 }
