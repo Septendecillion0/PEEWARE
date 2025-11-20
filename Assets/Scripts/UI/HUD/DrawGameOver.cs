@@ -5,33 +5,49 @@ using UnityEngine.UI;
 
 public class DrawGameOver : MonoBehaviour
 {
-    public Image YOU_PEED;
-    public float fadeDuration = 1f;
+    [SerializeField] private Canvas EndingCanvas;
+    [SerializeField] private Image YOU_PEED;
+    [SerializeField] private float fadeDuration = 1f;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private Button restartButton;
     private float fadeTimer = 0f;
     private bool fadingIn = false;
 
     void Start()
     {
+        // Setup button listeners
+        quitButton.onClick.AddListener(GameManager.Instance.QuitToMainMenu);
+        restartButton.onClick.AddListener(GameManager.Instance.RestartGame);
         // Hide at start
-        YOU_PEED.gameObject.SetActive(false);
+        quitButton.gameObject.SetActive(false);
+        restartButton.gameObject.SetActive(false);
+        EndingCanvas.gameObject.SetActive(false);
     }
 
     void Update()
     {
         if (fadingIn)
         {
+            // Fade in effect for YOU PEED image
             fadeTimer += Time.unscaledDeltaTime;
             SetAlpha(Mathf.Lerp(0f, 1f, fadeTimer / fadeDuration));
-            if (fadeTimer >= fadeDuration) fadingIn = false;
+
+            if (fadeTimer >= fadeDuration)
+            {
+                fadingIn = false;
+                // Activate the buttons
+                quitButton.gameObject.SetActive(true);
+                restartButton.gameObject.SetActive(true);
+            }
         }
     }
 
-    public void Show()
+    public void Show(bool foundToilet)
     {
         // Make image fully transparent
         SetAlpha(0f);
         // Show the image
-        YOU_PEED.gameObject.SetActive(true);
+        EndingCanvas.gameObject.SetActive(true);
         // Fade the image in
         fadeTimer = 0f;
         fadingIn = true;

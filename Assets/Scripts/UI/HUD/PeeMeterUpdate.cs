@@ -33,7 +33,8 @@ public class PeeMeterUpdate : MonoBehaviour
     }
 
     //A sudden PeeMeter increase due to scare
-    public void Scare(float drink){
+    public void Scare(float drink)
+    {
         peeMeter.value += drink;
     }
 }

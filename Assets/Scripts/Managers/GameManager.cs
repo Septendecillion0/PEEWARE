@@ -1,18 +1,20 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
-    // Singleton instance
-    private static GameManager _instance;
-    public static GameManager Instance { get { return _instance; } }
-
     public DrawGameOver drawGameOver;
 
     public GameObject firstPersonAudio;
 
-    // track whether the game is over、
     public bool IsGameOver { get; private set; } = false;
+
+
+
+    // Singleton instance
+    private static GameManager _instance;
+    public static GameManager Instance { get { return _instance; } }
 
 
     private void Awake()
@@ -68,14 +70,14 @@ public class GameManager : MonoBehaviour
         firstPersonAudio.SetActive(true);
     }
 
-    public void GameOver()
+    public void GameOver(bool foundToilet = false)
     {
         if (IsGameOver) return;
         PauseGame();
         IsGameOver = true;
         if (drawGameOver != null)
         {
-            drawGameOver.Show();
+            drawGameOver.Show(foundToilet);
         }
     }
 
@@ -83,10 +85,15 @@ public class GameManager : MonoBehaviour
     {
         if (!IsGameOver) return;
         // Reload the current scene
-        UnityEngine.SceneManagement.SceneManager.LoadScene(
-            UnityEngine.SceneManagement.SceneManager.GetActiveScene().buildIndex);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         IsGameOver = false;
         ResumeGame();
+    }
+
+    public void QuitToMainMenu()
+    {
+        Time.timeScale = 1f;
+        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
