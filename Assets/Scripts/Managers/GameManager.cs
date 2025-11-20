@@ -10,7 +10,7 @@ public class GameManager : MonoBehaviour
 
     public bool IsGameOver { get; private set; } = false;
 
-
+    public bool foundToilet = false;
 
     // Singleton instance
     private static GameManager _instance;
@@ -34,6 +34,7 @@ public class GameManager : MonoBehaviour
     public void ResetGameState()
     {
         IsGameOver = false;
+        foundToilet = false;
         Time.timeScale = 1f;
 
         Jump.canJump = true;
@@ -70,14 +71,14 @@ public class GameManager : MonoBehaviour
         firstPersonAudio.SetActive(true);
     }
 
-    public void GameOver(bool foundToilet = false)
+    public void GameOver()
     {
         if (IsGameOver) return;
         PauseGame();
         IsGameOver = true;
         if (drawGameOver != null)
         {
-            drawGameOver.Show(foundToilet);
+            drawGameOver.Show();
         }
     }
 

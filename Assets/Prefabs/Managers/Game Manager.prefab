@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5450111279094688951}
   - component: {fileID: 1925310853587164085}
-  - component: {fileID: 1784142537212655572}
   m_Layer: 0
   m_Name: Game Manager
   m_TagString: Untagged
@@ -45,19 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 989c316f4a5c74d77a749153dc1d52ec, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  drawGameOver: {fileID: 1784142537212655572}
+  drawGameOver: {fileID: 0}
   firstPersonAudio: {fileID: 0}
---- !u!114 &1784142537212655572
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3636112045591798939}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cabd8265f2bdc244d88532d987b21360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::DrawGameOver
-  YOU_PEED: {fileID: 0}
-  fadeDuration: 1

@@ -8,6 +8,8 @@ public class PeeMeterUpdate : MonoBehaviour
 
     private Image fillImage;
 
+    public int maxPee { get; private set; } = 100;
+
     // Colors for the pee meter
     Color32 startPee = new Color32(255, 255, 165, 255);
     Color32 endPee = new Color32(255, 208, 20, 255);
@@ -36,5 +38,14 @@ public class PeeMeterUpdate : MonoBehaviour
     public void Scare(float drink)
     {
         peeMeter.value += drink;
+    }
+
+    public void Pee(float amount)
+    {
+        peeMeter.value -= amount;
+        if (peeMeter.value < 0)
+        {
+            peeMeter.value = 0;
+        }
     }
 }
