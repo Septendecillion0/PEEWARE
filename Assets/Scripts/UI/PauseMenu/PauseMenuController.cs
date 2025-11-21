@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class PauseMenuController : MonoBehaviour
 {
-    [SerializeField] private GameObject pauseMenuUI;
+    [SerializeField] private GameObject pauseCanvas;
     private bool isPaused = false;
 
     private void Start()
     {
-        pauseMenuUI.SetActive(false);
+        pauseCanvas.SetActive(false);
     }
 
     private void Update()
@@ -26,7 +26,7 @@ public class PauseMenuController : MonoBehaviour
             }
 
             isPaused = !isPaused;
-            pauseMenuUI.SetActive(isPaused);
+            pauseCanvas.SetActive(isPaused);
         }
     }
 }

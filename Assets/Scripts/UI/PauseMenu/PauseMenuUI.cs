@@ -9,18 +9,12 @@ public class PauseMenuUI : MonoBehaviour
     private void Start()
     {
         resumeButton.onClick.AddListener(OnResumeClicked);
-        quitButton.onClick.AddListener(QuitToMainMenu);
+        quitButton.onClick.AddListener(GameManager.Instance.QuitToMainMenu);
     }
 
     private void OnResumeClicked()
     {
         GameManager.Instance.ResumeGame();
         gameObject.SetActive(false); // hide pause menu UI
-    }
-
-    public void QuitToMainMenu()
-    {
-        Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
     }
 }
