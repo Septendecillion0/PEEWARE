@@ -2,10 +2,14 @@ using UnityEngine;
 
 public class FairyScript : Enemy
 {
+    [Header("Relation to camera")]
     public float disCam = 2f;
-
     public Vector2 screenOffset = new Vector2(0.5f, 0.5f);
     public float smoothSpeed = 5f;
+    
+    [Header("Tree")]
+    public GameObject treePrefab;
+    private GameObject ownTree;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -34,6 +38,7 @@ public class FairyScript : Enemy
         else{
             peeMeter.GetComponent<PeeMeterUpdate>().Scare(20.0f);
             EnemyManager.Instance.EnemyVanish(this.gameObject);
+            EnemyManager.Instance.EnemyVanish(ownTree);
         }
     }
 }
