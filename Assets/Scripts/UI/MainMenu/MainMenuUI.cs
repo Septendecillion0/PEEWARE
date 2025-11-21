@@ -15,7 +15,8 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("TestScene");  // replace with the game scene name
+        SceneManager.LoadScene("Prerelease Build");  // replace with the game scene name
+        //SceneManager.LoadScene("TestScene");  // replace with the game scene name
     }
 
     public void QuitGame()

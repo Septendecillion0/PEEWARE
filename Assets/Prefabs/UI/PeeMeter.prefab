@@ -215,7 +215,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PeeMeterUpdate
   peeMeter: {fileID: 5142102304260634323}
-  deltaPee: 10
+  deltaPee: 0.4
 --- !u!1 &6215573166320313213
 GameObject:
   m_ObjectHideFlags: 0

@@ -196,7 +196,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
       propertyPath: deltaPee
-      value: 5
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
       propertyPath: drawGameOver

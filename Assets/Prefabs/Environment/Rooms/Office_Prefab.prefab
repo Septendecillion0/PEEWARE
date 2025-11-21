@@ -114,7 +114,7 @@ Transform:
   m_GameObject: {fileID: 3004548778008457204}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.398, y: 0, z: 2.715}
+  m_LocalPosition: {x: -1.398, y: 0, z: 2.65}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -414,7 +414,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 15.08, y: 0, z: -14.33}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2346371151872977359}
@@ -435,13 +435,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Office
+  weight: 2
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 4239616973358215100}
-    tag: Doorway
+    doorType: 0
     isConnected: 0
   - transform: {fileID: 1599191896321352635}
-    tag: Doorway
+    doorType: 0
     isConnected: 0
 --- !u!1 &7030623824800850408
 GameObject:
@@ -683,7 +684,7 @@ Transform:
   m_GameObject: {fileID: 8888884515523903823}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0.7071068, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.714, y: 0, z: 1.469}
+  m_LocalPosition: {x: -0.807, y: 0, z: 1.469}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []

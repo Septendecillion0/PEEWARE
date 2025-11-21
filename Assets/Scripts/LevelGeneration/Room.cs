@@ -9,23 +9,39 @@ public class Room : MonoBehaviour
     public class Exit
     {
         public Transform transform;   // where to attach next room
-        public string tag;             // optional: e.g. "door", "stairs", etc.
+        public DoorType doorType = DoorType.Single;
         [HideInInspector] public bool isConnected = false;
     }
 
+    public enum DoorType
+    {
+        Single,
+        Double,
+        Vent,
+        Hallway
+    }
+
+    [Header("Room Settings")]
     public string roomName;
+    public float weight = 1f; // default weight = 1
+    public bool isDoor = false;
     public Vector3 size;                // optional if you want to use bounding boxes
+    [Header("Room Exits")]
     public List<Exit> exits = new List<Exit>();
     public int exitCount => exits.Count;
 
-
-    // Called once after instantiation
-    public IEnumerable<Exit> GetAvailableExits()
+    public List<Exit> GetAvailableExits(DoorType? type = null)
     {
+        List<Exit> list = new List<Exit>();
         foreach (var e in exits)
-            if (!e.isConnected)
-                yield return e;
+        {
+            if (e.isConnected) continue;
+            if (type != null && e.doorType != type.Value) continue;
+            list.Add(e);
+        }
+        return list;
     }
+
 
     public Exit GetRandomAvailableExit()
     {

@@ -12,11 +12,16 @@ public class GenerateMap : MonoBehaviour
     [Header("Max Path Depth Allowed")]
     public int maxPath = 8;
 
-    [Header("Room Prefabs (index 0 = Start, last = End)")]
+    [Header("Room Prefabs (index 0 = Start, 1 = End)")]
     public List<Room> rooms;
 
     private int currentRoomNum = 0; // count successfully placed rooms
     private List<Bounds> placedBounds = new List<Bounds>(); // used for collision checks
+    private List<Room> placedRooms = new List<Room>(); // parallel list so we can name which room overlaps
+
+    private bool endRoomPlaced = false;
+    private GameObject generationRoot;
+    private const int maxGenerationRetries = 20;
 
     void Start()
     {
@@ -26,24 +31,61 @@ public class GenerateMap : MonoBehaviour
             seed = Random.Range(0, int.MaxValue);
 
         Debug.Log($"Using seed: {seed}");
-        Generate();
-    }
 
-    private void Generate()
-    {
-        currentRoomNum = 0;
-        placedBounds.Clear();
-
-        if (rooms == null || rooms.Count == 0)
+        int attempts = 0;
+        while (attempts < maxGenerationRetries)
         {
-            Debug.LogError("No room prefabs assigned to GenerateMap.rooms");
-            return;
+            attempts++;
+
+            bool success = Generate();
+
+            if (success)
+            {
+                Debug.Log($"Map generation succeeded after {attempts} attempt(s).");
+                return;
+            }
+            else
+            {
+                Debug.LogWarning($"Generation attempt {attempts} FAILED — restarting.");
+            }
         }
 
-        // Place start room
-        Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity);
-        placedBounds.Add(GetRoomBounds(startRoom));
+        Debug.LogError("Map generation failed after maximum retries.");
+    }
+
+    private bool Generate()
+    {
+        // Reset state
+        endRoomPlaced = false;
+        currentRoomNum = 0;
+        placedBounds.Clear();
+        placedRooms.Clear();
+
+        // Clear previous geometry
+        if (generationRoot != null)
+        {
+            DestroyImmediate(generationRoot);
+        }
+
+        generationRoot = new GameObject("GeneratedRooms");
+
+        if (rooms == null || rooms.Count < 2)
+        {
+            Debug.LogError("You must assign at least StartRoom (0) and EndRoom (1).");
+            return false;
+        }
+
+        // Place start room (parent under generationRoot)
+        Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity, generationRoot.transform);
+        // ensure its exits show as unconnected
+        foreach (var e in startRoom.exits) e.isConnected = false;
+
+        Bounds startBounds = GetRoomBounds(startRoom);
+        placedBounds.Add(startBounds);
+        placedRooms.Add(startRoom);
         currentRoomNum++;
+
+        Debug.Log($"[GEN] Placed start room '{startRoom.roomName}' at {startRoom.transform.position}. Bounds center {startBounds.center}, size {startBounds.size}");
 
         // Expand outward from start room exits
         foreach (var exit in startRoom.GetAvailableExits())
@@ -51,108 +93,43 @@ public class GenerateMap : MonoBehaviour
             TryPlaceRoomAtExitWithRetries(exit, 0);
             if (currentRoomNum >= maxRoom) break;
         }
+
+        return endRoomPlaced;
     }
 
-    /// <summary>
-    /// Tries to place a room at `fromExit`. This method exhaustively tries:
-    ///   - each candidate prefab (random order),
-    ///   - for each prefab, each available exit on that prefab (random order),
-    /// until one placement succeeds or all combinations are tried.
-    /// </summary>
     private void TryPlaceRoomAtExitWithRetries(Room.Exit fromExit, int pathLength)
     {
         if (currentRoomNum >= maxRoom) return;
         if (pathLength >= maxPath) return;
+        if (fromExit.isConnected) return;
 
-        // Build weighted list of prefab indices to try (skip index 0 - start room)
-        List<int> prefabIndices = BuildDepthBiasedPrefabList(pathLength);
+        bool mustPlaceEndRoom =
+            !endRoomPlaced &&
+            (pathLength + 1 >= maxPath || currentRoomNum + 1 >= maxRoom);
 
-        // If this placement would be at terminal depth, force end room first
-        bool mustPlaceEndRoom = (pathLength + 1 == maxPath);
+        // Try end room first if required
         if (mustPlaceEndRoom)
         {
-            prefabIndices.Remove(rooms.Count - 1);
-            prefabIndices.Insert(0, rooms.Count - 1);
+            Room endRoomPrefab = rooms[1];
+            if (TryPlaceRoomFromPrefab(fromExit, endRoomPrefab, pathLength))
+            {
+                endRoomPlaced = true;
+                return;
+            }
         }
 
+        // Otherwise, get all candidate prefabs for this exit
+        List<Room> candidates = GetCandidatePrefabs(fromExit, mustPlaceEndRoom);
+        Shuffle(candidates);
 
-        foreach (int prefabIndex in prefabIndices)
+        foreach (var prefab in candidates)
         {
-            if (currentRoomNum >= maxRoom) break;
+            if (TryPlaceRoomFromPrefab(fromExit, prefab, pathLength))
+                return; // stop after first success
+        }
 
-            Room prefabToTry = rooms[prefabIndex];
-
-            // Get a randomized list of available exits on this prefab
-            List<Room.Exit> availableExits = new List<Room.Exit>(prefabToTry.GetAvailableExits());
-            if (availableExits.Count == 0)
-            {
-                // No available exits on that prefab (weird), skip it
-                continue;
-            }
-            Shuffle(availableExits);
-
-            // Try each exit orientation for this prefab
-            foreach (var exitOnPrefab in availableExits)
-            {
-                if (currentRoomNum >= maxRoom) break;
-                // Instantiate candidate at origin (we'll align it)
-                Room candidate = Instantiate(prefabToTry, Vector3.zero, Quaternion.identity);
-
-                // IMPORTANT: find the corresponding Exit object on the instantiated candidate.
-                // exitOnPrefab is from the prefab asset; we must find the matching index in the prefab's exits list
-                int exitIndex = prefabToTry.exits.IndexOf(exitOnPrefab);
-                Room.Exit instantiatedExit;
-                if (exitIndex >= 0 && exitIndex < candidate.exits.Count)
-                    instantiatedExit = candidate.exits[exitIndex];
-                else
-                {
-                    // fallback: pick a random available exit on instantiated object
-                    instantiatedExit = candidate.GetRandomAvailableExit();
-                    if (instantiatedExit == null)
-                    {
-                        Destroy(candidate.gameObject);
-                        continue;
-                    }
-                }
-
-                // Align candidate so it connects to fromExit
-                AlignRoomToExit(candidate, instantiatedExit, fromExit);
-
-                // Compute bounds and check overlap
-                Bounds candidateBounds = GetRoomBounds(candidate);
-
-                bool overlaps = RoomOverlaps(candidateBounds);
-                if (overlaps)
-                {
-                    Debug.Log($"[GEN] Attempt FAILED: '{candidate.roomName}' (prefab idx {prefabIndex}) at exit '{fromExit.transform.name}' — overlaps existing room.");
-                    Destroy(candidate.gameObject);
-                    // try next orientation (exit) or next prefab
-                    continue;
-                }
-
-                // Success: commit candidate
-                placedBounds.Add(candidateBounds);
-                currentRoomNum++;
-                fromExit.isConnected = true;
-                instantiatedExit.isConnected = true;
-
-                Debug.Log($"[GEN] Placed '{candidate.roomName}' (prefab idx {prefabIndex}) at exit '{fromExit.transform.name}'. Total placed: {currentRoomNum}");
-
-                // Recurse from all available exits on the newly placed room
-                foreach (var nextExit in candidate.GetAvailableExits())
-                {
-                    if (currentRoomNum >= maxRoom) break;
-                    if (pathLength + 1 >= maxPath) break;
-                    TryPlaceRoomAtExitWithRetries(nextExit, pathLength + 1);
-                }
-
-                // We succeeded placing one candidate; stop trying other prefabs for this fromExit
-                return;
-            } // end foreach exitOnPrefab
-        } // end foreach prefabIndex
-
-        // If we get here, we've exhausted all prefabs and orientations without success.
-        Debug.Log($"[GEN] Exhausted all prefab×orientation attempts for exit '{fromExit.transform.name}' at depth {pathLength} — giving up on this branch.");
+        // All prefabs failed for this exit
+        Debug.Log($"[GEN] Exhausted all candidate prefabs for exit '{fromExit.transform.name}' at depth {pathLength}");
     }
 
     // Fisher-Yates shuffle for List<T>
@@ -167,88 +144,113 @@ public class GenerateMap : MonoBehaviour
         }
     }
 
-    /// <summary>
-    /// Returns a randomized, depth-biased ordering of room prefabs.
-    /// Prefers high-exit-count rooms at low depth, and low-exit-count rooms at high depth.
-    /// </summary>
-    private List<int> BuildDepthBiasedPrefabList(int depth)
+    private List<Room> GetCandidatePrefabs(Room.Exit fromExit, bool mustPlaceEndRoom)
     {
-        List<int> result = new List<int>();
-        List<(int prefabIndex, float weight)> weighted = new();
+        List<Room> candidates = new List<Room>();
 
-        float t = Mathf.Clamp01((float)depth / (float)maxPath);
-        // t = 0   → very early depth → want high exit count
-        // t = 1   → at/near end     → want low exit count
-
-        for (int i = 1; i < rooms.Count; i++) // skip start room
+        for (int i = 0; i < rooms.Count; i++)
         {
+            if (i == 0) continue; // never place start room again
+            if (i == 1 && !mustPlaceEndRoom) continue; // end room only when needed
+
             Room r = rooms[i];
-            int exitCount = Mathf.Max(1, r.exits.Count);
-
-            // Normalize exitCount across all rooms for fairness
-            // (optional but helps equalize variations in prefab design)
-            float minExits = 1f;
-            float maxExits = 1f;
-            foreach (var rm in rooms)
-                maxExits = Mathf.Max(maxExits, rm.exits.Count);
-
-            float norm = (exitCount - minExits) / (maxExits - minExits + 0.001f);
-
-            // ★ Depth-biased weighting ★
-            // At low depth (t=0): weight = norm      → prefer high-exit rooms
-            // At high depth (t=1): weight = 1-norm   → prefer low-exit rooms
-            float weight = Mathf.Lerp(norm, 1f - norm, t);
-
-            // Add a small constant to avoid zero weights
-            weight = Mathf.Max(0.01f, weight);
-
-            weighted.Add((i, weight));
+            // Only include if it has at least one exit matching the current exit's door type
+            if (r.GetAvailableExits(fromExit.doorType).Count > 0)
+                candidates.Add(r);
         }
 
-        // Weighted random ordering (roulette-wheel style)
-        while (weighted.Count > 0)
+        // Weighted shuffle: generate a random key biased by weight
+        candidates.Sort((a, b) =>
         {
-            float total = 0f;
-            foreach (var w in weighted) total += w.weight;
+            // Generate a random number in [0,1) and scale inversely by weight
+            float keyA = Mathf.Pow(Random.value, 1f / a.weight);
+            float keyB = Mathf.Pow(Random.value, 1f / b.weight);
+            return keyA.CompareTo(keyB); // smaller key → earlier in list
+        });
 
-            float pick = Random.value * total;
-            float acc = 0f;
-
-            for (int i = 0; i < weighted.Count; i++)
-            {
-                acc += weighted[i].weight;
-                if (acc >= pick)
-                {
-                    result.Add(weighted[i].prefabIndex);
-                    weighted.RemoveAt(i);
-                    break;
-                }
-            }
-        }
-
-        return result;
+        return candidates;
     }
 
 
+    private bool TryPlaceRoomFromPrefab(Room.Exit fromExit, Room prefab, int pathLength)
+    {
+        // Shuffle available exits of the prefab matching the current door type
+        List<Room.Exit> exitsToTry = prefab.GetAvailableExits(fromExit.doorType);
+        Shuffle(exitsToTry);
+
+        foreach (var prefabExit in exitsToTry)
+        {
+            // Instantiate prefab
+            Room candidate = Instantiate(prefab, Vector3.zero, Quaternion.identity, generationRoot.transform);
+
+            // Find matching exit on instance
+            int exitIndex = prefab.exits.IndexOf(prefabExit);
+            Room.Exit instantiatedExit = candidate.exits[exitIndex];
+            instantiatedExit.isConnected = false;
+
+            // Align to current exit
+            AlignRoomToExit(candidate, instantiatedExit, fromExit);
+
+            // Check overlap
+            Bounds candidateBounds = GetRoomBounds(candidate);
+            if (RoomOverlaps(candidateBounds))
+            {
+                Destroy(candidate.gameObject);
+                continue; // try next exit
+            }
+
+            // SUCCESS
+            Debug.Log($"[GEN] Placed room '{candidate.roomName}' at {candidate.transform.position}.");
+            placedRooms.Add(candidate);
+            placedBounds.Add(candidateBounds);
+            // don't add to count if placed room is a door
+            if (!candidate.isDoor) currentRoomNum++;
+            fromExit.isConnected = true;
+            instantiatedExit.isConnected = true;
+
+            // Recurse from one random available exit
+            List<Room.Exit> nextExits = candidate.GetAvailableExits();
+            Shuffle(nextExits);
+            foreach (var nextExit in nextExits)
+            {
+                TryPlaceRoomAtExitWithRetries(nextExit, pathLength + 1);
+            }
+
+            return true;
+        }
+
+        // All exits failed
+        return false;
+    }
+
+
+    // Width of wall to shrink bounds by
+    private const float WALL_THICKNESS = 0.15f;
     // Compute world-space bounds for a room by combining all child renderers
     private Bounds GetRoomBounds(Room room)
     {
         Renderer[] renderers = room.GetComponentsInChildren<Renderer>();
         if (renderers == null || renderers.Length == 0)
-            return new Bounds(room.transform.position, Vector3.zero);
+            return new Bounds(room.transform.position, Vector3.one * 0.1f);
 
         Bounds combined = renderers[0].bounds;
         for (int i = 1; i < renderers.Length; i++)
             combined.Encapsulate(renderers[i].bounds);
-        return combined;
+
+        Vector3 size = combined.size;
+        size.x = Mathf.Max(0.01f, size.x - WALL_THICKNESS * 2f);
+        size.y = Mathf.Max(0.01f, size.y - WALL_THICKNESS * 2f);
+        size.z = Mathf.Max(0.01f, size.z - WALL_THICKNESS * 2f);
+
+        return new Bounds(combined.center, size);
     }
 
     // Check candidate bounds against already committed placed rooms
     private bool RoomOverlaps(Bounds newBounds)
     {
-        foreach (var b in placedBounds)
+        for (int i = 0; i < placedBounds.Count; i++)
         {
-            if (b.Intersects(newBounds))
+            if (placedBounds[i].Intersects(newBounds))
                 return true;
         }
         return false;
@@ -259,10 +261,10 @@ public class GenerateMap : MonoBehaviour
         Transform rt = newRoom.transform;
 
         // Step 1: compute the target forward (pointing out of the new room)
-        Vector3 targetForward = -fromExit.transform.forward;  
+        Vector3 targetForward = -fromExit.transform.forward;
 
         // Step 2: compute the target up (keep the room upright)
-        Vector3 targetUp = fromExit.transform.up;            
+        Vector3 targetUp = fromExit.transform.up;
 
         // Step 3: build a rotation that matches BOTH directions
         Quaternion targetRotation = Quaternion.LookRotation(targetForward, targetUp);
@@ -275,5 +277,4 @@ public class GenerateMap : MonoBehaviour
         // Step 5: move so exit positions overlap exactly
         rt.position += (fromExit.transform.position - newExit.transform.position);
     }
-
 }

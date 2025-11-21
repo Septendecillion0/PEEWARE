@@ -1292,6 +1292,10 @@ PrefabInstance:
       propertyPath: peeMeter
       value: 
       objectReference: {fileID: 2920323334751017790}
+    - target: {fileID: 5786101710467770344, guid: fa6ef60f4c3c8e440aa728ce448544ef, type: 3}
+      propertyPath: playerCam
+      value: 
+      objectReference: {fileID: 814654594}
     - target: {fileID: 6987442691256376589, guid: fa6ef60f4c3c8e440aa728ce448544ef, type: 3}
       propertyPath: m_LocalPosition.x
       value: 4.01
