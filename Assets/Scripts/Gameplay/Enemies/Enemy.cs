@@ -5,8 +5,11 @@ public class Enemy : MonoBehaviour
 {
     private AudioSource thisAudio;
     public AudioClip deathSound;
-
     public GameObject peeMeter;
+
+    [Header("Player Related")]
+    private GameObject pl;
+    public Camera playerCam;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -17,7 +20,7 @@ public class Enemy : MonoBehaviour
     public void Update()
     {
         //Always look at the player
-        GameObject pl = EnemyManager.Instance.player;
+        pl = EnemyManager.Instance.player;
         Vector3 direction = pl.transform.position - transform.position;
         direction.y = 0;
         transform.rotation = Quaternion.LookRotation(direction);

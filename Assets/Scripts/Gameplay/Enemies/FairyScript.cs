@@ -2,11 +2,10 @@ using UnityEngine;
 
 public class FairyScript : Enemy
 {
-    public Camera cam;
-    public float disCam = 5f;
+    public float disCam = 2f;
 
     public Vector2 screenOffset = new Vector2(0.5f, 0.5f);
-    public float smoothSpeed = 0.0005f;
+    public float smoothSpeed = 5f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -20,7 +19,7 @@ public class FairyScript : Enemy
         base.Update();
         
         //Slowly move toward middle of the screen
-        Vector3 targetPos = cam.ViewportToWorldPoint(new Vector3(screenOffset.x, screenOffset.y, disCam));
+        Vector3 targetPos = playerCam.ViewportToWorldPoint(new Vector3(screenOffset.x, screenOffset.y, disCam));
         transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
     }
 
