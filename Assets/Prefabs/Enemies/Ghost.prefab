@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4549844077233238344}
   - component: {fileID: 378201515555015063}
   - component: {fileID: 8731114524487016187}
+  - component: {fileID: 2846662253118365836}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -114,3 +115,25 @@ CapsuleCollider:
   m_Height: 2.3049893
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2846662253118365836
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63164046888599622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3730e86ef153b0e47ab9687fa29c5384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostScript
+  deathSound: {fileID: 0}
+  peeMeter: {fileID: 4436666588249333562, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
+  playerCam: {fileID: 0}
+  minBehindDistance: 4
+  maxBehindDistance: 7
+  maxAllowedDistance: 18
+  lookThreshold: 0.8
+  jumpSpeed: 10
+  horizontalOffset: 2
+  tpTime: 3

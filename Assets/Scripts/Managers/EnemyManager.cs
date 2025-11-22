@@ -8,6 +8,7 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
 
+    [Header("Don't set player in inspector, make sure player object has tag 'Player' and will automatically be found")]
     public GameObject player;
     public List<GameObject> existingEnemies = new List<GameObject>();
 
@@ -15,10 +16,10 @@ public class EnemyManager : MonoBehaviour
 
     [Header("Enemy Settings")]
     public List<GameObject> enemyPrefabs; // drag your enemy prefabs here
-    public float SpawnInterval = 20f;
+    public float SpawnInterval = 10f;
     public float spawnRadius = 5f;        // maximum distance from player
     public float minDistanceFromPlayer = 3f; // minimum distance
-    public int maxSpawnAttempts = 10;      // how many times to retry if invalid
+    public int maxSpawnAttempts = 30;      // how many times to retry if invalid
     private void Awake(){
         Instance = this;
     }
@@ -27,7 +28,7 @@ public class EnemyManager : MonoBehaviour
     {
         blind.enabled = false;
         // Start the spawn coroutine
-        StartCoroutine(SpawnEnemiesRoutine());
+        StartCoroutine(FindPlayerAndStartSpawning());
     }
 
     // Update is called once per frame
@@ -36,19 +37,41 @@ public class EnemyManager : MonoBehaviour
         
     }
 
+    IEnumerator FindPlayerAndStartSpawning()
+    {
+        // Wait until a player exists in the scene
+        while (player == null)
+        {   
+            Debug.Log($"looking for player");
+            GameObject found = GameObject.FindGameObjectWithTag("Player");
+            if (found != null)
+            {
+                player = found;
+                Debug.Log($"player found");
+                break;
+            }
+            yield return null; // wait for next frame
+        }
+
+        Debug.Log($"starting enemy spawns");
+        // Now start spawning enemies
+        StartCoroutine(SpawnEnemiesRoutine());
+    }
+
     IEnumerator SpawnEnemiesRoutine()
     {
         while (true)
         {
             // Wait for the interval
+            Debug.Log($"waiting for enemy spawn");
             yield return new WaitForSeconds(SpawnInterval);
 
             // Spawn a random enemy
-            SpawnRandomEnemy();
+            SpawnRandomEnemy(0);
         }
     }
 
-    void SpawnRandomEnemy()
+    void SpawnRandomEnemy(int attempts)
     {
         if (enemyPrefabs.Count == 0 || player == null)
             return;
@@ -59,8 +82,11 @@ public class EnemyManager : MonoBehaviour
         // Pick a random position near the player
         Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
         Vector3 spawnPosition = player.transform.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
-        if (Physics.CheckSphere(spawnPosition, 1f)) return; // skip if blocked
-
+        if (Physics.CheckSphere(spawnPosition, 1f)) {
+            Debug.Log($"failed enemy spawn");
+            if (attempts < maxSpawnAttempts) SpawnRandomEnemy(attempts + 1); // try again if blocked
+            return;
+        }
 
         // Instantiate enemy and add to the existingEnemies list
         GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);

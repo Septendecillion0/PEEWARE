@@ -45,16 +45,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7812e908a057d684db817c1860795015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
-  player: {fileID: 1773623360729482, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
+  player: {fileID: 0}
   existingEnemies: []
   blind: {fileID: 6562645450816772453}
   enemyPrefabs:
   - {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
   - {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
-  - {fileID: 3381633526987363447, guid: 52d9b3d2322743449bdd5c74abacdbce, type: 3}
   - {fileID: 2094668390991299439, guid: abdccf77dfdffa2418aced9715901ae2, type: 3}
-  SpawnInterval: 20
-  spawnRadius: 3
+  SpawnInterval: 10
+  spawnRadius: 5
+  minDistanceFromPlayer: 3
+  maxSpawnAttempts: 10
 --- !u!1 &4443773306596894828
 GameObject:
   m_ObjectHideFlags: 0

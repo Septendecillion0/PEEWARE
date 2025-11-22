@@ -267,6 +267,7 @@ MonoBehaviour:
   lookThreshold: 0.8
   jumpSpeed: 10
   horizontalOffset: 2
+  tpTime: 3
 --- !u!1 &242301211 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2920323335950813468, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
@@ -352,6 +353,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Ghost
       objectReference: {fileID: 0}
+    - target: {fileID: 2846662253118365836, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
+      propertyPath: playerCam
+      value: 
+      objectReference: {fileID: 1748904419}
     - target: {fileID: 4549844077233238344, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: -1.63
