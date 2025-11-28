@@ -21,6 +21,7 @@ public class Enemy : MonoBehaviour
     {
         //Always look at the player
         pl = EnemyManager.Instance.player;
+        playerCam = EnemyManager.Instance.playerCam;
         Vector3 direction = pl.transform.position - transform.position;
         direction.y = 0;
         transform.rotation = Quaternion.LookRotation(direction);

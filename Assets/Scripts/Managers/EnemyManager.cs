@@ -10,6 +10,7 @@ public class EnemyManager : MonoBehaviour
 
     [Header("Don't set player in inspector, make sure player object has tag 'Player' and will automatically be found")]
     public GameObject player;
+    public Camera playerCam;
     public List<GameObject> existingEnemies = new List<GameObject>();
 
     public TextMeshProUGUI blind;
@@ -53,6 +54,15 @@ public class EnemyManager : MonoBehaviour
             yield return null; // wait for next frame
         }
 
+        while(playerCam == null){
+            Camera camFound = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
+            if (camFound != null){
+                playerCam = camFound;
+                Debug.Log($"Camera Found");
+                break;
+            }
+            yield return null;
+        }
         Debug.Log($"starting enemy spawns");
         // Now start spawning enemies
         StartCoroutine(SpawnEnemiesRoutine());
@@ -63,7 +73,6 @@ public class EnemyManager : MonoBehaviour
         while (true)
         {
             // Wait for the interval
-            Debug.Log($"waiting for enemy spawn");
             yield return new WaitForSeconds(SpawnInterval);
 
             // Spawn a random enemy
@@ -89,16 +98,16 @@ public class EnemyManager : MonoBehaviour
         }
 
         // Instantiate enemy and add to the existingEnemies list
-        GameObject newEnemy = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
-        existingEnemies.Add(newEnemy);
+        EnemySpawn(enemyPrefab, spawnPosition, Quaternion.identity);
 
         Debug.Log($"[ENEMY] Spawned new enemy");
     }
 
 
-    public void EnemySpawn(GameObject enemy, Vector3 loc, Quaternion direc){
-        Instantiate(enemy, loc, direc);
+    public GameObject EnemySpawn(GameObject enemy, Vector3 loc, Quaternion direc){
+        GameObject newEnemy = Instantiate(enemy, loc, direc);
         existingEnemies.Add(enemy);
+        return newEnemy;
     }
 
     public void EnemyVanish(GameObject enemy){
