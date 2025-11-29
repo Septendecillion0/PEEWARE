@@ -308,6 +308,10 @@ PrefabInstance:
       value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: mapGenManager
+      value: 
+      objectReference: {fileID: 1939241292}
+    - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: maxSpawnAttempts
       value: 30
       objectReference: {fileID: 0}
@@ -844,6 +848,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 70464f57be91247b8935e46dd1b83be4, type: 3}
+--- !u!1 &1939241292 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+  m_PrefabInstance: {fileID: 1273998833}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

@@ -22,6 +22,13 @@ public class EnemyManager : MonoBehaviour
     public float spawnRadius = 5f;        // maximum distance from player
     public float minDistanceFromPlayer = 3f; // minimum distance
     public int maxSpawnAttempts = 30;      // how many times to retry if invalid
+
+    [Header("Map Related")]
+    public GenerateMap mapGenerator;
+    public GameObject mapGenManager;
+    private List<Room> generatedRooms;
+    private List<Bounds> roomBounds;
+
     private void Awake(){
         Instance = this;
     }
@@ -66,6 +73,12 @@ public class EnemyManager : MonoBehaviour
             yield return null;
         }
         Debug.Log($"starting enemy spawns");
+
+        //Getting reference to the rooms
+        mapGenerator = mapGenManager.GetComponent<GenerateMap>();
+        generatedRooms = mapGenerator.GetAllPlacedRooms();
+        roomBounds = mapGenerator.GetAllRoomBounds();
+
         // Now start spawning enemies
         StartCoroutine(SpawnEnemiesRoutine());
     }
@@ -78,38 +91,72 @@ public class EnemyManager : MonoBehaviour
             yield return new WaitForSeconds(SpawnInterval);
 
             // Spawn a random enemy
-            SpawnRandomEnemy(0);
+            SpawnRandomEnemy();
         }
     }
 
-    void SpawnRandomEnemy(int attempts)
+    //Pick a random position in the room bound
+    Vector3 GetRandomPointInsideRoom(Bounds b)
     {
-        if (enemyPrefabs.Count == 0 || player == null)
+        float x = Random.Range(b.min.x + 1f, b.max.x - 1f);
+        float z = Random.Range(b.min.z + 1f, b.max.z - 1f);
+        float y = b.center.y;  // typically same floor height
+
+        return new Vector3(x, y, z);
+    }
+
+    //Avoid spawning too close to player
+    bool TooCloseToPlayer(Vector3 pos)
+    {
+        float dist = Vector3.Distance(pos, player.transform.position);
+        return dist < minDistanceFromPlayer;
+    }
+
+    //Check if the enemy is hitting the wall
+    bool IsPositionValid(Vector3 pos)
+    {
+        // Check there's ground
+        if (!Physics.Raycast(pos + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 4f))
+            return false;
+
+        // Check no walls or other obstacles
+        return !Physics.CheckSphere(pos, 0.5f);
+    }
+
+    void SpawnRandomEnemy()
+    {
+        if (enemyPrefabs.Count == 0 || player == null || roomBounds == null || roomBounds.Count == 0)
             return;
 
-        // Pick a random enemy prefab
-        GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
+        {
+            // Pick a random room
+            int index = Random.Range(0, roomBounds.Count);
+            Bounds b = roomBounds[index];
 
-        // Pick a random position near the player
-        Vector2 randomCircle = Random.insideUnitCircle * spawnRadius;
-        Vector3 spawnPosition = player.transform.position + new Vector3(randomCircle.x, 0f, randomCircle.y);
-        if (Physics.CheckSphere(spawnPosition, 1f)) {
-            Debug.Log($"failed enemy spawn");
-            if (attempts < maxSpawnAttempts) SpawnRandomEnemy(attempts + 1); // try again if blocked
+            // Get random point inside it
+            Vector3 pos = GetRandomPointInsideRoom(b);
+
+            // Reject if too close to player
+            if (TooCloseToPlayer(pos))
+                continue;
+
+            // Reject if inside objects / walls
+            if (!IsPositionValid(pos))
+                continue;
+
+            // Pick enemy prefab
+            GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+
+            // Spawn it
+            GameObject newEnemy = Instantiate(enemyPrefab, pos, Quaternion.identity);
+            existingEnemies.Add(newEnemy);
+
+            Debug.Log($"[ENEMY] Spawned '{enemyPrefab.name}' in room {index}");
             return;
         }
 
-        // Instantiate enemy and add to the existingEnemies list
-        EnemySpawn(enemyPrefab, spawnPosition, Quaternion.identity);
-
-        Debug.Log($"[ENEMY] Spawned new enemy");
-    }
-
-
-    public GameObject EnemySpawn(GameObject enemy, Vector3 loc, Quaternion direc){
-        GameObject newEnemy = Instantiate(enemy, loc, direc);
-        existingEnemies.Add(enemy);
-        return newEnemy;
+        Debug.Log("[ENEMY] Failed to find valid spawn point");
     }
 
     public void EnemyVanish(GameObject enemy){

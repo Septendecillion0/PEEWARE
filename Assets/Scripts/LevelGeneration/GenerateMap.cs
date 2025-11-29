@@ -277,4 +277,15 @@ public class GenerateMap : MonoBehaviour
         // Step 5: move so exit positions overlap exactly
         rt.position += (fromExit.transform.position - newExit.transform.position);
     }
+
+    //Function returning all room bounds and all rooms for enemy generation reference
+    public List<Bounds> GetAllRoomBounds()
+    {
+        return placedBounds;
+    }
+
+    public List<Room> GetAllPlacedRooms()
+    {
+        return placedRooms;
+    }
 }
