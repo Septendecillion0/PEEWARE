@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 8115876175342464274}
   m_Layer: 5
   m_Name: PeeMeter
-  m_TagString: Untagged
+  m_TagString: PeeMeter
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

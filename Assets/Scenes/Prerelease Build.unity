@@ -296,6 +296,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 0}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: peeMeter
+      value: 
+      objectReference: {fileID: 1785410160}
+    - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: spawnRadius
       value: 3
       objectReference: {fileID: 0}
@@ -316,9 +320,13 @@ PrefabInstance:
       value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: 'enemyPrefabs.Array.data[1]'
+      propertyPath: 'enemyPrefabs.Array.data[0]'
       value: 
       objectReference: {fileID: 2094668390991299439, guid: abdccf77dfdffa2418aced9715901ae2, type: 3}
+    - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: 'enemyPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: 'enemyPrefabs.Array.data[2]'
       value: 
@@ -774,6 +782,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
+--- !u!1 &1785410160 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2920323335950813468, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
+  m_PrefabInstance: {fileID: 204082003}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1879780328
 PrefabInstance:
   m_ObjectHideFlags: 0

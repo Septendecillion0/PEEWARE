@@ -8,9 +8,10 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
 
-    [Header("Don't set player in inspector, make sure player object has tag 'Player' and will automatically be found")]
+    [Header("Player Settings")]
     public GameObject player;
     public Camera playerCam;
+    public GameObject peeMeter;
     public List<GameObject> existingEnemies = new List<GameObject>();
 
     public TextMeshProUGUI blind;
@@ -28,6 +29,7 @@ public class EnemyManager : MonoBehaviour
     void Start()
     {
         blind.enabled = false;
+        //Find PeeMeter
         // Start the spawn coroutine
         StartCoroutine(FindPlayerAndStartSpawning());
     }
