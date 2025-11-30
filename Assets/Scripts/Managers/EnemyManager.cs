@@ -20,7 +20,8 @@ public class EnemyManager : MonoBehaviour
     public List<GameObject> enemyPrefabs; // drag your enemy prefabs here
     public float SpawnInterval = 10f;
     public float spawnRadius = 5f;        // maximum distance from player
-    public float minDistanceFromPlayer = 3f; // minimum distance
+    public float minDistanceFromPlayer = 20f; // minimum distance
+    public float maxDistanceFromPlayer = 40f;
     public int maxSpawnAttempts = 30;      // how many times to retry if invalid
 
     [Header("Map Related")]
@@ -106,10 +107,10 @@ public class EnemyManager : MonoBehaviour
     }
 
     //Avoid spawning too close to player
-    bool TooCloseToPlayer(Vector3 pos)
+    bool IsWithinSpawnRange(Vector3 pos)
     {
         float dist = Vector3.Distance(pos, player.transform.position);
-        return dist < minDistanceFromPlayer;
+        return dist > minDistanceFromPlayer && dist < maxDistanceFromPlayer;
     }
 
     //Check if the enemy is hitting the wall
@@ -138,7 +139,7 @@ public class EnemyManager : MonoBehaviour
             Vector3 pos = GetRandomPointInsideRoom(b);
 
             // Reject if too close to player
-            if (TooCloseToPlayer(pos))
+            if (!IsWithinSpawnRange(pos))
                 continue;
 
             // Reject if inside objects / walls

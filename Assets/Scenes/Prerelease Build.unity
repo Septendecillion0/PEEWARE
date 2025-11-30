@@ -302,7 +302,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!81 &333075318
 AudioListener:
   m_ObjectHideFlags: 0
@@ -455,7 +455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: minDistanceFromPlayer
-      value: 1
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: enemyPrefabs.Array.size
@@ -468,11 +468,11 @@ PrefabInstance:
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: 'enemyPrefabs.Array.data[1]'
       value: 
-      objectReference: {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
+      objectReference: {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: 'enemyPrefabs.Array.data[2]'
       value: 
-      objectReference: {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
+      objectReference: {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
     - target: {fileID: 5466011338916204885, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: 'enemyPrefabs.Array.data[3]'
       value: 
