@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Collections;
 
-public class GameManager : MonoBehaviour
+public class GameManager : Singleton<GameManager>
 {
     public DrawGameOver drawGameOver;
 
@@ -12,22 +12,10 @@ public class GameManager : MonoBehaviour
 
     public bool foundToilet = false;
 
-    // Singleton instance
-    private static GameManager _instance;
-    public static GameManager Instance { get { return _instance; } }
 
-
-    private void Awake()
+    protected override void Awake()
     {
-        // enforce singleton pattern
-        if (_instance != null && _instance != this)
-        {
-            // multiple instances detected, destroy this one
-            Destroy(gameObject);
-            return;
-        }
-        _instance = this;
-
+        base.Awake();
         ResetGameState();
     }
 
