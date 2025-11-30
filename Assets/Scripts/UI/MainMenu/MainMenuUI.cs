@@ -5,12 +5,13 @@ using UnityEngine.UI;
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button startButton;
-    [SerializeField] private Button quitButton;
+    [SerializeField] private Button settingButton;
+    [SerializeField] private Button exitButton;
 
     private void Start()
     {
         startButton.onClick.AddListener(StartGame);
-        quitButton.onClick.AddListener(QuitGame);
+        exitButton.onClick.AddListener(ExitGame);
     }
 
     public void StartGame()
@@ -19,7 +20,7 @@ public class MainMenuUI : MonoBehaviour
         //SceneManager.LoadScene("TestScene");  // replace with the game scene name
     }
 
-    public void QuitGame()
+    public void ExitGame()
     {
         Application.Quit();
     }

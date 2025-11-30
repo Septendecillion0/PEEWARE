@@ -64,9 +64,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: EndingCanvas
       objectReference: {fileID: 0}
-    - target: {fileID: 2272491748345718550, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -110
+    - target: {fileID: 1084601922715419753, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7103070891249981153, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
       propertyPath: m_Pivot.x
@@ -147,14 +147,6 @@ PrefabInstance:
     - target: {fileID: 7103070891249981153, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7206772802636087463, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8780238756978949833, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
-      propertyPath: m_AnchoredPosition.y
-      value: -60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
