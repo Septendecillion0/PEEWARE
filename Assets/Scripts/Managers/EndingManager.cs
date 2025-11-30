@@ -3,9 +3,7 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
-// Fade YOU PEED in when pee meter full
-
-public class DrawGameOver : MonoBehaviour
+public class EndingManager : Singleton<EndingManager>
 {
     [SerializeField] private Canvas EndingCanvas;
     [SerializeField] private Image YOU_PEED;
@@ -58,6 +56,7 @@ public class DrawGameOver : MonoBehaviour
         }
     }
 
+    // Fade YOU PEED in when pee meter full
     public void Show()
     {
         // Show the ending screen

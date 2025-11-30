@@ -4,8 +4,6 @@ using System.Collections;
 
 public class GameManager : Singleton<GameManager>
 {
-    public DrawGameOver drawGameOver;
-
     public GameObject firstPersonAudio;
 
     public bool IsGameOver { get; private set; } = false;
@@ -64,10 +62,7 @@ public class GameManager : Singleton<GameManager>
         if (IsGameOver) return;
         PauseGame();
         IsGameOver = true;
-        if (drawGameOver != null)
-        {
-            drawGameOver.Show();
-        }
+        EndingManager.Instance?.Show();
     }
 
     public void RestartGame()
