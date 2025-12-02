@@ -127,7 +127,7 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3615574720719807814, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+    - target: {fileID: 4128894482707153732, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -171,9 +171,29 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4585464974548450285, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4829027323824900623, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
       propertyPath: m_Name
       value: GameManagers
+      objectReference: {fileID: 0}
+    - target: {fileID: 4873752373006403736, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5521238111135746919, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6470696426006774005, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8918307272232268980, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

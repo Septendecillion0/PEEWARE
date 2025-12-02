@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class PauseManager : Singleton<PauseManager>
 {
-    [SerializeField] private GameObject pauseCanvas;
+    public GameObject pauseCanvas;
     private bool isPaused = false;
 
     private void Start()
@@ -12,7 +12,8 @@ public class PauseManager : Singleton<PauseManager>
 
     private void Update()
     {
-        if (GameManager.Instance.IsGameOver) return;
+        // Skip handling if the game is over, the settings menu were opened or just closed this frame - prevents the Escape key that closed the settings also toggling pause in the same frame.
+        if (GameManager.Instance.IsGameOver || SettingsManager.Instance.InSettings || SettingsManager.Instance.JustClosedSettings) return;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (!isPaused)

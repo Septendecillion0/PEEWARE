@@ -129,6 +129,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SettingsManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6583963851541989474, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 8425963147603269645, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_LocalPosition.x
       value: 960
