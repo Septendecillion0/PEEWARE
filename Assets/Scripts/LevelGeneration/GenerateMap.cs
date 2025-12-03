@@ -201,12 +201,16 @@ public class GenerateMap : MonoBehaviour
 
             // SUCCESS
             Debug.Log($"[GEN] Placed room '{candidate.roomName}' at {candidate.transform.position}.");
+            // update room bounds
             placedRooms.Add(candidate);
             placedBounds.Add(candidateBounds);
-            // don't add to count if placed room is a door
-            if (!candidate.isDoor) currentRoomNum++;
+            // connect exits
             fromExit.isConnected = true;
             instantiatedExit.isConnected = true;
+            // remove placeholder doors
+            Destroy(fromExit.transform.gameObject);
+            Destroy(instantiatedExit.transform.gameObject);
+
 
             // Recurse from one random available exit
             List<Room.Exit> nextExits = candidate.GetAvailableExits();
@@ -223,9 +227,8 @@ public class GenerateMap : MonoBehaviour
         return false;
     }
 
-
     // Width of wall to shrink bounds by
-    private const float WALL_THICKNESS = 0.15f;
+    private const float WALL_THICKNESS = 0.3f;
     // Compute world-space bounds for a room by combining all child renderers
     private Bounds GetRoomBounds(Room room)
     {

@@ -48,7 +48,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Hallway-Door Converter
-  weight: 8
+  weight: 30
+  isDoor: 0
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 8290753418352941711}
