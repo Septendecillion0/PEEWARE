@@ -111,11 +111,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1686208800068115996, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2323237287737237967, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2643215533696360667, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_AnchorMax.y
@@ -123,11 +123,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3387172254698627632, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3404570221918984903, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
+      propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3850055224393427549, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4698563859810131565, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_Name
       value: SettingsManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 5678594801233736099, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
+      propertyPath: m_SortingOrder
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 5980908773121315141, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6583963851541989474, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
       propertyPath: m_SizeDelta.x
@@ -237,6 +253,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 622081679015454338, guid: 70464f57be91247b8935e46dd1b83be4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2962972582520934655, guid: 70464f57be91247b8935e46dd1b83be4, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6307620405200150633, guid: 70464f57be91247b8935e46dd1b83be4, type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

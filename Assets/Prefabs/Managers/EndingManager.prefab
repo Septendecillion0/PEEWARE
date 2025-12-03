@@ -64,6 +64,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: EndingCanvas
       objectReference: {fileID: 0}
+    - target: {fileID: 1084601922715419753, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2272491748345718550, guid: e7236d4f36cc84ccd8563a12c6db84b7, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.2

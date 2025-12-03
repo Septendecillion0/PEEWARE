@@ -8,7 +8,7 @@ public class Toilet : MonoBehaviour, IInteractable
 	// when the player looks at the object
 	public void OnHoverEnter()
 	{
-		InteractionUI.Instance.Show("Press [E] to PEE!!");
+		InteractionUI.Instance.Show("[E] PEE!!");
 	}
 
 	// when the player looks away from the object

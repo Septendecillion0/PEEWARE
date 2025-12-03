@@ -28,7 +28,7 @@ public class DraggableObject : MonoBehaviour, IInteractable
     // when the player looks at the object
     public void OnHoverEnter()
     {
-        InteractionUI.Instance.Show("Press [E] to drag");
+        InteractionUI.Instance.Show("[E] Drag the object");
         hoverEntered = true;
     }
 
