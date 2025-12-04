@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
-public class SettingsMenuUI : MonoBehaviour
+public class SettingsMainMenuUI : MonoBehaviour
 {
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider brightnessSlider;
@@ -23,6 +23,22 @@ public class SettingsMenuUI : MonoBehaviour
         brightnessSlider.value = b;
         SettingsManager.Instance.SetBrightness(b);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
-        backButton.onClick.AddListener(PauseManager.Instance.CloseSettings);
+
+        // Back button listener
+        backButton.onClick.AddListener(CloseSettings);
     }
+
+    public void CloseSettings()
+    {
+        gameObject.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            CloseSettings();
+        }
+    }
+
 }

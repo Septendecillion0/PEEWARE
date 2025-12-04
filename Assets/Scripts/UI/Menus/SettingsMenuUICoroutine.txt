@@ -1,0 +1,83 @@
+// This is a coroutine version of settings menu, which binds listeners for the 
+// UI components dynamically on enabled
+// @pre: Settings Manager is a singleton, and won't be destroyed across scenes:
+// protected override void Awake()
+// {
+//     base.Awake();
+//     DontDestroyOnLoad(gameObject);
+// }
+// But @Chloe found the race condition during initialization hard to solve, so 
+// just gave up on this scheme, and added two Settings Managers to the main 
+// scene and the game scene separately
+
+
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class SettingsMenuUIcopy : MonoBehaviour
+{
+    [SerializeField] private Slider volumeSlider;
+    [SerializeField] private Slider brightnessSlider;
+    [SerializeField] private Button backButton;
+
+    private void InitUI()
+    {
+        // Initialize volume slider
+        float v = PlayerPrefs.GetFloat("MasterVolume", 1f);
+        v = Mathf.Clamp(v, 0.001f, 1f);
+        volumeSlider.value = v;
+        SettingsManager.Instance.SetMasterVolume(v);
+        volumeSlider.onValueChanged.AddListener(SettingsManager.Instance.SetMasterVolume);
+
+        // Initialize brightness slider
+        float b = PlayerPrefs.GetFloat("Brightness", 1f);
+        b = Mathf.Clamp(b, 0f, 1f);
+        brightnessSlider.value = b;
+        SettingsManager.Instance.SetBrightness(b);
+        brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
+    }
+
+    private IEnumerator WaitAndInit()
+    {
+        float timeout = 2f;
+        while (SettingsManager.Instance == null && timeout > 0f)
+        {
+            timeout -= Time.unscaledDeltaTime;
+            yield return null;
+        }
+
+        if (SettingsManager.Instance == null)
+        {
+            Debug.LogError("SettingsManager not found after waiting");
+            yield break;
+        }
+
+        InitUI();
+    }
+
+    private void Start()
+    {
+        // Back button listener
+        backButton.onClick.AddListener(PauseManager.Instance.CloseSettings);
+    }
+
+    private void OnEnable()
+    {
+        volumeSlider.onValueChanged.RemoveAllListeners();
+        brightnessSlider.onValueChanged.RemoveAllListeners();
+        backButton.onClick.RemoveAllListeners();
+
+        if (SettingsManager.Instance != null)
+            InitUI();
+        else
+            StartCoroutine(WaitAndInit());
+    }
+
+    private void OnDisable()
+    {
+        volumeSlider.onValueChanged.RemoveAllListeners();
+        brightnessSlider.onValueChanged.RemoveAllListeners();
+        backButton.onClick.RemoveAllListeners();
+    }
+}

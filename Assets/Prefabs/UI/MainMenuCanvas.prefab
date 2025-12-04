@@ -242,6 +242,7 @@ MonoBehaviour:
   startButton: {fileID: 1257062379222120511}
   settingButton: {fileID: 7563497582094880303}
   exitButton: {fileID: 6157633458247716981}
+  settingsCanvas: {fileID: 0}
 --- !u!1 &3783883790188714522
 GameObject:
   m_ObjectHideFlags: 0

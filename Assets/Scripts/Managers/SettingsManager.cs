@@ -1,43 +1,27 @@
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class SettingsManager : Singleton<SettingsManager>
 {
-    public GameObject settingsMenu;
-    public bool InSettings = false;
-    // Set to true in the frame when settings are closed to prevent other
-    // systems from also handling the same Escape key press.
-    public bool JustClosedSettings = false;
+    [SerializeField] private AudioMixer audioMixer;
+    [SerializeField] private Image brightnessOverlay;
 
-    void Start()
+    public void SetMasterVolume(float value)
     {
-        settingsMenu.SetActive(false);
+        value = Mathf.Clamp(value, 0.001f, 1f);
+        // slider 0-1 -> dB
+        float volume = Mathf.Log10(value) * 20;
+        audioMixer.SetFloat("MasterVolume", volume);
+        PlayerPrefs.SetFloat("MasterVolume", value);
     }
 
-    public void OpenSettings()
+    public void SetBrightness(float value)
     {
-        InSettings = true;
-        settingsMenu.SetActive(true);
-    }
-
-    public void CloseSettings()
-    {
-        InSettings = false;
-        settingsMenu.SetActive(false);
-        JustClosedSettings = true;
-    }
-
-    public void Update()
-    {
-        if (InSettings && Input.GetKeyDown(KeyCode.Escape))
-        {
-            CloseSettings();
-        }
-    }
-
-    // Reset the transient flag at the end of the frame so it only applies
-    // to the same frame in which CloseSettings() was called.
-    private void LateUpdate()
-    {
-        JustClosedSettings = false;
+        Color c = brightnessOverlay.color;
+        // Invert value: slider 0 = black overlay, slider 1 = transparent
+        c.a = 1f - value;
+        brightnessOverlay.color = c;
+        PlayerPrefs.SetFloat("Brightness", value);
     }
 }
