@@ -106,11 +106,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FairyScript
   deathSound: {fileID: 0}
+  playerCam: {fileID: 0}
   peeMeter: {fileID: 0}
-  cam: {fileID: 0}
+  minHorizontalDistance: 2
+  maxHorizontalDistance: 3
+  minVerticalDistance: -2
+  maxVerticalDistance: 3
+  minDirectionDot: 0.866
+  maxDirectionDot: 1
   disCam: 2
   screenOffset: {x: 0.5, y: 0.5}
   smoothSpeed: 5
+  treePrefab: {fileID: 0}
 --- !u!136 &1544985658772955443
 CapsuleCollider:
   m_ObjectHideFlags: 0

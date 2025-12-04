@@ -156,5 +156,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Humphrey
   deathSound: {fileID: 0}
+  playerCam: {fileID: 0}
   peeMeter: {fileID: 0}
+  minHorizontalDistance: 5
+  maxHorizontalDistance: 10
+  minVerticalDistance: -2
+  maxVerticalDistance: 3
+  minDirectionDot: -1
+  maxDirectionDot: 1
   naturalDespawnTime: 5

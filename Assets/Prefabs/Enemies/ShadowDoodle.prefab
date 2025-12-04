@@ -106,7 +106,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShadowDoodleScript
   deathSound: {fileID: 0}
+  playerCam: {fileID: 0}
   peeMeter: {fileID: 0}
+  minHorizontalDistance: 10
+  maxHorizontalDistance: 20
+  minVerticalDistance: -10
+  maxVerticalDistance: 10
+  minDirectionDot: -1
+  maxDirectionDot: 1
   naturalDespawnTime: 10
 --- !u!54 &6814242546728190072
 Rigidbody:

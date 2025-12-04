@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
-
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
@@ -17,12 +16,10 @@ public class EnemyManager : MonoBehaviour
     public TextMeshProUGUI blind;
 
     [Header("Enemy Settings")]
-    public List<GameObject> enemyPrefabs; // drag your enemy prefabs here
+    public List<GameObject> enemyPrefabs; // prefabs that each contain Enemy.cs with spawn rules
     public float SpawnInterval = 10f;
-    public float spawnRadius = 5f;        // maximum distance from player
-    public float minDistanceFromPlayer = 20f; // minimum distance
-    public float maxDistanceFromPlayer = 40f;
-    public int maxSpawnAttempts = 30;      // how many times to retry if invalid
+    public float spawnRadius = 5f;
+    public int maxSpawnAttempts = 30; // attempts per spawn
 
     [Header("Map Related")]
     public GenerateMap mapGenerator;
@@ -30,57 +27,48 @@ public class EnemyManager : MonoBehaviour
     private List<Room> generatedRooms;
     private List<Bounds> roomBounds;
 
-    private void Awake(){
+    private void Awake()
+    {
         Instance = this;
     }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         blind.enabled = false;
-        //Find PeeMeter
-        // Start the spawn coroutine
         StartCoroutine(FindPlayerAndStartSpawning());
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
     }
 
     IEnumerator FindPlayerAndStartSpawning()
     {
-        // Wait until a player exists in the scene
+        // Find Player
         while (player == null)
-        {   
-            Debug.Log($"looking for player");
+        {
             GameObject found = GameObject.FindGameObjectWithTag("Player");
             if (found != null)
             {
                 player = found;
-                Debug.Log($"player found");
-                break;
-            }
-            yield return null; // wait for next frame
-        }
-
-        while(playerCam == null){
-            Camera camFound = GameObject.FindGameObjectWithTag("MainCamera").GetComponent<Camera>();
-            if (camFound != null){
-                playerCam = camFound;
-                Debug.Log($"Camera Found");
                 break;
             }
             yield return null;
         }
-        Debug.Log($"starting enemy spawns");
 
-        //Getting reference to the rooms
+        // Find Camera
+        while (playerCam == null)
+        {
+            Camera camFound = GameObject.FindGameObjectWithTag("MainCamera")?.GetComponent<Camera>();
+            if (camFound != null)
+            {
+                playerCam = camFound;
+                break;
+            }
+            yield return null;
+        }
+
+        // Room data
         mapGenerator = mapGenManager.GetComponent<GenerateMap>();
         generatedRooms = mapGenerator.GetAllPlacedRooms();
         roomBounds = mapGenerator.GetAllRoomBounds();
 
-        // Now start spawning enemies
         StartCoroutine(SpawnEnemiesRoutine());
     }
 
@@ -88,40 +76,33 @@ public class EnemyManager : MonoBehaviour
     {
         while (true)
         {
-            // Wait for the interval
             yield return new WaitForSeconds(SpawnInterval);
-
-            // Spawn a random enemy
             SpawnRandomEnemy();
         }
     }
 
-    //Pick a random position in the room bound
+    // Pick a random position inside a room
     Vector3 GetRandomPointInsideRoom(Bounds b)
     {
-        float x = Random.Range(b.min.x + 1f, b.max.x - 1f);
-        float z = Random.Range(b.min.z + 1f, b.max.z - 1f);
-        float y = b.center.y;  // typically same floor height
+        float x = Random.Range(b.min.x + 2f, b.max.x - 2f);
+        float z = Random.Range(b.min.z + 2f, b.max.z - 2f);
+        float y = b.center.y;
 
         return new Vector3(x, y, z);
     }
 
-    //Avoid spawning too close to player
-    bool IsWithinSpawnRange(Vector3 pos)
-    {
-        float dist = Vector3.Distance(pos, player.transform.position);
-        return dist > minDistanceFromPlayer && dist < maxDistanceFromPlayer;
-    }
-
-    //Check if the enemy is hitting the wall
+    // Validate if spawn hits the ground & not inside walls
     bool IsPositionValid(Vector3 pos)
     {
-        // Check there's ground
+        // must hit floor
         if (!Physics.Raycast(pos + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 4f))
             return false;
 
-        // Check no walls or other obstacles
-        return !Physics.CheckSphere(pos, 0.5f);
+        // no walls
+        if (Physics.CheckSphere(pos, 0.5f))
+            return false;
+
+        return true;
     }
 
     void SpawnRandomEnemy()
@@ -129,49 +110,56 @@ public class EnemyManager : MonoBehaviour
         if (enemyPrefabs.Count == 0 || player == null || roomBounds == null || roomBounds.Count == 0)
             return;
 
+        Vector3 playerPos = player.transform.position;
+        Vector3 playerForward = playerCam != null ? playerCam.transform.forward : player.transform.forward;
+
         for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
         {
-            // Pick a random room
+            // pick random room
             int index = Random.Range(0, roomBounds.Count);
             Bounds b = roomBounds[index];
 
-            // Get random point inside it
+            // random point inside the room
             Vector3 pos = GetRandomPointInsideRoom(b);
 
-            // Reject if too close to player
-            if (!IsWithinSpawnRange(pos))
+            // pick a random enemy type
+            GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+            Enemy enemyRules = enemyPrefab.GetComponent<Enemy>();
+
+            // check enemy-specific spawn rules
+            if (!enemyRules.IsValidSpawnPosition(playerPos, playerForward, pos))
                 continue;
 
-            // Reject if inside objects / walls
+            // environment validation (walls, floor)
             if (!IsPositionValid(pos))
                 continue;
 
-            // Pick enemy prefab
-            GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
-
-            // Spawn it
+            // spawn
             GameObject newEnemy = Instantiate(enemyPrefab, pos, Quaternion.identity);
             existingEnemies.Add(newEnemy);
 
-            Debug.Log($"[ENEMY] Spawned '{enemyPrefab.name}' in room {index}");
+            Debug.Log($"[ENEMY] Spawned {enemyPrefab.name} at {pos}");
             return;
         }
 
-        Debug.Log("[ENEMY] Failed to find valid spawn point");
+        Debug.Log("[ENEMY] Failed to find valid spawn point after attempts");
     }
 
-    public void EnemyVanish(GameObject enemy){
-        if (existingEnemies.Contains(enemy)){
-            existingEnemies.Remove(enemy); 
-        }
+    public void EnemyVanish(GameObject enemy)
+    {
+        if (existingEnemies.Contains(enemy))
+            existingEnemies.Remove(enemy);
+
         Destroy(enemy);
     }
 
-    public void Blinded(){
+    public void Blinded()
+    {
         StartCoroutine(BlindBuff());
     }
-    
-    public IEnumerator BlindBuff(){
+
+    IEnumerator BlindBuff()
+    {
         blind.enabled = true;
         yield return new WaitForSeconds(3.0f);
         blind.enabled = false;
