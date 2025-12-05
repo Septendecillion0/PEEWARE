@@ -656,10 +656,6 @@ PrefabInstance:
       propertyPath: audioManager
       value: 
       objectReference: {fileID: 2017115061}
-    - target: {fileID: 1547641426234039466, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
-      propertyPath: gameplayMusic
-      value: 
-      objectReference: {fileID: 8300000, guid: 35c956429d651574fa364fa6ac34cf14, type: 3}
     - target: {fileID: 2526531275507760623, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 37.2048

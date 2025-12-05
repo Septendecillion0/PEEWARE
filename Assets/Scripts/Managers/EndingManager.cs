@@ -16,11 +16,11 @@ public class EndingManager : Singleton<EndingManager>
     private float fadeTimer = 0f;
     private bool fadingIn = false;
 
-    void Start()
+    private void Start()
     {
-        // Setup button listeners
-        quitButton.onClick.AddListener(GameManager.Instance.QuitToMainMenu);
-        restartButton.onClick.AddListener(GameManager.Instance.RestartGame);
+        // Setup button listeners with null checking
+        quitButton.onClick.AddListener(() => GameManager.Instance?.QuitToMainMenu());
+        restartButton.onClick.AddListener(() => GameManager.Instance?.RestartGame());
         // Hide at start
         quitButton.gameObject.SetActive(false);
         restartButton.gameObject.SetActive(false);

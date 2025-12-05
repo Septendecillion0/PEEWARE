@@ -47,13 +47,14 @@ public class GameManager : Singleton<GameManager>
     {
         audioManager = FindObjectOfType<AudioManager>();
 
-        if(scene.name == "MainMenu")
+        if (scene.name == "MainMenu")
         {
             SetState(GameState.Start);
         }
         else if (scene.name == "Prerelease Build")
         {
             SetState(GameState.Playing);
+            ResetGameState();
         }
 
         PlaySceneMusic();

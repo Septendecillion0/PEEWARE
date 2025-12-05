@@ -15,7 +15,17 @@ public class Singleton<T> : MonoBehaviour where T : MonoBehaviour
         {
             // multiple instances detected, destroy this one
             Destroy(this.gameObject);
+            return;
         }
         _instance = this as T;
+    }
+
+    protected virtual void OnDestroy()
+    {
+        // Clear the instance reference if this instance is being destroyed
+        if (_instance == this)
+        {
+            _instance = null;
+        }
     }
 }

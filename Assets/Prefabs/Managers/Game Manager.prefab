@@ -46,5 +46,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
   firstPersonAudio: {fileID: 1773623360729482, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
   foundToilet: 0
+  audioManager: {fileID: 0}
   mainMenuMusic: {fileID: 8300000, guid: 4cbece78d2f41764aa949d39dcb9767b, type: 3}
-  gameplayMusic: {fileID: 8300000, guid: d45746ccfde069d4d97a6ee1ba769cca, type: 3}
+  gameplayMusic: {fileID: 8300000, guid: 35c956429d651574fa364fa6ac34cf14, type: 3}

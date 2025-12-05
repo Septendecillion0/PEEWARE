@@ -10,8 +10,8 @@ public class PauseMenuUI : MonoBehaviour
 
     private void Start()
     {
-        resumeButton.onClick.AddListener(PauseManager.Instance.ClosePauseMenu);
-        settingsButton.onClick.AddListener(PauseManager.Instance.OpenSettings);
-        quitButton.onClick.AddListener(GameManager.Instance.QuitToMainMenu);
+        resumeButton.onClick.AddListener(() => PauseManager.Instance?.ClosePauseMenu());
+        settingsButton.onClick.AddListener(() => PauseManager.Instance?.OpenSettings());
+        quitButton.onClick.AddListener(() => GameManager.Instance?.QuitToMainMenu());
     }
 }
