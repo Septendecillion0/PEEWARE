@@ -194,14 +194,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
-      propertyPath: deltaPee
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
-      propertyPath: drawGameOver
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 8957864375518370939, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

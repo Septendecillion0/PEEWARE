@@ -75,7 +75,7 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator SpawnEnemiesRoutine()
     {
-        while (true)
+        while (!GameManager.Instance.IsGameOver)
         {
             yield return new WaitForSeconds(SpawnInterval);
             SpawnRandomEnemy();
@@ -107,7 +107,8 @@ public class EnemyManager : MonoBehaviour
     }
 
     void SpawnRandomEnemy()
-    {
+    {   
+        if (GameManager.Instance.IsGameOver) return;
         if (enemyPrefabs.Count == 0 || player == null || roomBounds == null || roomBounds.Count == 0)
             return;
 

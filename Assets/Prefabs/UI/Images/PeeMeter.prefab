@@ -216,6 +216,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PeeMeterUpdate
   peeMeter: {fileID: 5142102304260634323}
   deltaPee: 0.4
+  audioManager: {fileID: 0}
+  deathSound: {fileID: 8300000, guid: d45746ccfde069d4d97a6ee1ba769cca, type: 3}
 --- !u!1 &6215573166320313213
 GameObject:
   m_ObjectHideFlags: 0

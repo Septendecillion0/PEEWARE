@@ -9,6 +9,7 @@ public class PeeMeterUpdate : MonoBehaviour
 
     private Image fillImage;
     public AudioManager audioManager;
+    public AudioClip deathSound;
 
     public int maxPee { get; private set; } = 100;
 
@@ -34,6 +35,8 @@ public class PeeMeterUpdate : MonoBehaviour
         if (!GameManager.Instance.IsGameOver && Mathf.Approximately(peeMeter.value, 100f))
         {
             // trigger global game over
+            audioManager.FadeOutMusic(0.2f);
+            audioManager.PlaySFX(deathSound);
             GameManager.Instance.GameOver();
         }
     }

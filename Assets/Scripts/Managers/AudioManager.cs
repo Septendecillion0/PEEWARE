@@ -53,6 +53,8 @@ public class AudioManager : MonoBehaviour
             ChangeMusicVolume(Mathf.Lerp(start, end, t / duration));
             yield return null;
         }
+
+        StopMusic();
     }
 
     // ---------- SFX ----------
