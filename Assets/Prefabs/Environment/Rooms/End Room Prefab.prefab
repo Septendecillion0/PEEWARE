@@ -206,22 +206,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 5023043360610124118}
     m_Modifications:
-    - target: {fileID: 4664583354924007455, guid: e76c5c3a9fb944a53a0e494e6a2bd30a, type: 3}
-      propertyPath: peeMeterUpdate
-      value: 
-      objectReference: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
-    - target: {fileID: 6849221485613306715, guid: e76c5c3a9fb944a53a0e494e6a2bd30a, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 6849221485613306715, guid: e76c5c3a9fb944a53a0e494e6a2bd30a, type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.75
-      objectReference: {fileID: 0}
-    - target: {fileID: 6849221485613306715, guid: e76c5c3a9fb944a53a0e494e6a2bd30a, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.75
-      objectReference: {fileID: 0}
     - target: {fileID: 6849221485613306715, guid: e76c5c3a9fb944a53a0e494e6a2bd30a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -15.06
