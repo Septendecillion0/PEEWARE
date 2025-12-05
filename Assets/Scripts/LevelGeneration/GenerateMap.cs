@@ -24,6 +24,8 @@ public class GenerateMap : MonoBehaviour
     private GameObject generationRoot;
     private const int maxGenerationRetries = 20;
 
+    private Dictionary<Room, int> spawnCounts = new Dictionary<Room, int>();
+
     void Start()
     {
         if (seed >= 0)
@@ -55,6 +57,7 @@ public class GenerateMap : MonoBehaviour
         totalComplexity = 0;
         placedBounds.Clear();
         placedRooms.Clear();
+        spawnCounts.Clear();
 
         // Clear previous geometry
         if (generationRoot != null) {
@@ -147,7 +150,12 @@ public class GenerateMap : MonoBehaviour
             if (i == 1 && !mustPlaceEndRoom) continue; // end room only when needed
 
             Room r = rooms[i];
-
+            
+            // Check spawn limits on special rooms
+            if (r.maxSpawnCount >= 0 && GetSpawnCount(r) >= r.maxSpawnCount) {
+                Debug.Log($"spawn limit for {r.roomName} reached");
+                continue;
+            }
             // Must have compatible exits
             if (r.GetAvailableExits(fromExit.doorType).Count == 0)
                 continue;
@@ -213,7 +221,7 @@ public class GenerateMap : MonoBehaviour
             Destroy(instantiatedExit.transform.gameObject);
             // increase totalComplexity
             totalComplexity += candidate.complexity;
-
+            IncrementSpawnCount(prefab);
 
             // Recurse from one random available exit
             List<Room.Exit> nextExits = candidate.GetAvailableExits();
@@ -293,5 +301,20 @@ public class GenerateMap : MonoBehaviour
     public List<Room> GetAllPlacedRooms()
     {
         return placedRooms;
+    }
+
+    private int GetSpawnCount(Room prefab)
+    {
+        if (!spawnCounts.TryGetValue(prefab, out int count))
+            return 0;
+        return count;
+    }
+
+    private void IncrementSpawnCount(Room prefab)
+    {
+        if (!spawnCounts.ContainsKey(prefab))
+            spawnCounts[prefab] = 0;
+
+        spawnCounts[prefab]++;
     }
 }

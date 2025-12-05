@@ -29,6 +29,7 @@ public class Room : MonoBehaviour
     [Header("Room Exits")]
     public List<Exit> exits = new List<Exit>();
     public int exitCount => exits.Count;
+    public int maxSpawnCount = -1;
 
     public List<Room> preferredNeighbors = new List<Room>(); 
 

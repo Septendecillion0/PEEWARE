@@ -45,9 +45,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   seed: -1
-  maxRoomComplexity: 150
-  minRoomComplexity: 120
-  maxPathComplexity: 30
+  maxRoomComplexity: 80
+  minRoomComplexity: 65
+  maxPathComplexity: 20
   rooms:
   - {fileID: 267361161289352474, guid: c34e4c07fa4cc6541bd96756163fd866, type: 3}
   - {fileID: 3593470112852656898, guid: 14366250e420f6b4f894c09b6481fca2, type: 3}

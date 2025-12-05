@@ -486,6 +486,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+      propertyPath: maxPathComplexity
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+      propertyPath: maxRoomComplexity
+      value: 80
+      objectReference: {fileID: 0}
+    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
+      propertyPath: minRoomComplexity
+      value: 65
+      objectReference: {fileID: 0}
     - target: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_Name
       value: MapGenerationManager

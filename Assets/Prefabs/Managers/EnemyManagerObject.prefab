@@ -148,7 +148,7 @@ MonoBehaviour:
   - {fileID: 2094668390991299439, guid: abdccf77dfdffa2418aced9715901ae2, type: 3}
   SpawnInterval: 10
   spawnRadius: 3
-  maxSpawnAttempts: 30
+  maxSpawnAttempts: 50
   mapGenerator: {fileID: 0}
   mapGenManager: {fileID: 0}
 --- !u!1 &3227018123569389030

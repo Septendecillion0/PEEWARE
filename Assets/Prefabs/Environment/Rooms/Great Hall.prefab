@@ -1042,6 +1042,7 @@ MonoBehaviour:
   - transform: {fileID: 3295654246094367343}
     doorType: 0
     isConnected: 0
+  maxSpawnCount: 3
   preferredNeighbors:
   - {fileID: 2938284635973783088, guid: 14712958f8229c14fb523e192f510a28, type: 3}
   - {fileID: 9057399955984057516, guid: 1bb0e2372e1111942928969bc476ae71, type: 3}
