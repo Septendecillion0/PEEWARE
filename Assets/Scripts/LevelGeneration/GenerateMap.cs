@@ -7,10 +7,10 @@ public class GenerateMap : MonoBehaviour
     public int seed = -1;
 
     [Header("Total Rooms Allowed")]
-    public int maxRoom = 20;
+    public int maxRoom;
 
     [Header("Max Path Depth Allowed")]
-    public int maxPath = 8;
+    public int maxPath;
 
     [Header("Room Prefabs (index 0 = Start, 1 = End)")]
     public List<Room> rooms;

@@ -45,11 +45,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: '::'
   seed: -1
-  maxRoom: 100
-  maxPath: 15
+  maxRoom: 80
+  maxPath: 10
   rooms:
   - {fileID: 2712815085618480004, guid: d57ece824f876e2478b5297516b66cec, type: 3}
-  - {fileID: 3613769640560650598, guid: b42e6a59a332cde41856fe5694a819d7, type: 3}
+  - {fileID: 7628351167224315308, guid: a7256f5fd05b3cc41a9e0875efa537d1, type: 3}
   - {fileID: 2938284635973783088, guid: 14712958f8229c14fb523e192f510a28, type: 3}
   - {fileID: 7567702162395838942, guid: 182642f8b4abb974ab026889b7ba0289, type: 3}
   - {fileID: 7849461617915290291, guid: 696137f5129719b47b270b4ac63c1d94, type: 3}

@@ -73,6 +73,10 @@ public class EndingManager : Singleton<EndingManager>
         yield return new WaitForSecondsRealtime(2f);
         creditsImage.gameObject.SetActive(true);
         yield return new WaitForSecondsRealtime(3f);
+        while (!Input.anyKeyDown)
+        {
+            yield return null;
+        }
         GameManager.Instance.QuitToMainMenu();
     }
 

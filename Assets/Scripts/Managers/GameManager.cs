@@ -1,15 +1,28 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System;
 using System.Collections;
 
 public class GameManager : Singleton<GameManager>
 {
     public GameObject firstPersonAudio;
-
-    public bool IsGameOver { get; private set; } = false;
-
     public bool foundToilet = false;
 
+    public enum GameState
+    {
+        Playing,
+        Paused,
+        Ending
+    }
+
+    // Current state (public read, private set - use SetState() to change)
+    public GameState State { get; private set; } = GameState.Playing;
+
+    // Backwards-compatible boolean (read-only). Some scripts can keep using this for now.
+    public bool IsGameOver => State == GameState.Ending;
+
+    // Event fired when the state changes: (oldState, newState)
+    public event Action<GameState, GameState> OnStateChanged;
 
     protected override void Awake()
     {
@@ -19,7 +32,8 @@ public class GameManager : Singleton<GameManager>
 
     public void ResetGameState()
     {
-        IsGameOver = false;
+        SetState(GameState.Playing, invokeEvent: false);
+
         foundToilet = false;
         Time.timeScale = 1f;
 
@@ -27,57 +41,86 @@ public class GameManager : Singleton<GameManager>
         Crouch.canCrouch = true;
 
         FirstPersonLook.canLook = true;
-        firstPersonAudio.SetActive(true);
+        if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
     }
 
+    public void SetState(GameState newState, bool invokeEvent = true)
+    {
+        if (State == newState) return;
 
+        GameState old = State;
+        State = newState;
+
+        if (newState == GameState.Playing)
+        {
+            Time.timeScale = 1f;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            Jump.canJump = true;
+            Crouch.canCrouch = true;
+
+            FirstPersonLook.canLook = true;
+            if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
+        }
+        else if (newState == GameState.Paused)
+        {
+            Time.timeScale = 0f;
+            Cursor.lockState = CursorLockMode.None;
+
+            Jump.canJump = false;
+            Crouch.canCrouch = false;
+
+            FirstPersonLook.canLook = false;
+            if (firstPersonAudio != null) firstPersonAudio.SetActive(false);
+        }
+        else if (newState == GameState.Ending)
+        {
+            Cursor.lockState = CursorLockMode.None;
+
+            Jump.canJump = false;
+            Crouch.canCrouch = false;
+
+            FirstPersonLook.canLook = false;
+        }
+
+        if (invokeEvent)
+            OnStateChanged?.Invoke(old, newState);
+    }
+
+    // Convenience methods
     public void PauseGame()
     {
-        if (IsGameOver) return;
-        Time.timeScale = 0f;
-        Cursor.lockState = CursorLockMode.None;
-        // disable player jump and crouch
-        Jump.canJump = false;
-        Crouch.canCrouch = false;
-        // disable camera look and audio
-        FirstPersonLook.canLook = false;
-        firstPersonAudio.SetActive(false);
+        if (State == GameState.Ending) return; // Do not allow pause during ending
+        SetState(GameState.Paused);
     }
 
     public void ResumeGame()
     {
-        if (IsGameOver) return;
-        Time.timeScale = 1f;
-        Cursor.lockState = CursorLockMode.Locked;
-        // enable player jump and crouch
-        Jump.canJump = true;
-        Crouch.canCrouch = true;
-        // enable camera look and audio
-        FirstPersonLook.canLook = true;
-        firstPersonAudio.SetActive(true);
+        if (State == GameState.Ending) return;
+        SetState(GameState.Playing);
     }
 
     public void GameOver()
     {
         if (IsGameOver) return;
-        PauseGame();
-        IsGameOver = true;
+        SetState(GameState.Ending);
+
         EndingManager.Instance?.Show();
     }
 
     public void RestartGame()
     {
         if (!IsGameOver) return;
-        // Reload the current scene
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-        IsGameOver = false;
+
+        SetState(GameState.Playing);
         ResumeGame();
     }
 
     public void QuitToMainMenu()
     {
         Time.timeScale = 1f;
-        UnityEngine.SceneManagement.SceneManager.LoadScene("MainMenu");
+        SceneManager.LoadScene("MainMenu");
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
