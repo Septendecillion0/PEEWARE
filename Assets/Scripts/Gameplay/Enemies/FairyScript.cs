@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class FairyScript : Enemy
 {
+    private Transform player;
     [Header("Relation to camera")]
     public float disCam = 2f;
     public Vector2 screenOffset = new Vector2(0.5f, 0.5f);
@@ -13,7 +14,9 @@ public class FairyScript : Enemy
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-
+        player = EnemyManager.Instance.player.transform;
+        Vector3 spawnPos = player.position - player.forward * Random.Range(5.0f, 7.0f);
+        ownTree = Instantiate(treePrefab, spawnPos, Quaternion.identity);
     }
 
     // Update is called once per frame

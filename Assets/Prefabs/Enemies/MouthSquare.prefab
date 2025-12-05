@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 3380874865966555273}
   - component: {fileID: 7393026548229009265}
   - component: {fileID: 3610018894382386220}
+  - component: {fileID: 5781810491884127200}
   m_Layer: 0
   m_Name: MouthSquare
   m_TagString: Untagged
@@ -80,8 +81,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
-  m_Color: {r: 0.8207547, g: 0.29036134, b: 0.29036134, a: 1}
+  m_Sprite: {fileID: 21300000, guid: c23b11fc747e12d4f9be6f8e30da7a6f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -104,3 +105,37 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MouthSquareScript
   deathSound: {fileID: 0}
+  playerCam: {fileID: 0}
+  peeMeter: {fileID: 0}
+  minHorizontalDistance: 5
+  maxHorizontalDistance: 20
+  minVerticalDistance: -2
+  maxVerticalDistance: 3
+  minDirectionDot: -1
+  maxDirectionDot: 1
+  lookThreshold: 0.95
+  jumpSpeed: 15
+  naturalDespawnTime: 30
+--- !u!136 &5781810491884127200
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3381633526987363447}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 1.1524947
+  m_Height: 3.22
+  m_Direction: 1
+  m_Center: {x: 0, y: -0.52, z: 0}

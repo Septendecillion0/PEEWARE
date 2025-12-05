@@ -117,7 +117,7 @@ MonoBehaviour:
   disCam: 2
   screenOffset: {x: 0.5, y: 0.5}
   smoothSpeed: 5
-  treePrefab: {fileID: 0}
+  treePrefab: {fileID: 4784436105486175168, guid: a37422f7056348e4082a3dbd56b8751c, type: 3}
 --- !u!136 &1544985658772955443
 CapsuleCollider:
   m_ObjectHideFlags: 0

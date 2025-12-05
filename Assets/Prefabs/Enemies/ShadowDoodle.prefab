@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 584676102093668775}
   - component: {fileID: 6814242546728190072}
   - component: {fileID: 7878463144349027098}
+  - component: {fileID: 1064114851140700812}
   m_Layer: 0
   m_Name: ShadowDoodle
   m_TagString: Enemy
@@ -108,13 +109,13 @@ MonoBehaviour:
   deathSound: {fileID: 0}
   playerCam: {fileID: 0}
   peeMeter: {fileID: 0}
-  minHorizontalDistance: 10
-  maxHorizontalDistance: 20
-  minVerticalDistance: -10
-  maxVerticalDistance: 10
+  minHorizontalDistance: 5
+  maxHorizontalDistance: 30
+  minVerticalDistance: -20
+  maxVerticalDistance: 20
   minDirectionDot: -1
   maxDirectionDot: 1
-  naturalDespawnTime: 10
+  naturalDespawnTime: 30
 --- !u!54 &6814242546728190072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -163,5 +164,28 @@ CapsuleCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!136 &1064114851140700812
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2094668390991299439}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.80078125
+  m_Height: 2.3049893
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
