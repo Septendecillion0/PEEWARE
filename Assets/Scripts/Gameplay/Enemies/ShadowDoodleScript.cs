@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ShadowDoodleScript : Enemy
 {
-    public float naturalDespawnTime = 10.0f;
+    public float naturalDespawnTime = 30.0f;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {

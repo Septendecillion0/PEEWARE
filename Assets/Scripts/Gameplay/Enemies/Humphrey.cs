@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class Humphrey : Enemy
 {
-    public float naturalDespawnTime = 5.0f;
+    public float naturalDespawnTime = 30.0f;
     void Start()
     {
         base.NaturallyDespawn(naturalDespawnTime);
