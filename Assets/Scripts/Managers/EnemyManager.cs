@@ -13,7 +13,7 @@ public class EnemyManager : MonoBehaviour
     public GameObject peeMeter;
     public List<GameObject> existingEnemies = new List<GameObject>();
 
-    public TextMeshProUGUI blind;
+    public ScreenFade blind; //TODO: replace with blind image 
 
     [Header("Enemy Settings")]
     public List<GameObject> enemyPrefabs; // prefabs that each contain Enemy.cs with spawn rules
@@ -34,7 +34,7 @@ public class EnemyManager : MonoBehaviour
 
     void Start()
     {
-        blind.enabled = false;
+        blind.FadeIn(1.0f);
         StartCoroutine(FindPlayerAndStartSpawning());
     }
 
@@ -160,8 +160,8 @@ public class EnemyManager : MonoBehaviour
 
     IEnumerator BlindBuff()
     {
-        blind.enabled = true;
+        blind.FadeOut(0.1f);
         yield return new WaitForSeconds(3.0f);
-        blind.enabled = false;
+        blind.FadeIn(2.0f);
     }
 }

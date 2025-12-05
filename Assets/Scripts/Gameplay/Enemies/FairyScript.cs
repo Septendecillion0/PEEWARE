@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class FairyScript : Enemy
 {
+    [Header("Extra Audio")]
+    public AudioClip fairyLeave;
     private Transform player;
     [Header("Relation to camera")]
     public float disCam = 2f;
@@ -33,6 +35,7 @@ public class FairyScript : Enemy
     void OnCollisionEnter(Collision collision){
         //If collided with the tree, they both vanish ... and suck your pee away
         if (collision.gameObject.tag == "Tree"){
+            AudioSource.PlayClipAtPoint(fairyLeave, transform.position, 1f);
             peeMeter.GetComponent<PeeMeterUpdate>().Scare(-20.0f);
             EnemyManager.Instance.EnemyVanish(this.gameObject);
             EnemyManager.Instance.EnemyVanish(collision.gameObject);
@@ -40,7 +43,7 @@ public class FairyScript : Enemy
         //If not collided with the tree
         else{
             peeMeter.GetComponent<PeeMeterUpdate>().Scare(20.0f);
-            EnemyManager.Instance.EnemyVanish(this.gameObject);
+            EnemyDeath();
             EnemyManager.Instance.EnemyVanish(ownTree);
         }
     }

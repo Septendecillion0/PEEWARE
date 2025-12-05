@@ -49,7 +49,7 @@ public class MouthSquareScript : Enemy
         if (collision.gameObject.tag == "Player"){
             //Jump scare sound needed
             peeMeter.GetComponent<PeeMeterUpdate>().Scare(5.0f);
-            EnemyManager.Instance.EnemyVanish(this.gameObject);
+            EnemyDeath();
         }
     }
 }

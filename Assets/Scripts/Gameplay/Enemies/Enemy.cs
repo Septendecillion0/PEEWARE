@@ -1,9 +1,13 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Audio;
 
 public class Enemy : MonoBehaviour
 {
+    [Header("Audio")]
     private AudioSource thisAudio;
+    public AudioClip passiveSound;
+    public AudioClip spawnSound;
     public AudioClip deathSound;
 
     [Header("Player Related")]
@@ -32,10 +36,19 @@ public class Enemy : MonoBehaviour
     [Tooltip("Maximum allowed direction dot-product relative to player forward.")]
     [Range(-1, 1)]
     public float maxDirectionDot = 1f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    // awake called before start and base awake will not be overridden
+    void Awake()
     {
+        Debug.Log("begin enemy");
         thisAudio = GetComponent<AudioSource>();
+        if (spawnSound != null) thisAudio.PlayOneShot(spawnSound);
+        if (passiveSound != null)
+        {
+            thisAudio.clip = passiveSound;
+            thisAudio.loop = true;
+            thisAudio.Play();
+            Debug.Log("begin passive sound");
+        }
     }
 
     // Update is called once per frame
@@ -51,7 +64,7 @@ public class Enemy : MonoBehaviour
     }
 
     public void EnemyDeath(){
-        thisAudio.PlayOneShot(deathSound);
+        if (deathSound != null) AudioSource.PlayClipAtPoint(deathSound, transform.position, 1f);
         EnemyManager.Instance.EnemyVanish(this.gameObject);
     }
 
