@@ -207,10 +207,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 7585641121208191581, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
-      propertyPath: m_AnchorMax.x
-      value: 0
-      objectReference: {fileID: 0}
+    - target: {fileID: 7328557506039659316, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
+      propertyPath: audioManager
+      value: 
+      objectReference: {fileID: 2037363494}
     - target: {fileID: 7585641121208191581, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -534,14 +534,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxPath
-      value: 10
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxRoom
-      value: 80
-      objectReference: {fileID: 0}
     - target: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_Name
       value: MapGenerationManager
@@ -728,6 +720,17 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
   m_PrefabInstance: {fileID: 1273998833}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &2037363494 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5345056447799872233, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+  m_PrefabInstance: {fileID: 854611467}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 909613ea41c777b4aa1c7e45f124f7cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: '::'
 --- !u!114 &906478635966374635
 MonoBehaviour:
   m_ObjectHideFlags: 0

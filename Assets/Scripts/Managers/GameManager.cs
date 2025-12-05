@@ -10,6 +10,7 @@ public class GameManager : Singleton<GameManager>
 
     public enum GameState
     {
+        Start,
         Playing,
         Paused,
         Ending
@@ -20,19 +21,47 @@ public class GameManager : Singleton<GameManager>
 
     // Backwards-compatible boolean (read-only). Some scripts can keep using this for now.
     public bool IsGameOver => State == GameState.Ending;
+    public bool IsPaused => State == GameState.Paused;
 
-    // Event fired when the state changes: (oldState, newState)
-    public event Action<GameState, GameState> OnStateChanged;
+    [Header("Music")]
+    public AudioManager audioManager;
+    public AudioClip mainMenuMusic;
+    public AudioClip gameplayMusic;
+
 
     protected override void Awake()
     {
         base.Awake();
-        ResetGameState();
+        DontDestroyOnLoad(gameObject);
+
+        UnityEngine.SceneManagement.SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    void Start()
+    {
+        SetState(GameState.Start);
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        audioManager = FindObjectOfType<AudioManager>();
+
+        if(scene.name == "MainMenu")
+        {
+            SetState(GameState.Start);
+        }
+        else if (scene.name == "Prerelease Build")
+        {
+            SetState(GameState.Playing);
+        }
+
+        PlaySceneMusic();
     }
 
     public void ResetGameState()
     {
-        SetState(GameState.Playing, invokeEvent: false);
+        SetState(GameState.Playing);
 
         foundToilet = false;
         Time.timeScale = 1f;
@@ -44,11 +73,9 @@ public class GameManager : Singleton<GameManager>
         if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
     }
 
-    public void SetState(GameState newState, bool invokeEvent = true)
+    public void SetState(GameState newState)
     {
         if (State == newState) return;
-
-        GameState old = State;
         State = newState;
 
         if (newState == GameState.Playing)
@@ -82,10 +109,22 @@ public class GameManager : Singleton<GameManager>
 
             FirstPersonLook.canLook = false;
         }
-
-        if (invokeEvent)
-            OnStateChanged?.Invoke(old, newState);
     }
+
+    private void PlaySceneMusic()
+    {
+        string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
+
+        if (sceneName == "MainMenu")
+        {
+            audioManager.PlayMusic(mainMenuMusic);
+        }
+        else if (sceneName == "Prerelease Build")
+        {
+            audioManager.PlayMusic(gameplayMusic);
+        }
+    }
+
 
     // Convenience methods
     public void PauseGame()
@@ -121,12 +160,6 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
-    }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-
     }
 
     // Update is called once per frame

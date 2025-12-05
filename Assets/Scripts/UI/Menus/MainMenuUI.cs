@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using System.Collections;
 
 public class MainMenuUI : MonoBehaviour
 {
@@ -8,6 +9,8 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button settingButton;
     [SerializeField] private Button exitButton;
     public GameObject settingsCanvas;
+    public AudioManager audioManager;
+    public ScreenFade screenFade;
 
     private void Start()
     {
@@ -19,7 +22,22 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartGame()
     {
-        SceneManager.LoadScene("Prerelease Build");  // replace with the game scene name
+        StartCoroutine(Loading("Prerelease Build")); //replace with gameplay scene
+    }
+
+    private IEnumerator Loading(string sceneName)
+    {
+        float duration = 2.0f;
+
+        // Kick off both fades at the same time
+        screenFade.FadeOut(duration);  
+        audioManager.FadeOutMusic(duration);
+
+        // Wait for the fade duration
+        yield return new WaitForSecondsRealtime(duration);
+
+        // Load new scene
+        SceneManager.LoadScene(sceneName);
     }
 
     public void ExitGame()

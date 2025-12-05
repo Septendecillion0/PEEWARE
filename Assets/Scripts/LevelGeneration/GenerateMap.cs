@@ -37,7 +37,7 @@ public class GenerateMap : MonoBehaviour
         {
             attempts++;
 
-            bool success = Generate();
+            bool success = GenerationInit();
 
             if (success)
             {
@@ -53,7 +53,7 @@ public class GenerateMap : MonoBehaviour
         Debug.LogError("Map generation failed after maximum retries.");
     }
 
-    private bool Generate()
+    private bool GenerationInit()
     {
         // Reset state
         endRoomPlaced = false;
@@ -77,8 +77,6 @@ public class GenerateMap : MonoBehaviour
 
         // Place start room (parent under generationRoot)
         Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity, generationRoot.transform);
-        // ensure its exits show as unconnected
-        foreach (var e in startRoom.exits) e.isConnected = false;
 
         Bounds startBounds = GetRoomBounds(startRoom);
         placedBounds.Add(startBounds);
@@ -90,14 +88,14 @@ public class GenerateMap : MonoBehaviour
         // Expand outward from start room exits
         foreach (var exit in startRoom.GetAvailableExits())
         {
-            TryPlaceRoomAtExitWithRetries(exit, 0);
+            Generate(exit, 0);
             if (currentRoomNum >= maxRoom) break;
         }
 
         return endRoomPlaced;
     }
 
-    private void TryPlaceRoomAtExitWithRetries(Room.Exit fromExit, int pathLength)
+    private void Generate(Room.Exit fromExit, int pathLength)
     {
         if (currentRoomNum >= maxRoom) return;
         if (pathLength >= maxPath) return;
@@ -111,7 +109,7 @@ public class GenerateMap : MonoBehaviour
         if (mustPlaceEndRoom)
         {
             Room endRoomPrefab = rooms[1];
-            if (TryPlaceRoomFromPrefab(fromExit, endRoomPrefab, pathLength))
+            if (TryPlaceRoom(fromExit, endRoomPrefab, pathLength))
             {
                 endRoomPlaced = true;
                 return;
@@ -124,7 +122,7 @@ public class GenerateMap : MonoBehaviour
 
         foreach (var prefab in candidates)
         {
-            if (TryPlaceRoomFromPrefab(fromExit, prefab, pathLength))
+            if (TryPlaceRoom(fromExit, prefab, pathLength))
                 return; // stop after first success
         }
 
@@ -172,7 +170,7 @@ public class GenerateMap : MonoBehaviour
     }
 
 
-    private bool TryPlaceRoomFromPrefab(Room.Exit fromExit, Room prefab, int pathLength)
+    private bool TryPlaceRoom(Room.Exit fromExit, Room prefab, int pathLength)
     {
         // Shuffle available exits of the prefab matching the current door type
         List<Room.Exit> exitsToTry = prefab.GetAvailableExits(fromExit.doorType);
@@ -217,7 +215,7 @@ public class GenerateMap : MonoBehaviour
             Shuffle(nextExits);
             foreach (var nextExit in nextExits)
             {
-                TryPlaceRoomAtExitWithRetries(nextExit, pathLength + 1);
+                Generate(nextExit, pathLength + 1);
             }
 
             return true;
