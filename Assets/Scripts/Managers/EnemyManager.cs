@@ -14,6 +14,7 @@ public class EnemyManager : MonoBehaviour
     public List<GameObject> existingEnemies = new List<GameObject>();
 
     public ScreenFade blind; //TODO: replace with blind image 
+    public ScreenFade hurt; //TODO: replace with hurt image 
 
     [Header("Enemy Settings")]
     public List<GameObject> enemyPrefabs; // prefabs that each contain Enemy.cs with spawn rules
@@ -163,5 +164,17 @@ public class EnemyManager : MonoBehaviour
         blind.FadeOut(0.1f);
         yield return new WaitForSeconds(3.0f);
         blind.FadeIn(2.0f);
+    }
+
+    public void Hurt()
+    {
+        StartCoroutine(HurtBuff());
+    }
+
+    IEnumerator HurtBuff()
+    {
+        hurt.FadeOut(0.2f);
+        yield return new WaitForSeconds(0.5f);
+        hurt.FadeIn(2.0f);
     }
 }

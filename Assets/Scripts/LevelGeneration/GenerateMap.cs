@@ -6,16 +6,17 @@ public class GenerateMap : MonoBehaviour
     [Header("Map Seed (set -1 for random)")]
     public int seed = -1;
 
-    [Header("Total Rooms Allowed")]
-    public int maxRoom;
+    [Header("Room Complexity Constraints")]
+    public int maxRoomComplexity;
+    public int minRoomComplexity;
 
-    [Header("Max Path Depth Allowed")]
-    public int maxPath;
+    [Header("Max Path Complexity Allowed")]
+    public int maxPathComplexity;
 
     [Header("Room Prefabs (index 0 = Start, 1 = End)")]
     public List<Room> rooms;
 
-    private int currentRoomNum = 0; // count successfully placed rooms
+    private int totalComplexity = 0; // count successfully placed rooms
     private List<Bounds> placedBounds = new List<Bounds>(); // used for collision checks
     private List<Room> placedRooms = new List<Room>(); // parallel list so we can name which room overlaps
 
@@ -33,23 +34,17 @@ public class GenerateMap : MonoBehaviour
         Debug.Log($"Using seed: {seed}");
 
         int attempts = 0;
-        while (attempts < maxGenerationRetries)
-        {
+        while (attempts < maxGenerationRetries) {
             attempts++;
-
             bool success = GenerationInit();
-
-            if (success)
-            {
+            if (success) {
                 Debug.Log($"Map generation succeeded after {attempts} attempt(s).");
                 return;
             }
-            else
-            {
+            else {
                 Debug.LogWarning($"Generation attempt {attempts} FAILED — restarting.");
             }
         }
-
         Debug.LogError("Map generation failed after maximum retries.");
     }
 
@@ -57,31 +52,24 @@ public class GenerateMap : MonoBehaviour
     {
         // Reset state
         endRoomPlaced = false;
-        currentRoomNum = 0;
+        totalComplexity = 0;
         placedBounds.Clear();
         placedRooms.Clear();
 
         // Clear previous geometry
-        if (generationRoot != null)
-        {
+        if (generationRoot != null) {
             DestroyImmediate(generationRoot);
         }
 
         generationRoot = new GameObject("GeneratedRooms");
 
-        if (rooms == null || rooms.Count < 2)
-        {
-            Debug.LogError("You must assign at least StartRoom (0) and EndRoom (1).");
-            return false;
-        }
-
-        // Place start room (parent under generationRoot)
+        // Place start room (assume index 0)
         Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity, generationRoot.transform);
 
         Bounds startBounds = GetRoomBounds(startRoom);
         placedBounds.Add(startBounds);
         placedRooms.Add(startRoom);
-        currentRoomNum++;
+        totalComplexity += startRoom.complexity;
 
         Debug.Log($"[GEN] Placed start room '{startRoom.roomName}' at {startRoom.transform.position}. Bounds center {startBounds.center}, size {startBounds.size}");
 
@@ -89,27 +77,27 @@ public class GenerateMap : MonoBehaviour
         foreach (var exit in startRoom.GetAvailableExits())
         {
             Generate(exit, 0);
-            if (currentRoomNum >= maxRoom) break;
+            if (totalComplexity >= maxRoomComplexity) break;
         }
 
-        return endRoomPlaced;
+        return endRoomPlaced && totalComplexity >= minRoomComplexity;
     }
 
-    private void Generate(Room.Exit fromExit, int pathLength)
+    private void Generate(Room.Exit fromExit, int pathComplexity)
     {
-        if (currentRoomNum >= maxRoom) return;
-        if (pathLength >= maxPath) return;
+        if (totalComplexity >= maxRoomComplexity) return;
+        if (pathComplexity >= maxPathComplexity) return;
         if (fromExit.isConnected) return;
 
         bool mustPlaceEndRoom =
             !endRoomPlaced &&
-            (pathLength + 1 >= maxPath || currentRoomNum + 1 >= maxRoom);
+            (pathComplexity + 1 >= maxPathComplexity || totalComplexity + 1 >= maxRoomComplexity);
 
         // Try end room first if required
         if (mustPlaceEndRoom)
         {
             Room endRoomPrefab = rooms[1];
-            if (TryPlaceRoom(fromExit, endRoomPrefab, pathLength))
+            if (TryPlaceRoom(fromExit, endRoomPrefab, pathComplexity))
             {
                 endRoomPlaced = true;
                 return;
@@ -120,14 +108,18 @@ public class GenerateMap : MonoBehaviour
         List<Room> candidates = GetCandidatePrefabs(fromExit, mustPlaceEndRoom);
         Shuffle(candidates);
 
+        int count = 0;
         foreach (var prefab in candidates)
         {
-            if (TryPlaceRoom(fromExit, prefab, pathLength))
+            count++;
+            if (TryPlaceRoom(fromExit, prefab, pathComplexity)) {
+                Debug.Log($"Chose '{count}'th choice prefab");
                 return; // stop after first success
+            }
         }
 
         // All prefabs failed for this exit
-        Debug.Log($"[GEN] Exhausted all candidate prefabs for exit '{fromExit.transform.name}' at depth {pathLength}");
+        Debug.Log($"[GEN] Exhausted all candidate prefabs for exit '{fromExit.transform.name}' at depth {pathComplexity}");
     }
 
     // Fisher-Yates shuffle for List<T>
@@ -144,33 +136,44 @@ public class GenerateMap : MonoBehaviour
 
     private List<Room> GetCandidatePrefabs(Room.Exit fromExit, bool mustPlaceEndRoom)
     {
-        List<Room> candidates = new List<Room>();
+        List<Room> preferred = new List<Room>();
+        List<Room> normal = new List<Room>();
+
+        Room fromRoom = fromExit.transform.GetComponentInParent<Room>();
 
         for (int i = 0; i < rooms.Count; i++)
         {
-            if (i == 0) continue; // never place start room again
+            if (i == 0) continue;                // never place start room again
             if (i == 1 && !mustPlaceEndRoom) continue; // end room only when needed
 
             Room r = rooms[i];
-            // Only include if it has at least one exit matching the current exit's door type
-            if (r.GetAvailableExits(fromExit.doorType).Count > 0)
-                candidates.Add(r);
+
+            // Must have compatible exits
+            if (r.GetAvailableExits(fromExit.doorType).Count == 0)
+                continue;
+
+            // Check if this room is listed as preferred
+            if (fromRoom.preferredNeighbors.Contains(r))
+                preferred.Add(r);
+            else
+                normal.Add(r);
         }
 
-        // Weighted shuffle: generate a random key biased by weight
-        candidates.Sort((a, b) =>
-        {
-            // Generate a random number in [0,1) and scale inversely by weight
-            float keyA = Mathf.Pow(Random.value, 1f / a.weight);
-            float keyB = Mathf.Pow(Random.value, 1f / b.weight);
-            return keyA.CompareTo(keyB); // smaller key → earlier in list
-        });
+        // Shuffle both groups independently
+        Shuffle(preferred);
+        Shuffle(normal);
 
-        return candidates;
+        // Combine preferred first, normal after
+        List<Room> result = new List<Room>(preferred.Count + normal.Count);
+        result.AddRange(preferred);
+        result.AddRange(normal);
+
+        return result;
     }
 
 
-    private bool TryPlaceRoom(Room.Exit fromExit, Room prefab, int pathLength)
+
+    private bool TryPlaceRoom(Room.Exit fromExit, Room prefab, int pathComplexity)
     {
         // Shuffle available exits of the prefab matching the current door type
         List<Room.Exit> exitsToTry = prefab.GetAvailableExits(fromExit.doorType);
@@ -198,7 +201,7 @@ public class GenerateMap : MonoBehaviour
             }
 
             // SUCCESS
-            Debug.Log($"[GEN] Placed room '{candidate.roomName}' at {candidate.transform.position}.");
+            Debug.Log($"[GEN] Placed room '{candidate.roomName}' at depth {pathComplexity}, total complexity {totalComplexity}");
             // update room bounds
             placedRooms.Add(candidate);
             placedBounds.Add(candidateBounds);
@@ -208,6 +211,8 @@ public class GenerateMap : MonoBehaviour
             // remove placeholder doors
             Destroy(fromExit.transform.gameObject);
             Destroy(instantiatedExit.transform.gameObject);
+            // increase totalComplexity
+            totalComplexity += candidate.complexity;
 
 
             // Recurse from one random available exit
@@ -215,7 +220,7 @@ public class GenerateMap : MonoBehaviour
             Shuffle(nextExits);
             foreach (var nextExit in nextExits)
             {
-                Generate(nextExit, pathLength + 1);
+                Generate(nextExit, pathComplexity + candidate.complexity);
             }
 
             return true;

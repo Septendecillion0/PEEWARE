@@ -23,12 +23,14 @@ public class Room : MonoBehaviour
 
     [Header("Room Settings")]
     public string roomName;
-    public float weight = 1f; // default weight = 1
+    public int complexity = 1; // default complexity = 1
     public bool isDoor = false;
     public Vector3 size;                // optional if you want to use bounding boxes
     [Header("Room Exits")]
     public List<Exit> exits = new List<Exit>();
     public int exitCount => exits.Count;
+
+    public List<Room> preferredNeighbors = new List<Room>(); 
 
     public List<Exit> GetAvailableExits(DoorType? type = null)
     {

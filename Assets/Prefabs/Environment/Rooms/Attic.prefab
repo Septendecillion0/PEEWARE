@@ -678,7 +678,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Attic
-  weight: 1
+  complexity: 2
   isDoor: 0
   size: {x: 0, y: 0, z: 0}
   exits:
@@ -688,6 +688,8 @@ MonoBehaviour:
   - transform: {fileID: 4501573381322982936}
     doorType: 2
     isConnected: 0
+  preferredNeighbors:
+  - {fileID: 2938284635973783088, guid: 14712958f8229c14fb523e192f510a28, type: 3}
 --- !u!1 &5138004911168430188
 GameObject:
   m_ObjectHideFlags: 0

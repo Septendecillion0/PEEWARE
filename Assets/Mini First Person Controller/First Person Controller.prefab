@@ -536,7 +536,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.5
-  m_Height: 1.8
+  m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0.9, z: 0}
 --- !u!54 &54063890643546284
@@ -612,7 +612,7 @@ MonoBehaviour:
   movement: {fileID: 114963311885979670}
   movementSpeed: 2
   headToLower: {fileID: 4490257326247362}
-  crouchYHeadPosition: 0.8
+  crouchYHeadPosition: 0.7
   colliderToLower: {fileID: 136877096903737240}
   groundCheck: {fileID: 114503055206606986}
 --- !u!114 &3966144457947309906

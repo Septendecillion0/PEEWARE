@@ -417,7 +417,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Office
-  weight: 1
+  complexity: 3
   isDoor: 0
   size: {x: 0, y: 0, z: 0}
   exits:
@@ -430,6 +430,11 @@ MonoBehaviour:
   - transform: {fileID: 3567014256071280306}
     doorType: 2
     isConnected: 0
+  preferredNeighbors:
+  - {fileID: 9057399955984057516, guid: 1bb0e2372e1111942928969bc476ae71, type: 3}
+  - {fileID: 6685377742650555503, guid: 47a9558a160a0de4cb4df52ca59bb5b3, type: 3}
+  - {fileID: 6615992398462500054, guid: ff52b32cfcf228c4695ca8fc969e3f2e, type: 3}
+  - {fileID: 5294409422874110671, guid: 4198ca1ce733bfb4cb5b496e576abab1, type: 3}
 --- !u!1 &4055815007672905565
 GameObject:
   m_ObjectHideFlags: 0

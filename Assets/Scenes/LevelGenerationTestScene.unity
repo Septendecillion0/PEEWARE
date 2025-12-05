@@ -275,54 +275,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxPath
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: maxRoom
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: rooms.Array.size
-      value: 19
-      objectReference: {fileID: 0}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[10]'
-      value: 
-      objectReference: {fileID: 8382216537727675885, guid: 87f6d78f216c6a3489911351f4296071, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[11]'
-      value: 
-      objectReference: {fileID: 4584301779603464211, guid: aa7e0a23fbbb19c4f809f70881da061b, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[12]'
-      value: 
-      objectReference: {fileID: 7609710011924389205, guid: 677ee32fd9b6e3f4b9439fef3972ad4b, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[13]'
-      value: 
-      objectReference: {fileID: 186149293641172095, guid: cfd47e83be8eb554f910760f6a0b9cf7, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[14]'
-      value: 
-      objectReference: {fileID: 1636845873404446164, guid: e1ef103f52a63e044b2e0fc2c57e2e1d, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[15]'
-      value: 
-      objectReference: {fileID: 367869929265074252, guid: cb35eda4efcd1a246be9375ea7136680, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[16]'
-      value: 
-      objectReference: {fileID: 7656482069972532974, guid: d231b6cdc77fb564099397d3bf8c0912, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[17]'
-      value: 
-      objectReference: {fileID: 8702689441075453897, guid: e71a4c744ae84824ba224c5c15eb127e, type: 3}
-    - target: {fileID: 6981544016605285605, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
-      propertyPath: 'rooms.Array.data[18]'
-      value: 
-      objectReference: {fileID: 3945949120590600837, guid: dadeafcbcd3381645b355b08b07cc659, type: 3}
     - target: {fileID: 7907845071546034378, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
       propertyPath: m_Name
       value: MapGenerationManager
