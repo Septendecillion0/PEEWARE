@@ -7,13 +7,31 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Image brightnessOverlay;
 
+
+    /// <summary>
+    /// Sets the audio volume for a given mixer group parameter
+    /// </summary>
+    private void SetAudioVolume(string parameterName, float value)
+    {
+        // Convert slider 0-1 to dB scale (-80 to 0 dB)
+        float volumeInDb = Mathf.Log10(value) * 20;
+        audioMixer.SetFloat(parameterName, volumeInDb);
+        PlayerPrefs.SetFloat(parameterName, value);
+    }
+
     public void SetMasterVolume(float value)
     {
-        value = Mathf.Clamp(value, 0.001f, 1f);
-        // slider 0-1 -> dB
-        float volume = Mathf.Log10(value) * 20;
-        audioMixer.SetFloat("MasterVolume", volume);
-        PlayerPrefs.SetFloat("MasterVolume", value);
+        SetAudioVolume("MasterVolume", value);
+    }
+
+    public void SetMusicVolume(float value)
+    {
+        SetAudioVolume("BGMVolume", value);
+    }
+
+    public void SetSFXVolume(float value)
+    {
+        SetAudioVolume("SFXVolume", value);
     }
 
     public void SetBrightness(float value)

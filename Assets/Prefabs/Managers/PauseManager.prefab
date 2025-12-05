@@ -49,7 +49,6 @@ MonoBehaviour:
   pausePanel: {fileID: 2122674074819387120}
   settingsPanel: {fileID: 1217504056527908706}
   InSettings: 0
-  JustClosedSettings: 0
 --- !u!1001 &2017516066622178274
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -165,6 +164,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 622081679015454338}
     m_Modifications:
+    - target: {fileID: 922585234558261248, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1119864102618457254, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2460409945445217996, guid: bc554949431fa4abebb1b174af771edc, type: 3}
       propertyPath: m_Pivot.x
       value: 0
@@ -245,9 +252,33 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3090998643513885191, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5236357396276107097, guid: bc554949431fa4abebb1b174af771edc, type: 3}
       propertyPath: m_Name
       value: SettingsCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6690875194934738187, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7537794515637727792, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7684265100121678616, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8128009478506982261, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9218893415342762122, guid: bc554949431fa4abebb1b174af771edc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
