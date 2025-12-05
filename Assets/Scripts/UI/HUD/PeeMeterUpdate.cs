@@ -28,7 +28,7 @@ public class PeeMeterUpdate : MonoBehaviour
     {
         peeMeter.value += deltaPee * Time.deltaTime;
         fillImage.color = Color.Lerp(startPee, endPee, peeMeter.value / 100);
-        float dB = Mathf.Lerp(-44f, 0f, peeMeter.value/maxPee);
+        float dB = Mathf.Lerp(-50f, 0f, peeMeter.value/maxPee);
         audioManager.ChangeMusicVolume(dB);
 
         if (!GameManager.Instance.IsGameOver && Mathf.Approximately(peeMeter.value, 100f))
