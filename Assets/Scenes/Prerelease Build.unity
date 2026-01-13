@@ -372,6 +372,10 @@ PrefabInstance:
       propertyPath: peeMeter
       value: 
       objectReference: {fileID: 1785410160}
+    - target: {fileID: 8336352173275954653, guid: f1ed0e5a36fda40d4913828d0649dda5, type: 3}
+      propertyPath: m_Name
+      value: PausePanel
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

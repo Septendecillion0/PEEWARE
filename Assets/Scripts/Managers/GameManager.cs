@@ -13,6 +13,7 @@ public class GameManager : Singleton<GameManager>
         Start,
         Playing,
         Paused,
+        InSettings,
         Ending
     }
 
@@ -78,6 +79,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (State == newState) return;
         State = newState;
+        Debug.Log("Game State changed to: " + newState.ToString());
 
         if (newState == GameState.Playing)
         {
@@ -90,7 +92,7 @@ public class GameManager : Singleton<GameManager>
             FirstPersonLook.canLook = true;
             if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
         }
-        else if (newState == GameState.Paused)
+        else if (newState == GameState.Paused || newState == GameState.InSettings)
         {
             Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
@@ -103,12 +105,15 @@ public class GameManager : Singleton<GameManager>
         }
         else if (newState == GameState.Ending)
         {
+            Time.timeScale = 0f;
             Cursor.lockState = CursorLockMode.None;
 
             Jump.canJump = false;
             Crouch.canCrouch = false;
-
             FirstPersonLook.canLook = false;
+
+            // Show ending screen
+            EndingManager.Instance?.Show();
         }
     }
 
@@ -126,35 +131,12 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
-
-    // Convenience methods
-    public void PauseGame()
-    {
-        if (State == GameState.Ending) return; // Do not allow pause during ending
-        SetState(GameState.Paused);
-    }
-
-    public void ResumeGame()
-    {
-        if (State == GameState.Ending) return;
-        SetState(GameState.Playing);
-    }
-
-    public void GameOver()
-    {
-        if (IsGameOver) return;
-        SetState(GameState.Ending);
-
-        EndingManager.Instance?.Show();
-    }
-
     public void RestartGame()
     {
         if (!IsGameOver) return;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 
         SetState(GameState.Playing);
-        ResumeGame();
     }
 
     public void QuitToMainMenu()
@@ -163,9 +145,4 @@ public class GameManager : Singleton<GameManager>
         SceneManager.LoadScene("MainMenu");
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
 }

@@ -7,6 +7,11 @@ public class SettingsManager : Singleton<SettingsManager>
     [SerializeField] private AudioMixer audioMixer;
     [SerializeField] private Image brightnessOverlay;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
 
     /// <summary>
     /// Sets the audio volume for a given mixer group parameter

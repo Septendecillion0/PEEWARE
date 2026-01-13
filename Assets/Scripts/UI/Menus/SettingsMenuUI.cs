@@ -39,6 +39,8 @@ public class SettingsMenuUI : MonoBehaviour
         brightnessSlider.value = b;
         SettingsManager.Instance.SetBrightness(b);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
-        backButton.onClick.AddListener(PauseManager.Instance.CloseSettings);
+
+        // Back button listener
+        backButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.Paused));
     }
 }

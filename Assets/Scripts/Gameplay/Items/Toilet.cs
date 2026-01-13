@@ -22,6 +22,6 @@ public class Toilet : MonoBehaviour, IInteractable
 	{
 		peeMeterUpdate.Pee(peeMeterUpdate.maxPee);
 		GameManager.Instance.foundToilet = true;
-		GameManager.Instance.GameOver();
+		GameManager.Instance.SetState(GameManager.GameState.Ending);
 	}
 }
