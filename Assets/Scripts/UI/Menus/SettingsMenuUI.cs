@@ -40,7 +40,7 @@ public class SettingsMenuUI : MonoBehaviour
         SettingsManager.Instance.SetBrightness(b);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
 
-        // Back button listener
+        // Back button listener, returns to pause menu
         backButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.Paused));
     }
 }

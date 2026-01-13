@@ -2,6 +2,11 @@ using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
 
+/**
+* This script is for the Settings UI in the Main Menu.
+* It is basically the same as SettingsMenuUI, only with a different back button behavior,
+* and separated escape key handling.
+*/
 public class SettingsMainMenuUI : MonoBehaviour
 {
     [SerializeField] private Slider volumeSlider;
@@ -40,7 +45,7 @@ public class SettingsMainMenuUI : MonoBehaviour
         SettingsManager.Instance.SetBrightness(b);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
 
-        // Back button listener
+        // Back button listener, closes settings menu
         backButton.onClick.AddListener(CloseSettings);
     }
 
