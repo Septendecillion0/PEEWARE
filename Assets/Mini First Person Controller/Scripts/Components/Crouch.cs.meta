@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 27b67ddb3d23b8340b125aede56d7e8c
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 174710
+  packageName: Mini First Person Controller
+  packageVersion: 1.1.0
+  assetPath: Assets/Mini First Person Controller/Scripts/Components/Crouch.cs
+  uploadId: 442605
