@@ -22,7 +22,7 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartGame()
     {
-        StartCoroutine(Loading("Prerelease Build")); //replace with gameplay scene
+        StartCoroutine(Loading("Level")); //replace with gameplay scene
     }
 
     private IEnumerator Loading(string sceneName)
