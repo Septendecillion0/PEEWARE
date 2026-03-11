@@ -3,6 +3,17 @@ using UnityEngine.UI;
 using System.Collections;
 using TMPro;
 
+/// <summary>
+/// Controls the ending screen sequence: fading in the YOU PEED image,
+/// then branching into either a credits screen or restart/quit buttons
+/// depending on whether the player found the toilet.
+/// Called externally via Show() when the game reaches the Ending state.
+/// </summary>
+/// <remarks>
+/// Despite its name, this class is primarily a UI controller rather than a manager.
+/// All ending logic (what ending to show) is driven by GameManager.foundToilet.
+/// Consider renaming to EndingScreenUI and moving ending condition logic to GameManager.
+/// </remarks>
 public class EndingManager : Singleton<EndingManager>
 {
     [SerializeField] private Canvas EndingCanvas;
@@ -16,6 +27,9 @@ public class EndingManager : Singleton<EndingManager>
     private float fadeTimer = 0f;
     private bool fadingIn = false;
 
+    /// <summary>
+    /// Registers button listeners and hides all ending UI elements on startup.
+    /// </summary>
     private void Start()
     {
         // Setup button listeners with null checking
@@ -29,6 +43,11 @@ public class EndingManager : Singleton<EndingManager>
         EndingCanvas.gameObject.SetActive(false);
     }
 
+    /// <summary>
+    /// Advances the YOU PEED fade-in each frame using unscaled time.
+    /// Once the fade completes, branches to either the credits sequence
+    /// or the restart/quit buttons based on GameManager.foundToilet.
+    /// </summary>
     void Update()
     {
         if (fadingIn)
@@ -56,7 +75,10 @@ public class EndingManager : Singleton<EndingManager>
         }
     }
 
-    // Fade YOU PEED in when pee meter full
+    /// <summary>
+    /// Activates the ending canvas and starts the YOU PEED fade-in sequence.
+    /// Called by GameManager when the Ending state is entered.
+    /// </summary>
     public void Show()
     {
         // Show the ending screen
@@ -68,6 +90,10 @@ public class EndingManager : Singleton<EndingManager>
         fadingIn = true;
     }
 
+    /// <summary>
+    /// Displays the credits image after a short delay, then waits for any key input
+    /// before returning to the main menu.
+    /// </summary>
     IEnumerator ShowCredits()
     {
         yield return new WaitForSecondsRealtime(2f);
@@ -80,6 +106,9 @@ public class EndingManager : Singleton<EndingManager>
         GameManager.Instance.QuitToMainMenu();
     }
 
+    /// <summary>
+    /// Sets the alpha of the YOU PEED image without affecting its other color channels.
+    /// </summary>
     private void SetYouPeedAlpha(float a)
     {
         Color c = YOU_PEED.color;

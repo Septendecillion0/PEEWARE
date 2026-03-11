@@ -1,16 +1,30 @@
 using UnityEngine;
 
-public class PauseManager : Singleton<PauseManager>
+/// <summary>
+/// Handles pause and settings panel visibility in response to player input and game state changes.
+/// Listens for the Escape key each frame and toggles state via GameManager.
+/// </summary>
+/// <remarks>
+/// Panel visibility is driven by GameManager.State
+/// </remarks>
+public class PauseManager : MonoBehaviour
 {
     public GameObject pausePanel;
     public GameObject settingsPanel;
 
+    /// <summary>
+    /// Hides all managed panels on startup.
+    /// </summary>
     private void Start()
     {
         pausePanel.SetActive(false);
         settingsPanel.SetActive(false);
     }
 
+    /// <summary>
+    /// Polls for Escape key input and syncs panel visibility to the current GameState.
+    /// No-ops when the game is over.
+    /// </summary>
     void Update()
     {
         if (GameManager.Instance.IsGameOver) return;
