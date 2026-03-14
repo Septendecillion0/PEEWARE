@@ -259,7 +259,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7060938831881569340, guid: c308b80ff59f70941820669172dac0d1, type: 3}
+  - {fileID: 2100000, guid: 92253142dfc34a74388e9c9c9aa57544, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -358,6 +358,7 @@ MonoBehaviour:
   - transform: {fileID: 7926302068056394733}
     doorType: 0
     isConnected: 0
+  maxSpawnCount: -1
   preferredNeighbors:
   - {fileID: 2938284635973783088, guid: 14712958f8229c14fb523e192f510a28, type: 3}
 --- !u!1 &8634876762348937276
@@ -427,7 +428,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: -6478536213147159724, guid: c308b80ff59f70941820669172dac0d1, type: 3}
+  - {fileID: 2100000, guid: 70404bc9b015bcc4c942c85fbb5ac4a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

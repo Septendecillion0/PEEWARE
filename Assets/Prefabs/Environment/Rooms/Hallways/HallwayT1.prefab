@@ -407,7 +407,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 1c89094a8e5b43540ba2d9c4846d21e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -456,6 +456,8 @@ MonoBehaviour:
   - transform: {fileID: 3510728133798420592}
     doorType: 1
     isConnected: 0
+  maxSpawnCount: -1
+  preferredNeighbors: []
 --- !u!64 &5959611634499221441
 MeshCollider:
   m_ObjectHideFlags: 0

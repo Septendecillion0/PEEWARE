@@ -47,13 +47,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Storage
-  weight: 1
+  complexity: 1
   isDoor: 0
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 2353321337991530063}
     doorType: 0
     isConnected: 0
+  maxSpawnCount: -1
+  preferredNeighbors: []
 --- !u!1 &4605823647458213947
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +123,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 70404bc9b015bcc4c942c85fbb5ac4a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -457,7 +459,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8773368217548898763, guid: ce327da0d71dee4498a54c7652566da3, type: 3}
+  - {fileID: 2100000, guid: 1c89094a8e5b43540ba2d9c4846d21e0, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
