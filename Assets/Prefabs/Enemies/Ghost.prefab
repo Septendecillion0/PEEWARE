@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 8731114524487016187}
   - component: {fileID: 2846662253118365836}
   - component: {fileID: -7540952855276986694}
+  - component: {fileID: 1660715931149788625}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -128,9 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3730e86ef153b0e47ab9687fa29c5384, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GhostScript
-  passiveSound: {fileID: 8300000, guid: 0319cd101b11a034199ed8985c021cf4, type: 3}
-  spawnSound: {fileID: 0}
-  deathSound: {fileID: 8300000, guid: 04dce9462ce81b645b9414369287fe9f, type: 3}
+  passiveSound: {fileID: 8300000, guid: ac38fa094017a274791c2a52e57d8075, type: 3}
+  spawnSound: {fileID: 8300000, guid: 8ab30d1f66225aa4b976bfea279743c6, type: 3}
+  deathSound: {fileID: 8300000, guid: 9f1e813674d709d48a787898619a00d1, type: 3}
   playerCam: {fileID: 0}
   peeMeter: {fileID: 4436666588249333562, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
   minHorizontalDistance: 10
@@ -243,3 +244,33 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1660715931149788625
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 63164046888599622}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3730e86ef153b0e47ab9687fa29c5384, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GhostScript
+  passiveSound: {fileID: 0}
+  spawnSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  playerCam: {fileID: 0}
+  peeMeter: {fileID: 0}
+  minHorizontalDistance: 5
+  maxHorizontalDistance: 20
+  minVerticalDistance: -2
+  maxVerticalDistance: 3
+  minDirectionDot: -1
+  maxDirectionDot: 1
+  minBehindDistance: 4
+  maxBehindDistance: 7
+  maxAllowedDistance: 10
+  lookThreshold: 0.8
+  jumpSpeed: 10
+  horizontalOffset: 2
+  tpTime: 3

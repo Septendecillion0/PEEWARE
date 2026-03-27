@@ -1,5 +1,11 @@
 using UnityEngine;
-
+/// <summary>
+/// [Enemy]
+/// the Fairy is a pair enemy along with the FairyTree
+/// the Fairy will try to spawn in front of the player and hover over the camera, blocking the player's vision
+/// to "defeat" the Fairy, bring it to its tree
+/// colliding the Fairy with an object will kill it, causing it to scream
+/// </summary>
 public class FairyScript : Enemy
 {
     [Header("Extra Audio")]
@@ -39,12 +45,14 @@ public class FairyScript : Enemy
             peeMeter.GetComponent<PeeMeterUpdate>().Scare(-20.0f);
             EnemyManager.Instance.EnemyVanish(this.gameObject);
             EnemyManager.Instance.EnemyVanish(collision.gameObject);
+            Debug.Log("fairy reached tree");
         }
-        //If not collided with the tree
+        //If not collided with the tree, scare and increase pee
         else{
             peeMeter.GetComponent<PeeMeterUpdate>().Scare(20.0f);
             EnemyDeath();
             EnemyManager.Instance.EnemyVanish(ownTree);
+            Debug.Log("fairy died");
         }
     }
 }
