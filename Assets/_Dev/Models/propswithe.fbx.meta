@@ -1,19 +1,9 @@
 fileFormatVersion: 2
-guid: 462a1ae64ba255a4ab9e313997f5cf7d
+guid: 3b729172e16195f4a95399da286b74a0
 ModelImporter:
   serializedVersion: 24200
   internalIDToNameTable: []
-  externalObjects:
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: Material.004
-    second: {fileID: 2100000, guid: 6bc79e2c946eabf40987666f881ac2fd, type: 2}
-  - first:
-      type: UnityEngine:Material
-      assembly: UnityEngine.CoreModule
-      name: wooden wall with image texture
-    second: {fileID: 2100000, guid: bf5ac45eba290da42901560f75f3bdf6, type: 2}
+  externalObjects: {}
   materials:
     materialImportMode: 2
     materialName: 0

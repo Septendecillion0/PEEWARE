@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 
-public class GenerateMap : MonoBehaviour
+public class MapGenerationManager : Singleton<MapGenerationManager>
 {
     [Header("Map Seed (set -1 for random)")]
     public int seed = -1;

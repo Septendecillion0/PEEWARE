@@ -19,7 +19,7 @@ public class SettingsManager : Singleton<SettingsManager>
 
 
     /// <summary>
-    /// Initializes the singleton and marks this object as persistent across scenes.
+    /// Singleton manager setup (persistent)
     /// </summary>
     protected override void Awake()
     {

@@ -1,8 +1,22 @@
 using UnityEngine;
 using UnityEngine.Audio;
-
-public class AudioManager : MonoBehaviour
+/// <summary>
+/// Manager for all global audio and mixers
+/// Persists across scenes
+/// Holds and has calls for all global audio (Music, UI)
+/// DOES NOT manage spatial audio (enemy, environment, player)
+/// </summary>
+public class AudioManager : Singleton<AudioManager>
 {
+    /// <summary>
+    /// Singleton Manager setup (persistent)
+    /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+        DontDestroyOnLoad(gameObject);
+    }
+
     [Header("Mixer and Sources")]
     public AudioMixer mixer;          // Your existing mixer with SFX/Music groups
     public AudioSource musicSource;   // For background music

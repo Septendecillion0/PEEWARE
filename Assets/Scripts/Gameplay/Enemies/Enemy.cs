@@ -10,6 +10,8 @@ public class Enemy : MonoBehaviour
     public AudioClip spawnSound;
     public AudioClip deathSound;
 
+    [Header("Extra Audio")]
+
     [Header("Player Related")]
     private GameObject pl;
     public Camera playerCam;

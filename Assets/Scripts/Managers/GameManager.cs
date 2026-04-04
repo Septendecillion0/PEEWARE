@@ -5,7 +5,7 @@ using System.Collections;
 
 /// <summary>
 /// Central manager for game state, scene transitions, and top-level audio.
-/// Persists across all scenes (MainMenu and Level) as a DontDestroyOnLoad singleton.
+/// Persistent across scenes
 /// Use SetState() to trigger all state changes.
 /// </summary>
 public class GameManager : Singleton<GameManager>

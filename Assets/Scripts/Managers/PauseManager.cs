@@ -7,8 +7,16 @@ using UnityEngine;
 /// <remarks>
 /// Panel visibility is driven by GameManager.State
 /// </remarks>
-public class PauseManager : MonoBehaviour
+public class PauseManager : Singleton<PauseManager>
 {
+    /// <summary>
+    /// Singleton Manager setup
+    /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+    }
+
     public GameObject pausePanel;
     public GameObject settingsPanel;
 

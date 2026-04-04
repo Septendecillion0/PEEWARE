@@ -13,9 +13,15 @@ using TMPro;
 /// and environment checks (floor raycast, overlap sphere).
 /// Visual effects (blind/hurt) are delegated to ScreenFade components.
 /// </remarks>
-public class EnemyManager : MonoBehaviour
+public class EnemyManager : Singleton<EnemyManager>
 {
-    public static EnemyManager Instance;
+    /// <summary>
+    /// Singleton manager setup
+    /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+    }
 
     [Header("Player Settings")]
     public GameObject player;
@@ -33,18 +39,8 @@ public class EnemyManager : MonoBehaviour
     public int maxSpawnAttempts = 30; // attempts per spawn
 
     [Header("Map Related")]
-    public GenerateMap mapGenerator;
-    public GameObject mapGenManager;
     private List<Room> generatedRooms;
     private List<Bounds> roomBounds;
-
-    /// <summary>
-    /// Initializes the singleton instance.
-    /// </summary>
-    private void Awake()
-    {
-        Instance = this;
-    }
 
     /// <summary>
     /// Triggers the initial screen fade-in and begins the startup coroutine
@@ -87,9 +83,8 @@ public class EnemyManager : MonoBehaviour
         }
 
         // Room data
-        mapGenerator = mapGenManager.GetComponent<GenerateMap>();
-        generatedRooms = mapGenerator.GetAllPlacedRooms();
-        roomBounds = mapGenerator.GetAllRoomBounds();
+        generatedRooms = MapGenerationManager.Instance.GetAllPlacedRooms();
+        roomBounds = MapGenerationManager.Instance.GetAllRoomBounds();
 
         StartCoroutine(SpawnEnemiesRoutine());
     }

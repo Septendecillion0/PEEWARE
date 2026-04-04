@@ -16,6 +16,13 @@ using TMPro;
 /// </remarks>
 public class EndingManager : Singleton<EndingManager>
 {
+    /// <summary>
+    /// Singleton Manager setup
+    /// </summary>
+    protected override void Awake()
+    {
+        base.Awake();
+    }
     [SerializeField] private Canvas EndingCanvas;
     [SerializeField] private Image YOU_PEED;
     [SerializeField] private Image creditsImage;
