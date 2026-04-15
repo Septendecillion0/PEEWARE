@@ -1,12 +1,10 @@
 using UnityEngine;
 
 /// <summary>
-/// Handles pause and settings panel visibility in response to player input and game state changes.
-/// Listens for the Escape key each frame and toggles state via GameManager.
+/// Listens for "esc" button press during gameplay to toggle pause status
+/// Updates gamestate via GameManager
+/// draws UI via UIManager -> called by GameManager event
 /// </summary>
-/// <remarks>
-/// Panel visibility is driven by GameManager.State
-/// </remarks>
 public class PauseManager : Singleton<PauseManager>
 {
     /// <summary>
@@ -17,40 +15,30 @@ public class PauseManager : Singleton<PauseManager>
         base.Awake();
     }
 
-    public GameObject pausePanel;
-    public GameObject settingsPanel;
-
     /// <summary>
-    /// Hides all managed panels on startup.
-    /// </summary>
-    private void Start()
-    {
-        pausePanel.SetActive(false);
-        settingsPanel.SetActive(false);
-    }
-
-    /// <summary>
-    /// Polls for Escape key input and syncs panel visibility to the current GameState.
-    /// No-ops when the game is over.
+    /// Polls for "esc" key input
+    /// If in a valid GameState, move to HandleEscape()
     /// </summary>
     void Update()
     {
-        if (GameManager.Instance.IsGameOver) return;
-
-        var state = GameManager.Instance.State;
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (GameManager.Instance.State != GameManager.GameState.Playing &&
+            GameManager.Instance.State != GameManager.GameState.Paused &&
+            GameManager.Instance.State != GameManager.GameState.InSettings)
         {
-            if (state == GameManager.GameState.Playing)
-                GameManager.Instance.SetState(GameManager.GameState.Paused);
-            else if (state == GameManager.GameState.Paused)
-                GameManager.Instance.SetState(GameManager.GameState.Playing);
-            else if (state == GameManager.GameState.InSettings)
-                GameManager.Instance.SetState(GameManager.GameState.Paused);
+            return;
         }
 
-        // Game state might be updated by other means (e.g. buttons), so update panels here
-        pausePanel.SetActive(state == GameManager.GameState.Paused);
-        settingsPanel.SetActive(state == GameManager.GameState.InSettings);
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            HandleEscape();
+        }
+    }
 
+    /// <summary>
+    /// calls GameManager to update State -> GameManager event calls UIManager to update menu visibility
+    /// </summary>
+    private void HandleEscape()
+    {
+        GameManager.Instance.TogglePauseState();
     }
 }

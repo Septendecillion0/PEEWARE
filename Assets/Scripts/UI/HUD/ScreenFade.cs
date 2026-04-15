@@ -23,13 +23,14 @@ public class ScreenFade : MonoBehaviour
         Color c = fadeImage.color;
         while (elapsed < duration)
         {
-            elapsed += Time.deltaTime;
+            elapsed += Time.unscaledDeltaTime;
             c.a = Mathf.Lerp(from, to, elapsed / duration);
             fadeImage.color = c;
             yield return null;
         }
         c.a = to;
         fadeImage.color = c;
+        
         onComplete?.Invoke();
     }
 }

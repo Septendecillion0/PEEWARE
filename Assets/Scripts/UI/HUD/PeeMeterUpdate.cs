@@ -2,13 +2,15 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
+// TODO: remove manager references, replace with Instance
+//       remove UI image and add to UIManager
+
 public class PeeMeterUpdate : MonoBehaviour
 {
     public Slider peeMeter;
     public float deltaPee;
 
     private Image fillImage;
-    public AudioManager audioManager;
     public AudioClip deathSound;
 
     public int maxPee { get; private set; } = 100;
@@ -24,20 +26,20 @@ public class PeeMeterUpdate : MonoBehaviour
         fillImage = peeMeter.fillRect.GetComponent<Image>();
     }
 
-    // Update is called once per frame
+    // TODO: fix GameManager calls with current implementation
     void Update()
     {
         peeMeter.value += deltaPee * Time.deltaTime;
         fillImage.color = Color.Lerp(startPee, endPee, peeMeter.value / 100);
         float dB = Mathf.Lerp(-40f, 0f, peeMeter.value / maxPee);
-        audioManager.ChangeMusicVolume(dB);
+        AudioManager.Instance.ChangeMusicVolume(dB);
 
         if (!GameManager.Instance.IsGameOver && Mathf.Approximately(peeMeter.value, 100f))
         {
             // trigger global game over
-            audioManager.FadeOutMusic(0.2f);
-            audioManager.PlaySFX(deathSound);
-            GameManager.Instance.SetState(GameManager.GameState.Ending);
+            AudioManager.Instance.FadeOutMusic(0.2f);
+            AudioManager.Instance.PlaySFX(deathSound);
+            GameManager.Instance.SetState(GameManager.GameState.GameOver);
         }
     }
 

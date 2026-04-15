@@ -2,21 +2,24 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
 
+// TODO:
+// (optional) replace with SettingsData dataobject; give all function calls to individual UI scripts
+
 /// <summary>
 /// Manages persistent audio and display settings, applying changes to the AudioMixer
 /// and saving values to PlayerPrefs for persistence across sessions.
-/// Persists across all scenes as a DontDestroyOnLoad singleton.
+/// Persists across scenes
 /// </summary>
 /// <remarks>
 /// Audio volumes are stored in PlayerPrefs on a 0-1 linear scale and converted
 /// to decibels internally before being passed to the AudioMixer.
 /// Brightness is implemented as an overlay Image whose alpha is the inverse of the slider value.
+/// 
+/// NOTE: PlayerPrefs saves values to disk, which will be kept when the game reopens. This may or may not be intended behavior
 /// </remarks>
 public class SettingsManager : Singleton<SettingsManager>
 {
     [SerializeField] private AudioMixer audioMixer;
-    [SerializeField] private Image brightnessOverlay;
-
 
     /// <summary>
     /// Singleton manager setup (persistent)
@@ -68,16 +71,13 @@ public class SettingsManager : Singleton<SettingsManager>
     }
 
     /// <summary>
-    /// Adjusts screen brightness via a full-screen dark overlay.
+    /// Call UIManager to adjust screen brightness via a full-screen dark overlay.
     /// A slider value of 1 is fully transparent (brightest); 0 is fully opaque (darkest).
     /// Saves the value to PlayerPrefs.
     /// </summary>
     public void SetBrightness(float value)
     {
-        Color c = brightnessOverlay.color;
-        // Invert value: slider 0 = black overlay, slider 1 = transparent
-        c.a = 1f - value;
-        brightnessOverlay.color = c;
         PlayerPrefs.SetFloat("Brightness", value);
+        UIManager.Instance.SetBrightness(value);
     }
 }

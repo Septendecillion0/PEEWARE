@@ -9,7 +9,6 @@ public class MainMenuUI : MonoBehaviour
     [SerializeField] private Button settingButton;
     [SerializeField] private Button exitButton;
     public GameObject settingsCanvas;
-    public AudioManager audioManager;
     public ScreenFade screenFade;
 
     private void Start()
@@ -30,8 +29,9 @@ public class MainMenuUI : MonoBehaviour
         float duration = 2.0f;
 
         // Kick off both fades at the same time
+        
         screenFade.FadeOut(duration);  
-        audioManager.FadeOutMusic(duration);
+        AudioManager.Instance.FadeOutMusic(duration);
 
         // Wait for the fade duration
         yield return new WaitForSecondsRealtime(duration);

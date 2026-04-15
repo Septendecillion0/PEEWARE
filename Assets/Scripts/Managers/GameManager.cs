@@ -5,13 +5,19 @@ using System.Collections;
 
 /// <summary>
 /// Central manager for game state, scene transitions, and top-level audio.
+/// Also manages timescale based on states
 /// Persistent across scenes
 /// Use SetState() to trigger all state changes.
 /// </summary>
+/// <remarks>
+/// GameManager executes before other managers (Edit->Project Settings->Script Execution Order)
+/// so that subscription to events works correctly (does not cause null reference)
 public class GameManager : Singleton<GameManager>
 {
+    // TODO: reorganize header variables to make more sense
+    //       update AudioManager, remove music audioclips and audiomanager reference
     public GameObject firstPersonAudio;
-    public bool foundToilet = false;
+    public bool foundToilet = false; // TODO: remove this variable and tie to Victory game state. This is also likely responsible for replay or exit bugs
     private const string MainMenu = "MainMenu";
     private const string Level = "Level";
 
@@ -24,8 +30,14 @@ public class GameManager : Singleton<GameManager>
         Playing,
         Paused,
         InSettings,
-        Ending
+        GameOver,
+        Victory
     }
+
+    // compatibility line for scripts that don't distinguish between Victory/GameOver
+    public bool IsGameEnded =>
+    State == GameState.GameOver ||
+    State == GameState.Victory;
 
     /// <summary>
     /// The current game state. Read-only externally, call SetState() to change.
@@ -34,14 +46,19 @@ public class GameManager : Singleton<GameManager>
 
     /// <summary>
     /// Backwards-compatible boolean (read-only). Convenience property for scripts not yet migrated to GameState.
+    /// 
+    /// TODO: remove references to these bools and remove bools
     /// </summary>
-    public bool IsGameOver => State == GameState.Ending;
+    public bool IsGameOver => State == GameState.GameOver;
     public bool IsPaused => State == GameState.Paused;
 
-    [Header("Music")]
-    public AudioManager audioManager;
-    public AudioClip mainMenuMusic;
-    public AudioClip gameplayMusic;
+    [Header("Music")] // TODO remove
+    public AudioClip mainMenuMusic; // TODO remove
+    public AudioClip gameplayMusic; //TODO remove
+
+    [SerializeField] private EndingSequenceController endingController;
+
+    public event System.Action<GameState> OnGameStateChanged;
 
 
     /// <summary>
@@ -59,12 +76,10 @@ public class GameManager : Singleton<GameManager>
 
     /// <summary>
     /// Responds to scene load events， sets the appropriate GameState for the loaded scene.
-    /// Reassigns AudioManager reference, and starts scene music.
+    /// starts scene music.
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        audioManager = FindObjectOfType<AudioManager>();
-
         if (scene.name == MainMenu)
         {
             SetState(GameState.Start);
@@ -72,9 +87,8 @@ public class GameManager : Singleton<GameManager>
         else if (scene.name == Level)
         {
             SetState(GameState.Playing);
-            ResetGameState();
         }
-
+        ResetGame();
         PlaySceneMusic();
     }
 
@@ -94,15 +108,28 @@ public class GameManager : Singleton<GameManager>
     /// Resets all gameplay variables to their default values.
     /// Called on Level scene load to ensure a clean slate on each playthrough.
     /// </summary>
-    public void ResetGameState()
+    public void ResetGame()
     {
         foundToilet = false;
-        Time.timeScale = 1f;
+        if (State == GameState.Start)
+        {
+            Time.timeScale = 0f;
 
-        Jump.canJump = true;
-        Crouch.canCrouch = true;
+            Jump.canJump = false;
+            Crouch.canCrouch = false;
 
-        FirstPersonLook.canLook = true;
+            FirstPersonLook.canLook = false;
+        }
+        else
+        {
+            Time.timeScale = 1f;
+
+            Jump.canJump = true;
+            Crouch.canCrouch = true;
+
+            FirstPersonLook.canLook = true;
+        }
+        
         if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
     }
 
@@ -113,49 +140,71 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void SetState(GameState newState)
     {
-        if (State == newState) return;
+        if (State == null) State = newState;
+        else if (State == newState) return;
 
         State = newState;
-        Debug.Log("Game State changed to: " + newState.ToString());
+        Debug.Log("Game State changed to: " + newState);
 
-        if (newState == GameState.Playing)
+        switch (newState)
         {
-            Time.timeScale = 1f;
-            Cursor.lockState = CursorLockMode.Locked;
+            case GameState.Playing:
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.Locked;
 
-            Jump.canJump = true;
-            Crouch.canCrouch = true;
+                Jump.canJump = true;
+                Crouch.canCrouch = true;
+                FirstPersonLook.canLook = true;
 
-            FirstPersonLook.canLook = true;
-            if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
+                if (firstPersonAudio != null)
+                    firstPersonAudio.SetActive(true);
+                break;
+
+            case GameState.Paused:
+            case GameState.InSettings:
+                Time.timeScale = 0f;
+                Cursor.lockState = CursorLockMode.None;
+
+                Jump.canJump = false;
+                Crouch.canCrouch = false;
+                FirstPersonLook.canLook = false;
+
+                if (firstPersonAudio != null)
+                    firstPersonAudio.SetActive(false);
+                break;
+
+            case GameState.GameOver:
+                EnterEndingCommon();
+                endingController.PlayGameOver();
+                break;
+
+            case GameState.Victory:
+                EnterEndingCommon();
+                endingController.PlayVictory();
+                break;
         }
-        else if (newState == GameState.Paused || newState == GameState.InSettings)
-        {
-            Time.timeScale = 0f;
-            Cursor.lockState = CursorLockMode.None;
 
-            Jump.canJump = false;
-            Crouch.canCrouch = false;
+        // invoke the state change event AFTER all game state logic has been executed locally
+        OnGameStateChanged.Invoke(State);
+    }
 
-            FirstPersonLook.canLook = false;
-            if (firstPersonAudio != null) firstPersonAudio.SetActive(false);
-        }
-        else if (newState == GameState.Ending)
-        {
-            Time.timeScale = 0f;
-            Cursor.lockState = CursorLockMode.None;
+    // TEMPORARY Function for ending states compatibility
+    // TODO: refactor GameManager and separate timescale, cursor, and player controls
+    // TODO: small bug: cursor does not lock when pressing "esc" to leave pause menu, only when clicking on the button
+    private void EnterEndingCommon()
+    {
+        Time.timeScale = 0f;
+        Cursor.lockState = CursorLockMode.None;
 
-            Jump.canJump = false;
-            Crouch.canCrouch = false;
-            FirstPersonLook.canLook = false;
-
-            // Show ending screen
-            EndingManager.Instance?.Show();
-        }
+        Jump.canJump = false;
+        Crouch.canCrouch = false;
+        FirstPersonLook.canLook = false;
     }
 
     /// <summary>
     /// Plays the appropriate music track for the currently active scene.
+    /// 
+    /// TODO: remove audio
     /// </summary>
     private void PlaySceneMusic()
     {
@@ -163,11 +212,11 @@ public class GameManager : Singleton<GameManager>
 
         if (sceneName == MainMenu)
         {
-            audioManager.PlayMusic(mainMenuMusic);
+            AudioManager.Instance.PlayMusic(mainMenuMusic);
         }
         else if (sceneName == Level)
         {
-            audioManager.PlayMusic(gameplayMusic);
+            AudioManager.Instance.PlayMusic(gameplayMusic);
         }
     }
 
@@ -176,10 +225,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void RestartGame()
     {
-        if (!IsGameOver) return;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
-
         SetState(GameState.Playing);
+        
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     /// <summary>
@@ -189,6 +237,21 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene("MainMenu");
+    }
+
+    /// <summary>
+    /// Set the next GameState when "esc" (pause) is pressed
+    /// This helper is ONLY referenced by PauseManager
+    /// </summary>
+    public void TogglePauseState()
+    {
+        SetState(State switch
+        {
+            GameState.Playing => GameState.Paused,
+            GameState.Paused => GameState.Playing,
+            GameState.InSettings => GameState.Paused,
+            _ => State
+        });
     }
 
 }
