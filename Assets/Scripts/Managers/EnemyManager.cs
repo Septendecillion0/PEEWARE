@@ -16,7 +16,7 @@ using TMPro;
 public class EnemyManager : Singleton<EnemyManager>
 {
     /// <summary>
-    /// Singleton manager setup
+    /// Singleton manager setup, non persistent
     /// </summary>
     protected override void Awake()
     {
@@ -28,9 +28,6 @@ public class EnemyManager : Singleton<EnemyManager>
     public Camera playerCam;
     public GameObject peeMeter;
     public List<GameObject> existingEnemies = new List<GameObject>();
-
-    public ScreenFade blind; // TODO: replace with blind image 
-    public ScreenFade hurt; // TODO: replace with hurt image 
 
     [Header("Enemy Settings")]
     public List<GameObject> enemyPrefabs; // prefabs that each contain Enemy.cs with spawn rules
@@ -48,7 +45,6 @@ public class EnemyManager : Singleton<EnemyManager>
     /// </summary>
     void Start()
     {
-        blind.FadeIn(1.0f);
         StartCoroutine(FindPlayerAndStartSpawning());
     }
 
@@ -189,34 +185,20 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     /// <summary>
-    /// Triggers the blind visual effect: screen fades out quickly then recovers.
+    /// Calls UIManager to play the blinded visual animation
     /// Called when the player is blinded by an enemy.
     /// </summary>
     public void Blinded()
     {
-        StartCoroutine(BlindBuff());
-    }
-
-    IEnumerator BlindBuff()
-    {
-        blind.FadeOut(0.1f);
-        yield return new WaitForSeconds(3.0f);
-        blind.FadeIn(2.0f);
+        UIManager.Instance.PlayBlind();
     }
 
     /// <summary>
-    /// Triggers the hurt visual effect: brief screen flash then recovery.
+    /// Calls UIManager to play the hurt visual animation
     /// Called when the player takes damage.
     /// </summary>
     public void Hurt()
     {
-        StartCoroutine(HurtBuff());
-    }
-
-    IEnumerator HurtBuff()
-    {
-        hurt.FadeOut(0.2f);
-        yield return new WaitForSeconds(0.5f);
-        hurt.FadeIn(2.0f);
+        UIManager.Instance.PlayHurt();
     }
 }

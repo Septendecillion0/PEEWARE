@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
+using System.Collections.Generic;
 
 /// <summary>
 /// Manager for all on-screen UI elements.
@@ -22,9 +24,11 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameObject congratsText;
     [SerializeField] private GameObject gameOverButtons; // 
 
-    [Header("Overlays")]
+    [Header("Screen Overlays")]
     [SerializeField] private Image fadeOverlay;   // black image for screen fades
     [SerializeField] private Image brightnessOverlay; // black image for brightness
+    [SerializeField] private ScreenFade enemyBlind; // blind image (placeholder for blinding animation)
+    [SerializeField] private ScreenFade enemyHurt; // hurt image (placehodler for hurting animation)
 
     // note: for future may want to replace Image with CanvasGroup
 
@@ -64,6 +68,9 @@ public class UIManager : Singleton<UIManager>
 
     /// <summary>
     /// Hides (set unactive) all UI screens
+    /// 
+    /// TODO: put all canvas objects in a data structure so HideAllScreens can iterate through and hide everything
+    ///       instead of hardcoding each UI element here
     /// </summary>
     private void HideAllScreens()
     {
@@ -205,7 +212,7 @@ public class UIManager : Singleton<UIManager>
     }
 
     // =========================
-    // FADE (optional)
+    // OVERLAYS
     // =========================
 
     public void SetFade(float alpha)
@@ -213,5 +220,36 @@ public class UIManager : Singleton<UIManager>
         Color c = fadeOverlay.color;
         c.a = 1f - alpha;
         fadeOverlay.color = c;
+    }
+
+    // plays the blind animation
+    // TODO: replace with the animation instead of image fade
+    //   
+    public void PlayBlind()
+    {
+        StartCoroutine(BlindBuff());
+        
+        IEnumerator BlindBuff()
+        {
+            enemyBlind.FadeOut(0.1f);
+            yield return new WaitForSeconds(3.0f);
+            enemyBlind.FadeIn(2.0f);
+            // uses ScreenFade.cs to edit alpha of the image
+            // replace this when adding animation
+        }
+    }
+
+    // plays the hurt animation
+    // TODO: replace with the animation instead of image fade
+    public void PlayHurt()
+    {
+        StartCoroutine(HurtBuff());
+
+        IEnumerator HurtBuff()
+        {
+            enemyHurt.FadeOut(0.2f);
+            yield return new WaitForSeconds(0.5f);
+            enemyHurt.FadeIn(2.0f);
+        }
     }
 }
