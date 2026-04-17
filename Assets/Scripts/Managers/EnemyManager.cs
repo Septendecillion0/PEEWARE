@@ -11,7 +11,11 @@ using TMPro;
 /// <remarks>
 /// Spawn positions are validated against enemy-specific rules (defined in Enemy.cs)
 /// and environment checks (floor raycast, overlap sphere).
-/// Visual effects (blind/hurt) are delegated to ScreenFade components.
+/// TODO: update and rework spawn mechanics
+/// 
+/// Visual effects (blind/hurt) are called by enemy subclasses, then outsourced to UIManager
+/// 
+/// TODO: confirm audio implementation and reorganize to make sense
 /// </remarks>
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -29,7 +33,7 @@ public class EnemyManager : Singleton<EnemyManager>
     public GameObject peeMeter;
     public List<GameObject> existingEnemies = new List<GameObject>();
 
-    [Header("Enemy Settings")]
+    [Header("Enemy Class Settings")]
     public List<GameObject> enemyPrefabs; // prefabs that each contain Enemy.cs with spawn rules
     public float SpawnInterval = 10f;
     public float spawnRadius = 5f;
@@ -40,8 +44,7 @@ public class EnemyManager : Singleton<EnemyManager>
     private List<Bounds> roomBounds;
 
     /// <summary>
-    /// Triggers the initial screen fade-in and begins the startup coroutine
-    /// that waits for the player and camera before starting the spawn loop.
+    /// Begins the startup coroutine that waits for the player and camera before starting the spawn loop.
     /// </summary>
     void Start()
     {
@@ -86,14 +89,26 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     /// <summary>
-    /// Spawns an enemy at a regular interval until the game is over.
+    /// Spawns an enemy at a regular interval while the game is playing
     /// </summary>
+    /// <remarks>
+    /// The coroutine runs until the game ends (gameover). 
+    /// However, spawning WITHIN the coroutine is stopped when the game is not playing (paused, etc.)
+    /// The pause is tied to TimeScale, so the spawn interval should correctly track the elapsed time
+    /// and resume accordingly
+    /// 
+    /// (optional TODO) tie spawn routine to gameState events, manually track elapsed time
+    /// </remarks>
     IEnumerator SpawnEnemiesRoutine()
     {
         while (!GameManager.Instance.IsGameOver)
         {
             yield return new WaitForSeconds(SpawnInterval);
-            SpawnRandomEnemy();
+
+            if (GameManager.Instance.State == GameManager.GameState.Playing)
+            {
+                SpawnRandomEnemy();
+            }
         }
     }
 
@@ -131,6 +146,8 @@ public class EnemyManager : Singleton<EnemyManager>
     /// a random enemy prefab there. Validates against both enemy-specific rules
     /// and environment geometry. Gives up after maxSpawnAttempts tries.
     /// </summary>
+    /// 
+    /// TODO: COMPLETELY OVERHAUL SPAWN MECHANICS. this sucks also split this into separate responsibilities (finding spawn locations, actually spawning)
     void SpawnRandomEnemy()
     {
         if (GameManager.Instance.IsGameOver) return;

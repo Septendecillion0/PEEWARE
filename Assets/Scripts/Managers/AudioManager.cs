@@ -21,11 +21,12 @@ public class AudioManager : Singleton<AudioManager>
     public AudioMixer mixer;          // Your existing mixer with SFX/Music groups
     public AudioSource musicSource;   // For background music
     public AudioSource sfxSource;     // Optional: dedicated SFX source
-    private float pauseVolume = -10f;
+    private float pauseVolume = -10f; // how much music volume decreases when game is paused 
 
     // ---------- Music ----------
     public void PlayMusic(AudioClip clip, bool loop = true)
-    {
+    {   
+        StopMusic(); //only one BGM track should play at a time
         musicSource.clip = clip;
         musicSource.loop = loop;
         musicSource.Play();
@@ -36,7 +37,7 @@ public class AudioManager : Singleton<AudioManager>
     public void ChangeMusicVolume(float volume)
     {   
         float p = pauseVolume;
-        if (!GameManager.Instance.IsPaused)
+        if (GameManager.Instance.State != GameManager.GameState.Paused)
         {
             p = 0f;
         }
@@ -48,28 +49,33 @@ public class AudioManager : Singleton<AudioManager>
         musicSource.Stop();
     }
 
+    /// <summary>
+    /// Fades music out from the current volume to -40 dB over [duration] seconds
+    /// </summary>
+    /// <param name="duration"></param>
     public void FadeOutMusic(float duration)
     {
         StartCoroutine(FadeOutCoroutine(duration));
-    }
-
-    private System.Collections.IEnumerator FadeOutCoroutine(float duration)
-    {
-        float current;
-        mixer.GetFloat("BGMVolume", out current);
-        float start = current;
-        float end = -40f; // dB
-        float t = 0f;
-
-        while (t < duration)
+        System.Collections.IEnumerator FadeOutCoroutine(float duration)
         {
-            t += Time.unscaledDeltaTime;
-            ChangeMusicVolume(Mathf.Lerp(start, end, t / duration));
-            yield return null;
-        }
+            float current;
+            mixer.GetFloat("BGMVolume", out current);
+            float start = current;
+            float end = -40f; // dB
+            float t = 0f;
 
-        StopMusic();
+            while (t < duration)
+            {
+                t += Time.unscaledDeltaTime;
+                ChangeMusicVolume(Mathf.Lerp(start, end, t / duration));
+                yield return null;
+            }
+
+            StopMusic();
+        }
     }
+
+    
 
     // ---------- SFX ----------
     public void PlaySFX(AudioClip clip, float volume = 1f)

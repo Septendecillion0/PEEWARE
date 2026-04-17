@@ -1,7 +1,13 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Audio;
-
+/// <summary>
+/// Base class for all enemies
+/// Contains generic data and fields common to all enemies
+/// </summary>
+/// TODO: add class variable "scarePeeAmount": variable to determine how much the pee meter should increase if a scare is triggered
+/// ^ also must update individual enemies with this
+/// TODO: remove player and playerCam references, use EnemyManager (or some sort of player manager if implemented) to get references
 public class Enemy : MonoBehaviour
 {
     [Header("Audio")]
@@ -51,6 +57,8 @@ public class Enemy : MonoBehaviour
             thisAudio.Play();
             Debug.Log("begin passive sound");
         }
+
+        peeMeter = EnemyManager.Instance.peeMeter;
     }
 
     // Update is called once per frame
@@ -59,7 +67,7 @@ public class Enemy : MonoBehaviour
         //Always look at the player
         pl = EnemyManager.Instance.player;
         playerCam = EnemyManager.Instance.playerCam;
-        peeMeter = EnemyManager.Instance.peeMeter;
+        
         Vector3 direction = pl.transform.position - transform.position;
         direction.y = 0;
         transform.rotation = Quaternion.LookRotation(direction);

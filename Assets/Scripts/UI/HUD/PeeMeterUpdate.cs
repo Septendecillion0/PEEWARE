@@ -27,11 +27,12 @@ public class PeeMeterUpdate : MonoBehaviour
     }
 
     // TODO: fix GameManager calls with current implementation
+    // TODO: make AudioManager call clearer and separate responsibilities in update
     void Update()
     {
         peeMeter.value += deltaPee * Time.deltaTime;
         fillImage.color = Color.Lerp(startPee, endPee, peeMeter.value / 100);
-        float dB = Mathf.Lerp(-40f, 0f, peeMeter.value / maxPee);
+        float dB = Mathf.Lerp(-20f, 0f, peeMeter.value / maxPee); // starting volume of -20dB, increases to 0dB as pee meter fills
         AudioManager.Instance.ChangeMusicVolume(dB);
 
         if (!GameManager.Instance.IsGameOver && Mathf.Approximately(peeMeter.value, 100f))

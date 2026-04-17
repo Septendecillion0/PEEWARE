@@ -42,6 +42,8 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// The current game state. Read-only externally, call SetState() to change.
     /// </summary>
+    /// 
+    /// TODO: revisit and understand what this does. Don't set state to playing if we are in the main menu
     public GameState State { get; private set; } = GameState.Playing;
 
     /// <summary>
