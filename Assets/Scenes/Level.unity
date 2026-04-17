@@ -312,17 +312,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &388805639 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1470076509832798872, guid: e714e20afae789942975ebc213c365c7, type: 3}
-  m_PrefabInstance: {fileID: 915496145}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 909613ea41c777b4aa1c7e45f124f7cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
 --- !u!4 &552884836 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5264555877443789402, guid: 26b7569bcde3e0246ab8623967e10230, type: 3}
@@ -397,14 +386,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
-    - target: {fileID: 1547641426234039466, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
-      propertyPath: audioManager
-      value: 
-      objectReference: {fileID: 388805639}
-    - target: {fileID: 1547641426234039466, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
-      propertyPath: endingController
-      value: 
-      objectReference: {fileID: 8673870148557732747}
     - target: {fileID: 2526531275507760623, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.82721
@@ -1190,17 +1171,6 @@ MonoBehaviour:
   m_DefaultSpriteDPI: 96
   m_DynamicPixelsPerUnit: 1
   m_PresetInfoIsWorld: 0
---- !u!114 &8673870148557732747 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3948415261347461718, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
-  m_PrefabInstance: {fileID: 333430805333595067}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cabd8265f2bdc244d88532d987b21360, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::EndingSequenceController
 --- !u!224 &8889758614148912058
 RectTransform:
   m_ObjectHideFlags: 0

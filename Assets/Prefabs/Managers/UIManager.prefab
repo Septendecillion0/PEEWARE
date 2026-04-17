@@ -325,16 +325,16 @@ RectTransform:
   m_GameObject: {fileID: 613198935865029924}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.43749997}
-  m_ConstrainProportionsScale: 1
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3294271816549585596}
   m_Father: {fileID: 6080093886362399824}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -364, y: 103}
-  m_SizeDelta: {x: 1095, y: 363}
+  m_AnchoredPosition: {x: -376, y: 69}
+  m_SizeDelta: {x: 900, y: 250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2742445950204426559
 CanvasRenderer:
@@ -735,7 +735,7 @@ RectTransform:
   m_GameObject: {fileID: 1462849170747062554}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.43749997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 5219391274228903721}
@@ -743,8 +743,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -402, y: -608}
-  m_SizeDelta: {x: 1095, y: 363}
+  m_AnchoredPosition: {x: -379, y: -606}
+  m_SizeDelta: {x: 900, y: 250}
   m_Pivot: {x: 0.5, y: 0.1}
 --- !u!222 &6911708951588664037
 CanvasRenderer:
@@ -1003,7 +1003,7 @@ RectTransform:
   m_GameObject: {fileID: 1596116358514941534}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 8757818715949906633}
@@ -2177,7 +2177,7 @@ RectTransform:
   m_GameObject: {fileID: 3676495583103148869}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 5828822735001745845}
@@ -2823,7 +2823,7 @@ RectTransform:
   m_GameObject: {fileID: 5080898544858841977}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.7, y: 0.7, z: 0.43749997}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2116203833958998069}
@@ -2831,8 +2831,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -446, y: -237}
-  m_SizeDelta: {x: 1095, y: 363}
+  m_AnchoredPosition: {x: -386, y: -260}
+  m_SizeDelta: {x: 900, y: 250}
   m_Pivot: {x: 0.5, y: 0.3}
 --- !u!222 &8322132309122852259
 CanvasRenderer:
@@ -3300,7 +3300,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: d1965d340336f4e3f8ff93a72ca07be9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 85da15a5af64d4ffbb1cc6b05e6d0e50, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3325,6 +3325,13 @@ MonoBehaviour:
   resumeButton: {fileID: 1728008902319419505}
   settingsButton: {fileID: 3834034496619920823}
   quitButton: {fileID: 5481912769664068259}
+  animationImage: {fileID: 8360274756807984764}
+  animationFrames:
+  - {fileID: 21300000, guid: 2d91adaedf02e4fa5b929e2d71c1d096, type: 3}
+  - {fileID: 21300000, guid: cb42386f38be94329a4aee899feb7ed4, type: 3}
+  - {fileID: 21300000, guid: 4d5b613179d74414fafa892c6b02ed32, type: 3}
+  - {fileID: 21300000, guid: 85da15a5af64d4ffbb1cc6b05e6d0e50, type: 3}
+  frameRate: 10
 --- !u!1 &7008228217963762835
 GameObject:
   m_ObjectHideFlags: 0
@@ -3787,7 +3794,7 @@ RectTransform:
   m_GameObject: {fileID: 8126873727573169379}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1.2, y: 1.2, z: 1}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 9120155364446726547}
