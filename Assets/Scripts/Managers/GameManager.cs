@@ -131,7 +131,7 @@ public class GameManager : Singleton<GameManager>
 
             FirstPersonLook.canLook = true;
         }
-        
+
         if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
     }
 
@@ -228,7 +228,7 @@ public class GameManager : Singleton<GameManager>
     public void RestartGame()
     {
         SetState(GameState.Playing);
-        
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

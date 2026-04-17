@@ -386,6 +386,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Game Manager
       objectReference: {fileID: 0}
+    - target: {fileID: 1547641426234039466, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
+      propertyPath: endingController
+      value: 
+      objectReference: {fileID: 2091515930}
     - target: {fileID: 2526531275507760623, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 16.82721
@@ -751,6 +755,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1888e17a08960fd45a18bb56479f9f95, type: 3}
+--- !u!114 &2091515930 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3948415261347461718, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+  m_PrefabInstance: {fileID: 333430805333595067}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cabd8265f2bdc244d88532d987b21360, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EndingSequenceController
 --- !u!1001 &333430805333595067
 PrefabInstance:
   m_ObjectHideFlags: 0
