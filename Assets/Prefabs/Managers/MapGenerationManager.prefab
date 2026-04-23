@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5264555877443789402}
   - component: {fileID: 6981544016605285605}
+  - component: {fileID: 6920706656290262405}
   m_Layer: 0
   m_Name: MapGenerationManager
   m_TagString: Untagged
@@ -65,3 +66,15 @@ MonoBehaviour:
   - {fileID: 2269697967484626933, guid: e0ca19491c84c114aa178421050acddf, type: 3}
   - {fileID: 7915472172660918563, guid: 2d20573f68b3ac946bef447a269d0aa2, type: 3}
   - {fileID: 9052210014587834478, guid: 1f3f075d240668448b6cfdbc33970f4e, type: 3}
+--- !u!114 &6920706656290262405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7907845071546034378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b9e478c196f9be4fbb2eba1df5d656c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BottleSpawner

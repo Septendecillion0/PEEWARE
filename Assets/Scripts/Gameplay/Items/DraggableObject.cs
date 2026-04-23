@@ -2,7 +2,6 @@ using UnityEngine;
 
 public class DraggableObject : MonoBehaviour, IInteractable
 {
-    public KeyCode interactKey = KeyCode.E;
     // distance in front of the player where the object should be held
     public float forwardDistance = 1.5f;
     // vertical offset relative to player's position

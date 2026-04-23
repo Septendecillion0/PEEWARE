@@ -68,7 +68,7 @@ public class GhostScript : Enemy
         //If the Ghost collided with the player
         if (collision.gameObject.tag == "Player"){
             //Jump scare sound needed
-            peeMeter.GetComponent<PeeMeterUpdate>().Scare(20.0f);
+            PeeMeterManager.Instance.Scare(20.0f);
             EnemyDeath();
         }
     }

@@ -21,7 +21,6 @@ public class Enemy : MonoBehaviour
     [Header("Player Related")]
     private GameObject pl;
     public Camera playerCam;
-    public GameObject peeMeter;
 
     [Header("Spawn Constraints")]
 
@@ -57,8 +56,6 @@ public class Enemy : MonoBehaviour
             thisAudio.Play();
             Debug.Log("begin passive sound");
         }
-
-        peeMeter = EnemyManager.Instance.peeMeter;
     }
 
     // Update is called once per frame

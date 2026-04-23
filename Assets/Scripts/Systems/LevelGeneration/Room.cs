@@ -33,6 +33,10 @@ public class Room : MonoBehaviour
 
     public List<Room> preferredNeighbors = new List<Room>(); 
 
+    [Header("Bottle Spawning")]
+    [Range(0f, 1f)]
+    public float bottleSpawnChance = 0.5f; // 0-1, probability that each bottle in room spawns
+
     public List<Exit> GetAvailableExits(DoorType? type = null)
     {
         List<Exit> list = new List<Exit>();

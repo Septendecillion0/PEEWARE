@@ -20,7 +20,7 @@ public class ShadowDoodleScript : Enemy
         //If player is in its danger zone
         if (collision.gameObject.tag == "Player"){
             EnemyManager.Instance.Blinded();
-            peeMeter.GetComponent<PeeMeterUpdate>().Scare(10.0f);
+            PeeMeterManager.Instance.Scare(10.0f);
             EnemyDeath();
         }
     }

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &5492575452328743457
+--- !u!1 &3182108544513864582
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,11 +8,11 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 668350986709509648}
-  - component: {fileID: 6233345744610253411}
-  - component: {fileID: 6178570226323415622}
-  - component: {fileID: 4721352337459052251}
-  - component: {fileID: 4570570539848839532}
+  - component: {fileID: 1969542367969555599}
+  - component: {fileID: 740639657533150237}
+  - component: {fileID: 5577043923154984001}
+  - component: {fileID: 3655513299282564356}
+  - component: {fileID: 7636595303711676437}
   m_Layer: 0
   m_Name: Toilet
   m_TagString: Untagged
@@ -20,36 +20,36 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &668350986709509648
+--- !u!4 &1969542367969555599
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5492575452328743457}
+  m_GameObject: {fileID: 3182108544513864582}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &6233345744610253411
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+--- !u!33 &740639657533150237
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5492575452328743457}
-  m_Mesh: {fileID: -8928055837537713139, guid: 0d1993066529a714b913d80998a19980, type: 3}
---- !u!23 &6178570226323415622
+  m_GameObject: {fileID: 3182108544513864582}
+  m_Mesh: {fileID: -8928055837537713139, guid: c308b80ff59f70941820669172dac0d1, type: 3}
+--- !u!23 &5577043923154984001
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5492575452328743457}
+  m_GameObject: {fileID: 3182108544513864582}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -68,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 7060938831881569340, guid: 0d1993066529a714b913d80998a19980, type: 3}
+  - {fileID: 7060938831881569340, guid: c308b80ff59f70941820669172dac0d1, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -91,13 +91,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &4721352337459052251
+--- !u!64 &3655513299282564356
 MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5492575452328743457}
+  m_GameObject: {fileID: 3182108544513864582}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -112,18 +112,17 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -8928055837537713139, guid: 0d1993066529a714b913d80998a19980, type: 3}
---- !u!114 &4570570539848839532
+  m_Mesh: {fileID: -8928055837537713139, guid: c308b80ff59f70941820669172dac0d1, type: 3}
+--- !u!114 &7636595303711676437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5492575452328743457}
+  m_GameObject: {fileID: 3182108544513864582}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 30bc8e711a61b4e3b8757e9624a10c0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Toilet
-  interactKey: 101
   peeMeterUpdate: {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}

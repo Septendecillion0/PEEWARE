@@ -159,7 +159,7 @@ public class MouthSquareScript : Enemy
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision){
         if (collision.gameObject.CompareTag("Player") && aggroLevel >= aggroThreshold){
-            peeMeter.GetComponent<PeeMeterUpdate>().Scare(5.0f);
+            PeeMeterManager.Instance.Scare(5.0f);
             EnemyManager.Instance.Hurt();
             EnemyDeath();
         }

@@ -198,11 +198,46 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8115876175342464274, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4436666588249333562, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8095725508752851975}
   m_SourcePrefab: {fileID: 100100000, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
+--- !u!1 &2920323335950813468 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4436666588249333562, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
+  m_PrefabInstance: {fileID: 1519162611253630502}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &8095725508752851975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2920323335950813468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b7d29b5ff6f1f443aa45bc736dbce99, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PeeMeterUI
+  peeMeter: {fileID: 5929354590129479925}
+  deathSound: {fileID: 8300000, guid: d45746ccfde069d4d97a6ee1ba769cca, type: 3}
+  deltaPee: 0.4
+--- !u!114 &5929354590129479925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5142102304260634323, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
+  m_PrefabInstance: {fileID: 1519162611253630502}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2920323335950813468}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67db9e8f0e2ae9c40bc1e2b64352a6b4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Slider
 --- !u!224 &6378535774666078574 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5589031069963022152, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}

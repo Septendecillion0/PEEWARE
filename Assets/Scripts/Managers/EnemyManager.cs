@@ -30,7 +30,6 @@ public class EnemyManager : Singleton<EnemyManager>
     [Header("Player Settings")]
     public GameObject player;
     public Camera playerCam;
-    public GameObject peeMeter;
     public List<GameObject> existingEnemies = new List<GameObject>();
 
     [Header("Enemy Class Settings")]

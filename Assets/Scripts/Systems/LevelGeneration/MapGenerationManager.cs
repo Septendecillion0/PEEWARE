@@ -41,6 +41,7 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             bool success = GenerationInit();
             if (success) {
                 Debug.Log($"Map generation succeeded after {attempts} attempt(s).");
+                BottleSpawner.Instance.SpawnBottles(placedRooms);
                 return;
             }
             else {

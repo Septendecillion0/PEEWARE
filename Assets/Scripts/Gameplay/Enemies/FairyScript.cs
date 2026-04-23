@@ -42,14 +42,14 @@ public class FairyScript : Enemy
         //If collided with the tree, they both vanish ... and suck your pee away
         if (collision.gameObject.tag == "Tree"){
             AudioSource.PlayClipAtPoint(fairyLeave, transform.position, 1f);
-            peeMeter.GetComponent<PeeMeterUpdate>().Scare(-20.0f);
+            PeeMeterManager.Instance.Scare(-20.0f);
             EnemyManager.Instance.EnemyVanish(this.gameObject);
             EnemyManager.Instance.EnemyVanish(collision.gameObject);
             Debug.Log("fairy reached tree");
         }
         //If not collided with the tree, scare and increase pee
         else{
-            peeMeter.GetComponent<PeeMeterUpdate>().Scare(20.0f);
+            PeeMeterManager.Instance.Scare(20.0f);
             EnemyDeath();
             EnemyManager.Instance.EnemyVanish(ownTree);
             Debug.Log("fairy died");

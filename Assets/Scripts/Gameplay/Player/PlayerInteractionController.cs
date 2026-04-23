@@ -1,5 +1,10 @@
 using UnityEngine;
-
+/// <summary>
+/// Handles player interaction with interactable objects
+/// Interact key = E
+/// Interactable objects are of type IInteractable
+/// related scripts: IInteractable.cs, InteractionUI.cs
+/// </summary>
 public class PlayerInteractionController : MonoBehaviour
 {
     [SerializeField] private float interactRange = 1.5f;
