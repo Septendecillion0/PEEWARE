@@ -58,8 +58,6 @@ public class GameManager : Singleton<GameManager>
     public AudioClip mainMenuMusic; // TODO remove
     public AudioClip gameplayMusic; //TODO remove
 
-    [SerializeField] private EndingSequenceController endingController;
-
     public event System.Action<GameState> OnGameStateChanged;
 
 
@@ -142,8 +140,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public void SetState(GameState newState)
     {
-        if (State == null) State = newState;
-        else if (State == newState) return;
+        if (State == newState) return;
 
         State = newState;
         Debug.Log("Game State changed to: " + newState);
@@ -177,17 +174,15 @@ public class GameManager : Singleton<GameManager>
 
             case GameState.GameOver:
                 EnterEndingCommon();
-                endingController.PlayGameOver();
                 break;
 
             case GameState.Victory:
                 EnterEndingCommon();
-                endingController.PlayVictory();
                 break;
         }
 
         // invoke the state change event AFTER all game state logic has been executed locally
-        OnGameStateChanged.Invoke(State);
+        OnGameStateChanged?.Invoke(State);
     }
 
     // TEMPORARY Function for ending states compatibility
@@ -206,7 +201,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// Plays the appropriate music track for the currently active scene.
     /// 
-    /// TODO: remove audio
+    /// TODO: remove audio sources and make calls to AudioManager instead.
     /// </summary>
     private void PlaySceneMusic()
     {
@@ -238,7 +233,8 @@ public class GameManager : Singleton<GameManager>
     public void QuitToMainMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene("MainMenu");
+        // Transition to the main menu state explicitly before scene load.
+        SceneManager.LoadScene(MainMenu);
     }
 
     /// <summary>

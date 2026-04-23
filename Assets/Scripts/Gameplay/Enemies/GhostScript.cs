@@ -2,9 +2,8 @@ using UnityEngine;
 
 public class GhostScript : Enemy
 {
-    private Transform player;
-    private Transform playerCamera;
     private bool playerLooking = false;
+
     [Header("Distances")]
     public float minBehindDistance = 4f;
     public float maxBehindDistance = 7f;
@@ -16,17 +15,17 @@ public class GhostScript : Enemy
     public float horizontalOffset = 2f;
     public int tpTime = 3;
 
-    void Update()
+    protected override void Update()
     {
         base.Update();
-        player = EnemyManager.Instance.player.transform;
-        playerCamera = playerCam.transform;
-        Vector3 toCreature = (transform.position - playerCamera.position).normalized;
-        float dot = Vector3.Dot(playerCamera.forward, toCreature);
+        
+        Transform playerCam = EnemyManager.Instance.playerCam.transform;
+        Vector3 toCreature = (transform.position - playerCam.position).normalized;
+        float dot = Vector3.Dot(playerCam.forward, toCreature);
 
         if (dot > lookThreshold)
         {
-            if (Physics.Raycast(playerCamera.position, toCreature, out RaycastHit hit, 100f))
+            if (Physics.Raycast(playerCam.position, toCreature, out RaycastHit hit, 100f))
             {
                 if (hit.transform == transform)
                     playerLooking = true;
@@ -38,28 +37,28 @@ public class GhostScript : Enemy
         {
             transform.position = Vector3.MoveTowards(
                 transform.position, 
-                playerCamera.position, 
+                playerCam.position, 
                 jumpSpeed * Time.deltaTime);
         }
 
         // ✦ Teleport if too far
-        float dist = Vector3.Distance(player.position, transform.position);
+        float dist = Vector3.Distance(EnemyManager.Instance.player.transform.position, transform.position);
         if (dist > maxAllowedDistance && tpTime > 0)
         {
-            //Teleport sound needed
             TeleportBehindPlayer();
         }
     }
 
     void TeleportBehindPlayer()
     {
+        Transform playerTransform = EnemyManager.Instance.player.transform;
         float behindDist = Random.Range(minBehindDistance, maxBehindDistance);
-        Vector3 pos = player.position - player.forward * behindDist;
-        pos += player.right * Random.Range(-horizontalOffset, horizontalOffset);
+        Vector3 pos = playerTransform.position - playerTransform.forward * behindDist;
+        pos += playerTransform.right * Random.Range(-horizontalOffset, horizontalOffset);
         transform.position = pos;
         tpTime -= 1;
-        if (tpTime <= 0){
-            //Add Vanish sound
+        if (tpTime <= 0)
+        {
             EnemyManager.Instance.EnemyVanish(this.gameObject);
         }
     }

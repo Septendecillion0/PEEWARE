@@ -1,13 +1,11 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.Audio;
+
 /// <summary>
-/// Base class for all enemies
-/// Contains generic data and fields common to all enemies
+/// Base class for all enemies.
+/// Handles audio setup, basic player rotation, despawning, and spawn position validation.
 /// </summary>
-/// TODO: add class variable "scarePeeAmount": variable to determine how much the pee meter should increase if a scare is triggered
-/// ^ also must update individual enemies with this
-/// TODO: remove player and playerCam references, use EnemyManager (or some sort of player manager if implemented) to get references
 public class Enemy : MonoBehaviour
 {
     [Header("Audio")]
@@ -15,12 +13,6 @@ public class Enemy : MonoBehaviour
     public AudioClip passiveSound;
     public AudioClip spawnSound;
     public AudioClip deathSound;
-
-    [Header("Extra Audio")]
-
-    [Header("Player Related")]
-    private GameObject pl;
-    public Camera playerCam;
 
     [Header("Spawn Constraints")]
 
@@ -43,10 +35,8 @@ public class Enemy : MonoBehaviour
     [Tooltip("Maximum allowed direction dot-product relative to player forward.")]
     [Range(-1, 1)]
     public float maxDirectionDot = 1f;
-    // awake called before start and base awake will not be overridden
     void Awake()
     {
-        Debug.Log("begin enemy");
         thisAudio = GetComponent<AudioSource>();
         if (spawnSound != null) thisAudio.PlayOneShot(spawnSound);
         if (passiveSound != null)
@@ -54,20 +44,19 @@ public class Enemy : MonoBehaviour
             thisAudio.clip = passiveSound;
             thisAudio.loop = true;
             thisAudio.Play();
-            Debug.Log("begin passive sound");
         }
     }
 
-    // Update is called once per frame
-    public void Update()
+    // Base Update that always orients toward player
+    protected virtual void Update()
     {
-        //Always look at the player
-        pl = EnemyManager.Instance.player;
-        playerCam = EnemyManager.Instance.playerCam;
-        
-        Vector3 direction = pl.transform.position - transform.position;
-        direction.y = 0;
-        transform.rotation = Quaternion.LookRotation(direction);
+        // Always look at the player
+        if (EnemyManager.Instance != null && EnemyManager.Instance.player != null)
+        {
+            Vector3 direction = EnemyManager.Instance.player.transform.position - transform.position;
+            direction.y = 0;
+            transform.rotation = Quaternion.LookRotation(direction);
+        }
     }
 
     public void EnemyDeath(){
@@ -75,11 +64,13 @@ public class Enemy : MonoBehaviour
         EnemyManager.Instance.EnemyVanish(this.gameObject);
     }
 
-    public void NaturallyDespawn(float age){
+    public void NaturallyDespawn(float age)
+    {
         StartCoroutine(Nd(age));
     }
 
-    public IEnumerator Nd(float age){
+    private IEnumerator Nd(float age)
+    {
         yield return new WaitForSeconds(age);
         EnemyManager.Instance.EnemyVanish(this.gameObject);
     }

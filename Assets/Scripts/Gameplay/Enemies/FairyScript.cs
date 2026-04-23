@@ -10,7 +10,7 @@ public class FairyScript : Enemy
 {
     [Header("Extra Audio")]
     public AudioClip fairyLeave;
-    private Transform player;
+
     [Header("Relation to camera")]
     public float disCam = 2f;
     public Vector2 screenOffset = new Vector2(0.5f, 0.5f);
@@ -19,22 +19,21 @@ public class FairyScript : Enemy
     [Header("Tree")]
     public GameObject treePrefab;
     private GameObject ownTree;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
-        player = EnemyManager.Instance.player.transform;
-        Vector3 spawnPos = player.position - player.forward * Random.Range(5.0f, 7.0f);
+        Vector3 spawnPos = EnemyManager.Instance.player.transform.position - EnemyManager.Instance.player.transform.forward * Random.Range(5.0f, 7.0f);
         ownTree = Instantiate(treePrefab, spawnPos, Quaternion.identity);
     }
 
     // Update is called once per frame
-    void Update()
+    protected override void Update()
     {
-        //Look at player
+        // Always look at the player
         base.Update();
         
         //Slowly move toward middle of the screen
-        Vector3 targetPos = playerCam.ViewportToWorldPoint(new Vector3(screenOffset.x, screenOffset.y, disCam));
+        Vector3 targetPos = EnemyManager.Instance.playerCam.ViewportToWorldPoint(new Vector3(screenOffset.x, screenOffset.y, disCam));
         transform.position = Vector3.Lerp(transform.position, targetPos, smoothSpeed * Time.deltaTime);
     }
 

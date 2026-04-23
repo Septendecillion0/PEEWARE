@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &1437212104422919035
+--- !u!1 &1300014665317008669
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,43 +8,40 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 2526531275507760623}
-  - component: {fileID: 1547641426234039466}
+  - component: {fileID: 7622325059909869576}
+  - component: {fileID: 1158515512667331722}
   m_Layer: 0
-  m_Name: Game Manager
+  m_Name: PeeMeterManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &2526531275507760623
+--- !u!4 &7622325059909869576
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437212104422919035}
+  m_GameObject: {fileID: 1300014665317008669}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.40734, y: 0, z: 5.5727}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1547641426234039466
+--- !u!114 &1158515512667331722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1437212104422919035}
+  m_GameObject: {fileID: 1300014665317008669}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 989c316f4a5c74d77a749153dc1d52ec, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ad59488e277ca140bdafae33c242c59, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
-  firstPersonAudio: {fileID: 1773623360729482, guid: 11aaea5348574644a9eb4f4504fcce3f, type: 3}
-  foundToilet: 0
-  mainMenuMusic: {fileID: 8300000, guid: 4cbece78d2f41764aa949d39dcb9767b, type: 3}
-  gameplayMusic: {fileID: 8300000, guid: 35c956429d651574fa364fa6ac34cf14, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::PeeMeterManager
+  deltaPee: 0.4

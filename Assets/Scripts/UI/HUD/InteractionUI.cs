@@ -21,16 +21,22 @@ public class InteractionUI : MonoBehaviour
         {
             _instance = this;
         }
+
+        Hide();
     }
 
     public void Show(string message)
     {
         promptText.text = message;
         canvasGroup.alpha = 1;
+        canvasGroup.interactable = true;
+        canvasGroup.blocksRaycasts = true;
     }
 
     public void Hide()
     {
         canvasGroup.alpha = 0;
+        canvasGroup.interactable = false;
+        canvasGroup.blocksRaycasts = false;
     }
 }

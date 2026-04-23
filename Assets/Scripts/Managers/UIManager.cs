@@ -14,15 +14,11 @@ using System.Collections.Generic;
 /// specifically: Pee meter, enemy flash screens
 public class UIManager : Singleton<UIManager>
 {
-    [Header("Pause and Settings Screens")]
-    [SerializeField] private GameObject pauseMenu;
-    [SerializeField] private GameObject settingsMenu;
-    [Header("Ending Screen + Objects")]
-    [SerializeField] private GameObject endingScreen;
-    [SerializeField] private Image youPeed;
-    [SerializeField] private GameObject credits;
-    [SerializeField] private GameObject congratsText;
-    [SerializeField] private GameObject gameOverButtons; // 
+    [Header("Screens")]
+    [SerializeField] private PauseMenuUI pauseMenuUI;
+    [SerializeField] private SettingsMenuUI settingsMenuUI;
+    [SerializeField] private VictoryUI victoryUI;
+    [SerializeField] private GameOverUI gameOverUI;
 
     [Header("Screen Overlays")]
     [SerializeField] private Image fadeOverlay;   // black image for screen fades
@@ -42,15 +38,18 @@ public class UIManager : Singleton<UIManager>
         base.Awake();
         DontDestroyOnLoad(gameObject);
 
-        GameManager.Instance.OnGameStateChanged += HandleGameStateChange;
-
+        ValidateReferences();
         InitializeUI();
+
+        GameManager.Instance.OnGameStateChanged += HandleGameStateChange;
     }
-    // event safety function
-    private void OnDestroy()
+
+    private void ValidateReferences()
     {
-        if (GameManager.Instance != null)
-            GameManager.Instance.OnGameStateChanged -= HandleGameStateChange;
+        if (pauseMenuUI == null) throw new System.InvalidOperationException("[UIManager] pauseMenuUI is not assigned");
+        if (settingsMenuUI == null) throw new System.InvalidOperationException("[UIManager] settingsMenuUI is not assigned");
+        if (victoryUI == null) throw new System.InvalidOperationException("[UIManager] victoryUI is not assigned");
+        if (gameOverUI == null) throw new System.InvalidOperationException("[UIManager] gameOverUI is not assigned");
     }
 
     /// <summary>
@@ -67,18 +66,15 @@ public class UIManager : Singleton<UIManager>
     }
 
     /// <summary>
-    /// Hides (set unactive) all UI screens
-    /// 
-    /// TODO: put all canvas objects in a data structure so HideAllScreens can iterate through and hide everything
-    ///       instead of hardcoding each UI element here
+    /// Hides all UI screens
+    /// Does not affect overlays or HUD elements
     /// </summary>
     private void HideAllScreens()
     {
-        pauseMenu.SetActive(false);
-        settingsMenu.SetActive(false);
-        endingScreen.SetActive(false);
-        //gameOverScreen.SetActive(false);
-        //victoryScreen.SetActive(false);
+        pauseMenuUI.Hide();
+        settingsMenuUI.Hide();
+        victoryUI.Hide();
+        gameOverUI.Hide();
     }
 
     // =========================================================
@@ -133,63 +129,26 @@ public class UIManager : Singleton<UIManager>
 
     private void StatePaused()
     {
-        pauseMenu.SetActive(true);
-        settingsMenu.SetActive(false);
+        HideAllScreens();
+        pauseMenuUI.Show();
     }
 
     private void StateSettings()
     {
-        settingsMenu.SetActive(true);
+        HideAllScreens();
+        settingsMenuUI.Show();
     }
 
     private void StateGameOver()
     {
-        return; // handled by EndingSequenceController
-        // gameOverScreen.SetActive(true);
-        // pauseMenu.SetActive(false);
-        // settingsMenu.SetActive(false);
+        HideAllScreens();
+        gameOverUI.Show();
     }
 
     private void StateVictory()
     {
-        return; // handled by EndingSequenceController
-        // victoryScreen.SetActive(true);
-        // pauseMenu.SetActive(false);
-        // settingsMenu.SetActive(false);
-    }
-    
-    // =========================================================
-    // ENDING UI
-    // =========================================================
-    public void ShowEndingScreen()
-    {
-        endingScreen.SetActive(true);
-
-        credits.SetActive(false);
-        congratsText.SetActive(false);
-        gameOverButtons.SetActive(false);
-    }
-
-    public void SetYouPeedAlpha(float a)
-    {
-        Color c = youPeed.color;
-        c.a = a;
-        youPeed.color = c;
-    }
-
-    public void ShowCredits()
-    {
-        credits.SetActive(true);
-    }
-
-    public void ShowCongratsText()
-    {
-        congratsText.SetActive(true);
-    }
-
-    public void ShowGameOverButtons()
-    {
-        gameOverButtons.SetActive(true);
+        HideAllScreens();
+        victoryUI.Show();
     }
 
     // =========================
@@ -251,5 +210,13 @@ public class UIManager : Singleton<UIManager>
             yield return new WaitForSeconds(0.5f);
             enemyHurt.FadeIn(2.0f);
         }
+    }
+
+        
+    // event safety function
+    private void OnDestroy()
+    {
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnGameStateChanged -= HandleGameStateChange;
     }
 }

@@ -22,7 +22,7 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
 
     private bool endRoomPlaced = false;
     private GameObject generationRoot;
-    private const int maxGenerationRetries = 20;
+    private const int maxGenerationRetries = 100;
 
     private Dictionary<Room, int> spawnCounts = new Dictionary<Room, int>();
 

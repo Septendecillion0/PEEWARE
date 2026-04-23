@@ -1,8 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
-using System.Collections;
 
-public class SettingsMenuUI : MonoBehaviour
+public class SettingsMenuUI : UIHandler
 {
     [SerializeField] private Slider volumeSlider;
     [SerializeField] private Slider musicSlider;
@@ -10,6 +9,33 @@ public class SettingsMenuUI : MonoBehaviour
     [SerializeField] private Slider brightnessSlider;
     [SerializeField] private Button backButton;
 
+    protected override void ValidateReferences()
+    {
+        if (volumeSlider == null)
+            throw new System.InvalidOperationException("[SettingsMenuUI] volumeSlider reference is not assigned in inspector");
+        if (musicSlider == null)
+            throw new System.InvalidOperationException("[SettingsMenuUI] musicSlider reference is not assigned in inspector");
+        if (sfxSlider == null)
+            throw new System.InvalidOperationException("[SettingsMenuUI] sfxSlider reference is not assigned in inspector");
+        if (brightnessSlider == null)
+            throw new System.InvalidOperationException("[SettingsMenuUI] brightnessSlider reference is not assigned in inspector");
+        if (backButton == null)
+            throw new System.InvalidOperationException("[SettingsMenuUI] backButton reference is not assigned in inspector");
+    }
+
+    protected override void ConfigureButtons()
+    {
+        // Back button listener, returns to pause menu
+        backButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.Paused));
+    }
+
+    protected override void SetButtonsVisible(bool visible)
+    {
+        // Settings UI doesn't toggle button visibility; sliders and back button are always visible when menu is shown
+    }
+
+    // TODO: we can probably refactor this with the UIHandler base class or separate into ConfigureSliders()
+    // ^low priority
     private void Start()
     {
         // Initialize master volume slider
@@ -39,8 +65,5 @@ public class SettingsMenuUI : MonoBehaviour
         brightnessSlider.value = b;
         SettingsManager.Instance.SetBrightness(b);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
-
-        // Back button listener, returns to pause menu
-        backButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.Paused));
     }
 }

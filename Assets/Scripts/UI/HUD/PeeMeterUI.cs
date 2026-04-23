@@ -6,7 +6,6 @@ public class PeeMeterUI : MonoBehaviour
 {
     public Slider peeMeter;
     public AudioClip deathSound;
-    [SerializeField] private float deltaPee = 0f; // Rate of pee increase per second
 
     private Image fillImage;
 
@@ -17,7 +16,6 @@ public class PeeMeterUI : MonoBehaviour
     private void Start()
     {
         fillImage = peeMeter.fillRect.GetComponent<Image>();
-        PeeMeterManager.Instance.deltaPee = deltaPee;
         PeeMeterManager.Instance.OnPeeValueChanged += UpdateUI;
         UpdateUI(PeeMeterManager.Instance.currentPee);
     }

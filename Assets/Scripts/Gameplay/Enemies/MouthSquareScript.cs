@@ -23,11 +23,6 @@ using UnityEngine;
 /// </remarks>
 public class MouthSquareScript : Enemy
 {
-    private Transform player;
-    private Transform playerCamera;
-
-    // TODO: fix reference gathering by using EnemyManager; rename to be more accurate since these are transforms and not other GameObjects
-
     [Header("MouthSquare Attributes")]
     [SerializeField] private float lookThreshold = 0.95f; // dot product threshold
     [SerializeField] private float attackMoveSpeed = 15f;
@@ -40,25 +35,13 @@ public class MouthSquareScript : Enemy
     [SerializeField] private float naturalDespawnTime = 30.0f;
     [SerializeField] private Vector3 initialPosition;
     
-    /// <summary>
-    /// Set starting values: initial position and despawn time
-    /// </summary>
     void Start()
     {   
         initialPosition = transform.position;
         base.NaturallyDespawn(naturalDespawnTime);
-
-        // note: these are POINTERS and update based on the actual value
-        player = EnemyManager.Instance.player.transform;
-        playerCamera = EnemyManager.Instance.playerCam.transform;
-
-        Debug.Assert(playerCamera != null, "Player camera not assigned");
     }
 
-    /// <summary>
-    /// Every frame, check if it is being viewed, then update aggro and move
-    /// </summary>
-    void Update()
+    protected override void Update()
     {
         base.Update();
 
@@ -67,15 +50,11 @@ public class MouthSquareScript : Enemy
         UpdatePosition();
     }
 
-    /// <summary>
-    /// Use raycast to check if player is looking at MouthSquare based on lookThreshold
-    /// Updates lookIntensity; 0 = not looking, 1 = looking directly at MouthSquare
-    /// </summary>
     private void DetectPlayerSight()
     {
-        Vector3 direction = (transform.position - playerCamera.position).normalized;
-
-        float dot = Vector3.Dot(playerCamera.forward, direction);
+        Transform playerCam = EnemyManager.Instance.playerCam.transform;
+        Vector3 direction = (transform.position - playerCam.position).normalized;
+        float dot = Vector3.Dot(playerCam.forward, direction);
 
         // base intensity from how centered on the screen MouthSquare is
         float intensity = Mathf.InverseLerp(lookThreshold, 1f, dot);
@@ -88,7 +67,7 @@ public class MouthSquareScript : Enemy
         }
 
         // line-of-sight check
-        if (Physics.Raycast(playerCamera.position, direction, out RaycastHit hit, 100f))
+        if (Physics.Raycast(playerCam.position, direction, out RaycastHit hit, 100f))
         {
             if (hit.transform == transform)
             {
@@ -122,18 +101,16 @@ public class MouthSquareScript : Enemy
         aggroLevel = Mathf.Clamp(aggroLevel, 0f, 1f);
     }
 
-    /// <summary>
-    /// Moves MouthSquare based on value of aggroLevel
-    /// aggro status is determined based on aggroLevel and aggroThreshold
-    /// </summary>
     private void UpdatePosition()
     {   
+        Transform playerCam = EnemyManager.Instance.playerCam.transform;
+        
         // aggro + player looking -> move to player
         if (aggroLevel >= aggroThreshold && lookIntensity > 0f)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position, 
-                playerCamera.position, 
+                playerCam.position, 
                 attackMoveSpeed * Time.deltaTime);
         }
         // aggro + player not looking -> no movement (hover in place)
