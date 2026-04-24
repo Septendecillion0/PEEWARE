@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
-
+// TODO: controls a screen fade, should be delegated elsewhere
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button startButton;

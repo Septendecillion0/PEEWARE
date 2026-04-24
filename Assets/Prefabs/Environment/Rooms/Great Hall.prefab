@@ -1395,6 +1395,7 @@ MonoBehaviour:
   - {fileID: 2269697967484626933, guid: e0ca19491c84c114aa178421050acddf, type: 3}
   - {fileID: 9052210014587834478, guid: 1f3f075d240668448b6cfdbc33970f4e, type: 3}
   - {fileID: 7915472172660918563, guid: 2d20573f68b3ac946bef447a269d0aa2, type: 3}
+  bottleSpawnChance: 0.5
 --- !u!1 &8595454902121399705
 GameObject:
   m_ObjectHideFlags: 0
@@ -1626,6 +1627,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 36863083089882727}
     m_Modifications:
+    - target: {fileID: 154939480046249088, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2944794618170734410, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3484934201067765296, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_Name
       value: PeeBottle

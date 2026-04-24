@@ -21,7 +21,7 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private GameOverUI gameOverUI;
 
     [Header("Screen Overlays")]
-    [SerializeField] private Image fadeOverlay;   // black image for screen fades
+    [SerializeField] private ScreenFade fadeOverlay;   // black image for screen fades
     [SerializeField] private Image brightnessOverlay; // black image for brightness
     [SerializeField] private ScreenFade enemyBlind; // blind image (placeholder for blinding animation)
     [SerializeField] private ScreenFade enemyHurt; // hurt image (placehodler for hurting animation)
@@ -174,12 +174,18 @@ public class UIManager : Singleton<UIManager>
     // OVERLAYS
     // =========================
 
-    public void SetFade(float alpha)
+    public void PlayFadeIn(float duration)
     {
-        Color c = fadeOverlay.color;
-        c.a = 1f - alpha;
-        fadeOverlay.color = c;
+        Debug.Log("playing fade in");
+        fadeOverlay.FadeIn(duration);
     }
+
+    // public void SetFade(float alpha)
+    // {
+    //     Color c = fadeOverlay.color;
+    //     c.a = 1f - alpha;
+    //     fadeOverlay.color = c;
+    // }
 
     // plays the blind animation
     // TODO: replace with the animation instead of image fade

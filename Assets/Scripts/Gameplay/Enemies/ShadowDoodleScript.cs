@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ShadowDoodleScript : Enemy
 {
+    public override bool IsGrounded => true;
     [Header("Behavior Settings")]
     [SerializeField] private float scareAmountOnTrigger = 10f;
 

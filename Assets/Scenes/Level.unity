@@ -595,7 +595,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1661018356}
   - component: {fileID: 1661018355}
-  - component: {fileID: 1661018357}
   m_Layer: 0
   m_Name: Directional Light
   m_TagString: Untagged
@@ -683,18 +682,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!114 &1661018357
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1661018354}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
 --- !u!4 &2046004083 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7622325059909869576, guid: 6d7cf2e58053b4a4d922a97e627b7e6e, type: 3}
@@ -929,6 +916,18 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7730403055549870064, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_UiScaleMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7730403055549870064, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_ReferenceResolution.x
+      value: 1920
+      objectReference: {fileID: 0}
+    - target: {fileID: 7730403055549870064, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_ReferenceResolution.y
+      value: 1080
+      objectReference: {fileID: 0}
     - target: {fileID: 9028368778829350320, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1039,6 +1038,34 @@ PrefabInstance:
       propertyPath: peeMeter
       value: 
       objectReference: {fileID: 1447322215}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: maxSpawnAttempts
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: enemyPrefabs.Array.size
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: 'enemyPrefabs.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4784436105486175168, guid: a37422f7056348e4082a3dbd56b8751c, type: 3}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: 'enemyPrefabs.Array.data[1]'
+      value: 
+      objectReference: {fileID: 2094668390991299439, guid: abdccf77dfdffa2418aced9715901ae2, type: 3}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: 'enemyPrefabs.Array.data[2]'
+      value: 
+      objectReference: {fileID: 3381633526987363447, guid: 52d9b3d2322743449bdd5c74abacdbce, type: 3}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: 'enemyPrefabs.Array.data[3]'
+      value: 
+      objectReference: {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
+    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+      propertyPath: 'enemyPrefabs.Array.data[4]'
+      value: 
+      objectReference: {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
     - target: {fileID: 6921079755364561768, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: m_Name
       value: EnemyManager

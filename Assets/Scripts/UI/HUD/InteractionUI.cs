@@ -36,7 +36,9 @@ public class InteractionUI : MonoBehaviour
     }
 
     public void Hide()
-    {
+    {   
+        // safety check is triggered in some scene changes
+        if (canvasGroup == null) return; // safety check
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;

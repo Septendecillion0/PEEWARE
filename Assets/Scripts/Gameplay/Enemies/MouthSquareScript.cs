@@ -23,7 +23,8 @@ using UnityEngine;
 /// </remarks>
 public class MouthSquareScript : Enemy
 {
-    [Header("MouthSquare Attributes")]
+    public override bool IsGrounded => false;
+    [Header("MouthSquare Aggro Behavior")]
     [SerializeField] private float lookThreshold = 0.95f; // dot product threshold
     [SerializeField] private float attackMoveSpeed = 15f;
     [SerializeField] private float returnMoveSpeed = 2f;
@@ -34,7 +35,7 @@ public class MouthSquareScript : Enemy
     [SerializeField] private float aggroDecaySpeed = 0.3f;
     [SerializeField] private float naturalDespawnTime = 30.0f;
     [SerializeField] private Vector3 initialPosition;
-    [SerializeField] private float scareAmountOnCollide = 5f;
+    [SerializeField] private float scareAmountOnCollide = 5f; // TODO write this into enemy base class
     
     void Start()
     {   

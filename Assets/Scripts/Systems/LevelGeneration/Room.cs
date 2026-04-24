@@ -1,8 +1,10 @@
 using UnityEngine;
 using System.Collections.Generic;
-
-//written with assistance by ChatGPT
-
+/// <summary>
+/// Represents a room in the level generation system. 
+/// Contains data about the room's exits, size, and other properties.
+/// Exits must be manually assigned in the inspector, but parent room references will be automatically assigned
+/// </summary>
 public class Room : MonoBehaviour
 {
     [System.Serializable]
@@ -10,7 +12,8 @@ public class Room : MonoBehaviour
     {
         public Transform transform;   // where to attach next room
         public DoorType doorType = DoorType.Single;
-        [HideInInspector] public bool isConnected = false;
+        public Exit connectedExit;
+        public Room room; // the room this exit belongs to
     }
 
     public enum DoorType
@@ -37,12 +40,21 @@ public class Room : MonoBehaviour
     [Range(0f, 1f)]
     public float bottleSpawnChance = 0.5f; // 0-1, probability that each bottle in room spawns
 
+    // Automatically assign parent room reference to exits
+    private void Awake()
+    {
+        foreach (var e in exits)
+        {
+            e.room = this;
+        }
+    }
+
     public List<Exit> GetAvailableExits(DoorType? type = null)
     {
         List<Exit> list = new List<Exit>();
         foreach (var e in exits)
         {
-            if (e.isConnected) continue;
+            if (e.connectedExit != null) continue;
             if (type != null && e.doorType != type.Value) continue;
             list.Add(e);
         }
@@ -54,7 +66,7 @@ public class Room : MonoBehaviour
     {
         List<Exit> available = new List<Exit>();
         foreach (var e in exits)
-            if (!e.isConnected)
+            if (e.connectedExit == null)
                 available.Add(e);
 
         if (available.Count == 0) return null;

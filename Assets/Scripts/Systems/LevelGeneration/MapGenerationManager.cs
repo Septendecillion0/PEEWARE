@@ -91,7 +91,7 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
     {
         if (totalComplexity >= maxRoomComplexity) return;
         if (pathComplexity >= maxPathComplexity) return;
-        if (fromExit.isConnected) return;
+        if (fromExit.connectedExit != null) return;
 
         bool mustPlaceEndRoom =
             !endRoomPlaced &&
@@ -196,7 +196,7 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             // Find matching exit on instance
             int exitIndex = prefab.exits.IndexOf(prefabExit);
             Room.Exit instantiatedExit = candidate.exits[exitIndex];
-            instantiatedExit.isConnected = false;
+            instantiatedExit.connectedExit = null;
 
             // Align to current exit
             AlignRoomToExit(candidate, instantiatedExit, fromExit);
@@ -215,8 +215,8 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             placedRooms.Add(candidate);
             placedBounds.Add(candidateBounds);
             // connect exits
-            fromExit.isConnected = true;
-            instantiatedExit.isConnected = true;
+            fromExit.connectedExit = instantiatedExit;
+            instantiatedExit.connectedExit = fromExit;
             // remove placeholder doors
             Destroy(fromExit.transform.gameObject);
             Destroy(instantiatedExit.transform.gameObject);
@@ -317,5 +317,147 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             spawnCounts[prefab] = 0;
 
         spawnCounts[prefab]++;
+    }
+    /// ---------------------------------
+    /// HELPER METHODS FOR ENEMY SPAWNING
+    /// ---------------------------------
+    
+    /// <summary>
+    /// Return a valid random point inside of a room, given a position and distance
+    /// On fail case, returns an invalid point to be caught by later checks
+    /// </summary>
+    public Vector3 GetRandomPointFromDistance(Vector3 position, float distance, bool ignoreY = false, float offset = 0f)
+    {
+        List<Room> nearbyRooms = GetRoomsWithinDistance(position, distance);
+        if (nearbyRooms.Count == 0)
+            return new Vector3 {x = float.MaxValue, y = float.MaxValue, z = float.MaxValue}; // signal failure with invalid point
+        Room randomRoom = nearbyRooms[Random.Range(0, nearbyRooms.Count)];
+
+        int maxAttempts = 100;
+        Vector3 point = GetRandomPointInRoom(randomRoom, ignoreY, offset);
+        // If distance to point is too far, keep picking new points up to maxAttempts
+        for (int i = 0; i < maxAttempts; i++)
+        { 
+            point = GetRandomPointInRoom(randomRoom, ignoreY, offset);
+            if (Vector3.Distance(position, point) <= distance)
+                break;
+        }
+        return point;
+    }
+    /// <summary>
+    /// Returns a random point within the bounds of the given room.
+    /// 
+    /// Optional ignoreY parameter guarantees height is in the center (not random)
+    /// Optional offset parameter guarantees returned point is away from walls/bounds
+    /// </summary>
+    public Vector3 GetRandomPointInRoom(Room room, bool ignoreY = false, float offset = 0f)
+    {
+        Bounds bounds = GetRoomBounds(room);
+        float x = Random.Range(bounds.min.x + offset, bounds.max.x - offset);
+        float y = Random.Range(bounds.min.y + offset, bounds.max.y - offset);
+        if (ignoreY)
+            y = bounds.center.y;
+        float z = Random.Range(bounds.min.z + offset, bounds.max.z - offset);
+        return new Vector3(x, y, z);
+    }
+
+    /// <summary>
+    /// Finds which room contains the given world position using bounds checks
+    /// </summary>
+    public Room GetRoomAtPosition(Vector3 worldPos)
+    {
+        for (int i = 0; i < placedRooms.Count; i++)
+        {
+            if (placedBounds[i].Contains(worldPos))
+            {
+                return placedRooms[i];
+            }
+        }
+        Debug.LogWarning($"[MAP GEN] GetRoomAtPosition: didn't find room at {worldPos}");
+        return null;
+    }
+
+    /// <summary>
+    /// Returns all rooms that are within maxDistance from the given position.
+    /// 
+    /// Checks to see if any part of the bounds are within distance
+    /// </summary>
+    public List<Room> GetRoomsWithinDistance(Vector3 position, float maxDistance)
+    {
+        List<Room> nearbyRooms = new List<Room>();
+        foreach (var room in placedRooms)
+        {
+            if (Vector3.Distance(room.transform.position, position) <= maxDistance)
+            {
+                nearbyRooms.Add(room);
+            }
+
+            Bounds bounds = GetRoomBounds(room);
+
+            // Finds the closest point on the bounds to the original position (not room position)
+            float distanceToClosestPoint =
+                Vector3.Distance(bounds.ClosestPoint(position), position);
+
+            if (distanceToClosestPoint <= maxDistance)
+            {
+                nearbyRooms.Add(room);
+            }
+        }
+
+        if (nearbyRooms.Count == 0)
+        {
+            Debug.LogWarning($"[MAP GEN] GetRoomsWithinDistance: no rooms found within {maxDistance} of {position}");
+        }
+        return nearbyRooms;
+    }
+
+    /// <summary>
+    /// Returns all rooms that are within maxPathDistance pathable rooms from the given room.
+    /// Uses BFS through connected exits to determine pathability.
+    /// </summary>
+    public List<Room> GetRoomsWithinPathDistance(Room startRoom, int maxPathDistance)
+    {
+        if (startRoom == null || maxPathDistance < 0)
+            return new List<Room>();
+
+        List<Room> result = new List<Room>();
+        Queue<(Room room, int distance)> queue = new Queue<(Room, int)>();
+        HashSet<Room> visited = new HashSet<Room>();
+
+        queue.Enqueue((startRoom, 0));
+        visited.Add(startRoom);
+        result.Add(startRoom);
+
+        while (queue.Count > 0)
+        {
+            var (currentRoom, currentDistance) = queue.Dequeue();
+
+            if (currentDistance >= maxPathDistance)
+                continue;
+
+            // Check all connected exits from current room
+            foreach (var exit in currentRoom.exits)
+            {   
+                // Exit is not connected to a room
+                if (exit.connectedExit == null)
+                    continue;
+
+                // Find the room connected to this exit
+                Room nextRoom = exit.connectedExit.room;
+
+                // Recurse if it is a new unvisited room
+                if (nextRoom != null && !visited.Contains(nextRoom))
+                {
+                    visited.Add(nextRoom);
+                    result.Add(nextRoom);
+                    queue.Enqueue((nextRoom, currentDistance + 1));
+                }
+            }
+        }
+        if (result.Count == 0)
+        {
+            Debug.LogWarning($"[MAP GEN] GetRoomsWithinPathDistance: no rooms found within path distance {maxPathDistance} of {startRoom.roomName}");
+        }
+        return result;
     }
 }

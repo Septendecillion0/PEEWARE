@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class GhostScript : Enemy
 {
+    public override bool IsGrounded => false; // Ghost (TODO) has a spawn override but specify groundedness for clarity
     private bool playerLooking = false;
 
     [Header("Behavior Settings")]

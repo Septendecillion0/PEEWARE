@@ -9,12 +9,21 @@ public class ScreenFade : MonoBehaviour
     // fades out the SCREEN, drawing the image
     public void FadeOut(float duration, System.Action onComplete = null)
     {
+        StopAllCoroutines();
         StartCoroutine(Fade(0f, 1f, duration, onComplete));
     }
     // fades in the SCREEN, hiding the image
+    // note: fade in is separated into 2 phases bc the first 5% alpha change is very noticeable
     public void FadeIn(float duration, System.Action onComplete = null)
     {
-        StartCoroutine(Fade(1f, 0f, duration, onComplete));
+        StopAllCoroutines();
+        StartCoroutine(FadeInHelper(duration, onComplete));
+    }
+
+    private IEnumerator FadeInHelper(float duration, System.Action onComplete)
+    {
+        yield return StartCoroutine(Fade(1f, 0.95f, Mathf.Clamp(duration, 0f, duration - 0.5f), onComplete));
+        yield return StartCoroutine(Fade(0.95f, 0f, 0.5f, null)); // smooth out the last 5% of the fade
     }
 
     private IEnumerator Fade(float from, float to, float duration, System.Action onComplete)

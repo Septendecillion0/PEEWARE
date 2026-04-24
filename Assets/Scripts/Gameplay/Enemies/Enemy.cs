@@ -19,6 +19,9 @@ public class Enemy : MonoBehaviour
     [SerializeField] protected float scareAmount = 10f;
 
     [Header("Spawn Constraints")]
+    // Indicator for whether the enemy stays on the ground
+    // Note: default value is true but explicitly write in the value in all enemies for clarity
+    public virtual bool IsGrounded => true;
 
     [Tooltip("Minimum allowed horizontal (XZ plane) distance from player.")]
     public float minHorizontalDistance = 5f;
@@ -27,18 +30,20 @@ public class Enemy : MonoBehaviour
     public float maxHorizontalDistance = 20f;
 
     [Tooltip("Minimum vertical difference allowed between player and spawn position.")]
-    public float minVerticalDistance = -2f;
+    public float minVerticalDistance = -5f;
 
     [Tooltip("Maximum vertical difference allowed between player and spawn position.")]
-    public float maxVerticalDistance = 3f;
+    public float maxVerticalDistance = 5f;
 
-    [Tooltip("Minimum allowed direction dot-product relative to player forward.")]
-    [Range(-1, 1)]
-    public float minDirectionDot = -1f;
+    // Center of allowed spawn direction relative to player forward
+    [Tooltip("Center of allowed spawn direction cone, from 0 (front of player) to 180 (behind)")]
+    [Range(-180f, 180f)]
+    public float viewAngleCenter = 0f; // default to in front of player
 
-    [Tooltip("Maximum allowed direction dot-product relative to player forward.")]
-    [Range(-1, 1)]
-    public float maxDirectionDot = 1f;
+    [Tooltip("Width of allowed spawn direction cone, from 0 (exact direction) to 180 (any direction)")]
+    // How wide the allowed cone is (half-angle)
+    [Range(0f, 180f)]
+    public float viewAngleWidth = 180f; // default to any direction (no constraint)
     void Awake()
     {
         thisAudio = GetComponent<AudioSource>();
@@ -82,56 +87,113 @@ public class Enemy : MonoBehaviour
         EnemyManager.Instance.EnemyVanish(this.gameObject);
     }
 
+    /// -------------------------------------
+    /// SPAWN VALIDATION LOGIC
+    /// -------------------------------------
+
     /// <summary>
-    /// Base spawn position validation. Checks if spawn position is within acceptable
-    /// distance ranges (horizontal, vertical, direction relative to player forward).
-    /// This is always called by EnemyManager as the first validation step.
+    /// Validates that a given position is within the given ranges of distance and direction from the player.
+    /// 1st layer of spawn validation
     /// </summary>
-    public bool IsValidSpawnPosition(Vector3 playerPos, Vector3 playerForward, Vector3 spawnPos)
+    /// <returns>True if the position is valid, false otherwise</returns>
+    /// 
+    /// note: max spawn distance check is redundant with MapGenerationManager.GetRoomsWithinDistance
+    /// TODO: spawn direction overrides are not added to enemies
+    /// TODO: add some sort of visibility parameter to define enemy spawning based on whether the player can see them
+    ///       ^ revisit spawn direction to define if enemies should spawn based on visibility or direction
+    public bool CheckSpawnDistanceAndDirection(Vector3 playerPos, Vector3 playerForward, Vector3 spawnPos)
     {
         Vector3 flatPlayerPos = new Vector3(playerPos.x, 0, playerPos.z);
         Vector3 flatSpawnPos = new Vector3(spawnPos.x, 0, spawnPos.z);
 
         float horizontalDist = Vector3.Distance(flatPlayerPos, flatSpawnPos);
         if (horizontalDist < minHorizontalDistance || horizontalDist > maxHorizontalDistance)
+        {   
+            Debug.LogWarning($"[ENEMY] Spawn validation failed: horizontal distance {horizontalDist} not in range [{minHorizontalDistance}, {maxHorizontalDistance}]");
             return false;
+        }
 
         float verticalDelta = spawnPos.y - playerPos.y;
         if (verticalDelta < minVerticalDistance || verticalDelta > maxVerticalDistance)
+        {
+            Debug.LogWarning($"[ENEMY] Spawn validation failed: vertical distance {verticalDelta} not in range [{minVerticalDistance}, {maxVerticalDistance}]");
             return false;
+        }
 
-        Vector3 dirToSpawn = (flatSpawnPos - flatPlayerPos).normalized;
-        float dot = Vector3.Dot(playerForward.normalized, dirToSpawn);
+        // Direction check using ViewAngle
+        if (viewAngleWidth >= 180f)
+        {
+            Debug.Log("position validation passed");
+            return true; // no direction constraint
+        }
 
-        if (dot < minDirectionDot || dot > maxDirectionDot)
+        Vector3 flatForward = Flatten(playerForward);
+        Vector3 desiredDir = GetRotatedDirection(flatForward, viewAngleCenter);
+        
+        Vector3 flatToSpawn = Flatten(spawnPos - playerPos);
+        float angle = Vector3.Angle(desiredDir, flatToSpawn);
+
+        Debug.Log("shouldn't see this");
+        return angle <= viewAngleWidth;
+    }
+
+    /// Helper methods for vector math
+    Vector3 Flatten(Vector3 v)
+    {
+        v.y = 0;
+        return v.normalized;
+    }
+    Vector3 GetRotatedDirection(Vector3 forward, float angleDegrees)
+    {
+        return Quaternion.AngleAxis(angleDegrees, Vector3.up) * forward;
+    }
+    /// <summary>
+    /// Check if the surrounding geometry is clear
+    /// 2nd layer of spawn validation
+    /// </summary>
+    /// <returns>True if the environment is clear, false otherwise.</returns>
+    public bool CheckEnvironmentClear(Vector3 candidatePos)
+    {
+        // Check if there's ground below the candidate position
+        // In theory, should be redundant given the room bounds
+        // note: raycast checks from 0.5 units above the candidate down to 5 units below
+        if (!Physics.Raycast(candidatePos + Vector3.up * 0.5f, Vector3.down, 5f))
+        {
+            Debug.LogWarning($"[ENEMY] Spawn validation failed: no ground detected below candidate position {candidatePos}");
             return false;
+        }
 
+        // Check for obstacles at the candidate position
+        // TODO: replace CheckSphere
+        if (gameObject.GetComponent<Collider>() != null && Physics.CheckSphere(candidatePos, 0.5f))
+        {
+            Debug.LogWarning($"[ENEMY] Spawn validation failed: obstacle detected at candidate position {candidatePos}");
+            return false;
+        }
+
+        Debug.Log("environment validation passed");
         return true;
     }
 
     /// <summary>
-    /// Optional enemy-specific spawn location filtering.
-    /// Override this to add additional constraints beyond base distance validation
-    /// (e.g., must be near walls, must be in certain areas, must meet visibility requirements).
-    /// 
-    /// Called after base validation (distance + environment) passes.
+    /// Enemy-specific spawn position checks
+    /// 3rd layer of spawn validation
     /// </summary>
-    /// <returns>True if the spawn location is acceptable for this enemy type, false otherwise</returns>
-    public virtual bool IsAcceptableSpawnLocation(Vector3 playerPos, Vector3 playerForward, Vector3 candidatePos)
-    {
-        return true;  // Default: accept all positions that pass base validation
+    /// <returns>True if the spawn location is valid, false otherwise</returns>
+    public virtual bool CheckSpecialSpawnRules(Vector3 playerPos, Vector3 playerForward, Vector3 candidatePos)
+    {   
+        Debug.Log("enemy-specific validation passed");
+        return true;  // Default: accept all positions
     }
 
     /// <summary>
-    /// Optional full custom spawn override.
-    /// Only override this for enemies that need completely different spawn logic
-    /// that bypasses room bounds and distance constraints (e.g., Ghost spawning behind player).
-    /// 
-    /// Return null to use the standard spawn algorithm instead.
+    /// Fully custom spawn position override
+    /// Passes base class checks of distance, environment, etc.
+    /// 4th layer (special exception) of spawn validation
     /// </summary>
     /// <returns>A valid spawn position, or null to use standard algorithm</returns>
     public virtual Vector3? GetFullCustomSpawnPosition(Vector3 playerPos, Vector3 playerForward, List<Bounds> roomBounds)
     {
-        return null;  // Default: use standard spawn algorithm
+        return null;  // Default: null indicates no override, proceed to standard spawn algorithm
     }
 }

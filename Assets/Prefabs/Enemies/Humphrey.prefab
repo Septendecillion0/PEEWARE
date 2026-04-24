@@ -160,12 +160,12 @@ MonoBehaviour:
   spawnSound: {fileID: 8300000, guid: ae4d31d94854392449e8d15f7c9030f8, type: 3}
   deathSound: {fileID: 8300000, guid: 91d134ffb4286ee4a8f7b15e9e450c91, type: 3}
   scareAmount: 10
-  minHorizontalDistance: 5
+  minHorizontalDistance: 2
   maxHorizontalDistance: 10
-  minVerticalDistance: -2
-  maxVerticalDistance: 3
-  minDirectionDot: -1
-  maxDirectionDot: 1
+  minVerticalDistance: -5
+  maxVerticalDistance: 5
+  viewAngleCenter: 0
+  viewAngleWidth: 180
   naturalDespawnTime: 30
 --- !u!82 &-2282652644313670972
 AudioSource:

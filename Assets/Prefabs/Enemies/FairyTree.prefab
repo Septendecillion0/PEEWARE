@@ -162,10 +162,12 @@ MonoBehaviour:
   scareAmount: 10
   minHorizontalDistance: 5
   maxHorizontalDistance: 20
-  minVerticalDistance: -2
-  maxVerticalDistance: 3
-  minDirectionDot: -1
-  maxDirectionDot: 0
+  minVerticalDistance: -10
+  maxVerticalDistance: 10
+  viewAngleCenter: 0
+  viewAngleWidth: 180
+  fairyPrefab: {fileID: 3216914794022235752, guid: fa6ef60f4c3c8e440aa728ce448544ef, type: 3}
+  maxPathDistanceForTree: 4
 --- !u!82 &2335946320827134352
 AudioSource:
   m_ObjectHideFlags: 0
