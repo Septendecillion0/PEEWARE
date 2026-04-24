@@ -108,8 +108,7 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: 40cce78ee1d114a4aa2b7808937fbbb4, type: 3}
   spawnSound: {fileID: 0}
   deathSound: {fileID: 8300000, guid: d9480da04449eb44f946e67b32ae9c10, type: 3}
-  playerCam: {fileID: 0}
-  peeMeter: {fileID: 0}
+  scareAmount: 10
   minHorizontalDistance: 5
   maxHorizontalDistance: 20
   minVerticalDistance: -2
@@ -117,8 +116,16 @@ MonoBehaviour:
   minDirectionDot: -1
   maxDirectionDot: 1
   lookThreshold: 0.95
-  jumpSpeed: 15
+  attackMoveSpeed: 15
+  returnMoveSpeed: 2
+  lookIntensity: 0
+  aggroThreshold: 0.4
+  aggroLevel: 0
+  aggroBuildSpeed: 2
+  aggroDecaySpeed: 0.3
   naturalDespawnTime: 30
+  initialPosition: {x: 0, y: 0, z: 0}
+  scareAmountOnCollide: 5
 --- !u!136 &5781810491884127200
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -138,10 +145,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1.1524947
-  m_Height: 3.22
+  m_Radius: 0.769773
+  m_Height: 1.539546
   m_Direction: 1
-  m_Center: {x: 0, y: -0.52, z: 0}
+  m_Center: {x: 0, y: -0.08446121, z: -0.0161829}
 --- !u!82 &6172116168890265620
 AudioSource:
   m_ObjectHideFlags: 0

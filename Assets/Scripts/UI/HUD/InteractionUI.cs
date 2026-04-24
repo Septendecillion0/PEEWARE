@@ -23,6 +23,8 @@ public class InteractionUI : MonoBehaviour
         }
 
         Hide();
+
+        GameManager.Instance.OnGameStateChanged += HandleGameStateChange;
     }
 
     public void Show(string message)
@@ -38,5 +40,13 @@ public class InteractionUI : MonoBehaviour
         canvasGroup.alpha = 0;
         canvasGroup.interactable = false;
         canvasGroup.blocksRaycasts = false;
+    }
+
+    public void HandleGameStateChange(GameManager.GameState state)
+    {
+        if (state != GameManager.GameState.Playing)
+        {
+            Hide();
+        }
     }
 }

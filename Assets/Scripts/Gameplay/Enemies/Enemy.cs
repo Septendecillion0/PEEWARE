@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine.Audio;
 
 /// <summary>
@@ -13,6 +14,9 @@ public class Enemy : MonoBehaviour
     public AudioClip passiveSound;
     public AudioClip spawnSound;
     public AudioClip deathSound;
+
+    [Header("Behavior")]
+    [SerializeField] protected float scareAmount = 10f;
 
     [Header("Spawn Constraints")]
 
@@ -38,6 +42,9 @@ public class Enemy : MonoBehaviour
     void Awake()
     {
         thisAudio = GetComponent<AudioSource>();
+        if (thisAudio == null)
+            throw new System.InvalidOperationException($"[{GetType().Name}] AudioSource component not found on enemy prefab");
+
         if (spawnSound != null) thisAudio.PlayOneShot(spawnSound);
         if (passiveSound != null)
         {
@@ -75,6 +82,11 @@ public class Enemy : MonoBehaviour
         EnemyManager.Instance.EnemyVanish(this.gameObject);
     }
 
+    /// <summary>
+    /// Base spawn position validation. Checks if spawn position is within acceptable
+    /// distance ranges (horizontal, vertical, direction relative to player forward).
+    /// This is always called by EnemyManager as the first validation step.
+    /// </summary>
     public bool IsValidSpawnPosition(Vector3 playerPos, Vector3 playerForward, Vector3 spawnPos)
     {
         Vector3 flatPlayerPos = new Vector3(playerPos.x, 0, playerPos.z);
@@ -95,5 +107,31 @@ public class Enemy : MonoBehaviour
             return false;
 
         return true;
+    }
+
+    /// <summary>
+    /// Optional enemy-specific spawn location filtering.
+    /// Override this to add additional constraints beyond base distance validation
+    /// (e.g., must be near walls, must be in certain areas, must meet visibility requirements).
+    /// 
+    /// Called after base validation (distance + environment) passes.
+    /// </summary>
+    /// <returns>True if the spawn location is acceptable for this enemy type, false otherwise</returns>
+    public virtual bool IsAcceptableSpawnLocation(Vector3 playerPos, Vector3 playerForward, Vector3 candidatePos)
+    {
+        return true;  // Default: accept all positions that pass base validation
+    }
+
+    /// <summary>
+    /// Optional full custom spawn override.
+    /// Only override this for enemies that need completely different spawn logic
+    /// that bypasses room bounds and distance constraints (e.g., Ghost spawning behind player).
+    /// 
+    /// Return null to use the standard spawn algorithm instead.
+    /// </summary>
+    /// <returns>A valid spawn position, or null to use standard algorithm</returns>
+    public virtual Vector3? GetFullCustomSpawnPosition(Vector3 playerPos, Vector3 playerForward, List<Bounds> roomBounds)
+    {
+        return null;  // Default: use standard spawn algorithm
     }
 }

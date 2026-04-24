@@ -109,8 +109,7 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: 50a199e23b4ca65458b7ebd191230183, type: 3}
   spawnSound: {fileID: 8300000, guid: 0c817d466d2218545be3791e5a385e6b, type: 3}
   deathSound: {fileID: 8300000, guid: e677ac68e9d1a064d8d01d22efeeac9d, type: 3}
-  playerCam: {fileID: 0}
-  peeMeter: {fileID: 0}
+  scareAmount: 10
   minHorizontalDistance: 2
   maxHorizontalDistance: 3
   minVerticalDistance: -2
@@ -118,6 +117,8 @@ MonoBehaviour:
   minDirectionDot: 0.866
   maxDirectionDot: 1
   fairyLeave: {fileID: 8300000, guid: ba8f161f5b6421d40894623bee8f69b9, type: 3}
+  scareAmountOnCollide: 20
+  scareAmountOnTree: -20
   disCam: 2
   screenOffset: {x: 0.5, y: 0.5}
   smoothSpeed: 5
@@ -141,10 +142,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.34
-  m_Height: 0.83
+  m_Radius: 0.15505171
+  m_Height: 0.7056482
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.029468417, z: -0.0077414513}
 --- !u!54 &7792376040652990386
 Rigidbody:
   m_ObjectHideFlags: 0

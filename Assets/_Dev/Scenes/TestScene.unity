@@ -301,10 +301,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3593470112852656898, guid: 14366250e420f6b4f894c09b6481fca2, type: 3}
-      propertyPath: exits.Array.data[0].transform
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 4068837570279439233, guid: 14366250e420f6b4f894c09b6481fca2, type: 3}
       propertyPath: m_LocalPosition.x
       value: -6.497
@@ -350,8 +346,7 @@ PrefabInstance:
       value: Bathroom
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 5815613438459860216, guid: 14366250e420f6b4f894c09b6481fca2, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14366250e420f6b4f894c09b6481fca2, type: 3}
@@ -1301,22 +1296,68 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa6ef60f4c3c8e440aa728ce448544ef, type: 3}
+--- !u!1001 &1967399083446597187
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 10.299582
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.0465186
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 14.501068
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.00000003774895
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2303848683713492729, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8064132967814576617, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
+      propertyPath: m_Name
+      value: waitingingrooddom
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 4ea5690e681364b428a823d315d351d6, type: 3}
 --- !u!1 &2920323334751017790 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2920323335950813468, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
   m_PrefabInstance: {fileID: 1038272678}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &2920323334751017791 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7328557506039659316, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
-  m_PrefabInstance: {fileID: 1038272678}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2920323334751017790}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 12db978f5bef2468287249189a572538, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PeeMeterUpdate
 --- !u!1001 &3576558866938783721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1458,7 +1499,7 @@ PrefabInstance:
     - target: {fileID: 4802615590586275885, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: peeMeter
       value: 
-      objectReference: {fileID: 2920323334751017791}
+      objectReference: {fileID: 0}
     - target: {fileID: 6339809477654702880, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.5459
@@ -1821,3 +1862,4 @@ SceneRoots:
   - {fileID: 159641670}
   - {fileID: 6684873642530925108}
   - {fileID: 207342693}
+  - {fileID: 1967399083446597187}

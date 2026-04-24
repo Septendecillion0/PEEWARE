@@ -2,25 +2,21 @@ using UnityEngine;
 
 public class ShadowDoodleScript : Enemy
 {
+    [Header("Behavior Settings")]
+    [SerializeField] private float scareAmountOnTrigger = 10f;
+
     public float naturalDespawnTime = 30.0f;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    
     void Start()
     {
         base.NaturallyDespawn(naturalDespawnTime);
-;    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        //Look at player
-        base.Update();
     }
 
     void OnTriggerEnter(Collider collision){
         //If player is in its danger zone
-        if (collision.gameObject.tag == "Player"){
+        if (collision.gameObject.CompareTag("Player")){
             EnemyManager.Instance.Blinded();
-            PeeMeterManager.Instance.Scare(10.0f);
+            PeeMeterManager.Instance.Scare(scareAmountOnTrigger);
             EnemyDeath();
         }
     }

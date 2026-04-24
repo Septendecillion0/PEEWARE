@@ -34,6 +34,7 @@ public class MouthSquareScript : Enemy
     [SerializeField] private float aggroDecaySpeed = 0.3f;
     [SerializeField] private float naturalDespawnTime = 30.0f;
     [SerializeField] private Vector3 initialPosition;
+    [SerializeField] private float scareAmountOnCollide = 5f;
     
     void Start()
     {   
@@ -66,8 +67,9 @@ public class MouthSquareScript : Enemy
             return;
         }
 
-        // line-of-sight check
-        if (Physics.Raycast(playerCam.position, direction, out RaycastHit hit, 100f))
+        // line-of-sight check (layer mask to only hit enemies and environment)
+        int layerMask = LayerMask.GetMask("Default"); // Adjust if using specific layers for enemies
+        if (Physics.Raycast(playerCam.position, direction, out RaycastHit hit, 100f, layerMask))
         {
             if (hit.transform == transform)
             {
@@ -136,7 +138,7 @@ public class MouthSquareScript : Enemy
     /// <param name="collision"></param>
     private void OnCollisionEnter(Collision collision){
         if (collision.gameObject.CompareTag("Player") && aggroLevel >= aggroThreshold){
-            PeeMeterManager.Instance.Scare(5.0f);
+            PeeMeterManager.Instance.Scare(scareAmountOnCollide);
             EnemyManager.Instance.Hurt();
             EnemyDeath();
         }

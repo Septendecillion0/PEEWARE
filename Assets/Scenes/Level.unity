@@ -211,10 +211,6 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 8095725508752851975, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
-      propertyPath: deltaPee
-      value: 30
-      objectReference: {fileID: 0}
     - target: {fileID: 9018857415070332078, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
       propertyPath: m_Name
       value: HUDCanvas
@@ -389,10 +385,6 @@ PrefabInstance:
     - target: {fileID: 1437212104422919035, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: m_Name
       value: Game Manager
-      objectReference: {fileID: 0}
-    - target: {fileID: 1547641426234039466, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
-      propertyPath: endingController
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2526531275507760623, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: m_LocalPosition.x

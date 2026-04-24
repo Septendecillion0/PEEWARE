@@ -226,7 +226,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PeeMeterUI
   peeMeter: {fileID: 5929354590129479925}
   deathSound: {fileID: 8300000, guid: d45746ccfde069d4d97a6ee1ba769cca, type: 3}
-  deltaPee: 0.4
 --- !u!114 &5929354590129479925 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5142102304260634323, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}

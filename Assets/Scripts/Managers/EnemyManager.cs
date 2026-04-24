@@ -115,7 +115,7 @@ public class EnemyManager : Singleton<EnemyManager>
     /// Returns a random point inside the given room bounds,
     /// inset by 2 units on each side to avoid spawning in walls.
     /// </summary>
-    Vector3 GetRandomPointInsideRoom(Bounds b)
+    private Vector3 GetRandomPointInsideRoom(Bounds b)
     {
         float x = Random.Range(b.min.x + 2f, b.max.x - 2f);
         float z = Random.Range(b.min.z + 2f, b.max.z - 2f);
@@ -125,15 +125,44 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     /// <summary>
-    /// Returns true if the spawn hits the ground and no overlapping colliders.
+    /// Validates that a spawn position is within acceptable distance ranges from the player.
+    /// Checks horizontal distance, vertical distance, and direction relative to player forward.
     /// </summary>
-    bool IsPositionValid(Vector3 pos)
+    private bool IsBaseDistanceValid(Vector3 playerPos, Vector3 playerForward, Vector3 spawnPos, Enemy enemyRules)
     {
-        // must hit floor
+        // Flat distances on XZ plane
+        Vector3 flatPlayerPos = new Vector3(playerPos.x, 0, playerPos.z);
+        Vector3 flatSpawnPos = new Vector3(spawnPos.x, 0, spawnPos.z);
+
+        float horizontalDist = Vector3.Distance(flatPlayerPos, flatSpawnPos);
+        if (horizontalDist < enemyRules.minHorizontalDistance || horizontalDist > enemyRules.maxHorizontalDistance)
+            return false;
+
+        // Vertical distance
+        float verticalDelta = spawnPos.y - playerPos.y;
+        if (verticalDelta < enemyRules.minVerticalDistance || verticalDelta > enemyRules.maxVerticalDistance)
+            return false;
+
+        // Direction relative to player looking direction
+        Vector3 dirToSpawn = (flatSpawnPos - flatPlayerPos).normalized;
+        float dot = Vector3.Dot(playerForward.normalized, dirToSpawn);
+
+        if (dot < enemyRules.minDirectionDot || dot > enemyRules.maxDirectionDot)
+            return false;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Validates environment: must have ground below and no obstacles.
+    /// </summary>
+    private bool IsEnvironmentClear(Vector3 pos)
+    {
+        // Must hit floor
         if (!Physics.Raycast(pos + Vector3.up * 2f, Vector3.down, out RaycastHit hit, 4f))
             return false;
 
-        // no walls
+        // No obstacles
         if (Physics.CheckSphere(pos, 0.5f))
             return false;
 
@@ -141,12 +170,11 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     /// <summary>
-    /// Attempts to find a valid spawn position across random rooms and instantiates
-    /// a random enemy prefab there. Validates against both enemy-specific rules
-    /// and environment geometry. Gives up after maxSpawnAttempts tries.
+    /// Attempts to spawn an enemy with appropriate validation.
+    /// First checks if the enemy has a custom spawn override (e.g., Ghost).
+    /// Otherwise uses the base spawn algorithm with base distance validation
+    /// and optional enemy-specific filtering.
     /// </summary>
-    /// 
-    /// TODO: COMPLETELY OVERHAUL SPAWN MECHANICS. this sucks also split this into separate responsibilities (finding spawn locations, actually spawning)
     void SpawnRandomEnemy()
     {
         if (GameManager.Instance.IsGameOver) return;
@@ -156,36 +184,48 @@ public class EnemyManager : Singleton<EnemyManager>
         Vector3 playerPos = player.transform.position;
         Vector3 playerForward = playerCam != null ? playerCam.transform.forward : player.transform.forward;
 
-        for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
+        // Pick a random enemy type
+        GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        Enemy enemyRules = enemyPrefab.GetComponent<Enemy>();
+
+        // Check if this enemy type has a full custom spawn override
+        Vector3? customSpawnPos = enemyRules.GetFullCustomSpawnPosition(playerPos, playerForward, roomBounds);
+        if (customSpawnPos.HasValue)
         {
-            // pick random room
-            int index = Random.Range(0, roomBounds.Count);
-            Bounds b = roomBounds[index];
-
-            // random point inside the room
-            Vector3 pos = GetRandomPointInsideRoom(b);
-
-            // pick a random enemy type
-            GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
-            Enemy enemyRules = enemyPrefab.GetComponent<Enemy>();
-
-            // check enemy-specific spawn rules
-            if (!enemyRules.IsValidSpawnPosition(playerPos, playerForward, pos))
-                continue;
-
-            // environment validation (walls, floor)
-            if (!IsPositionValid(pos))
-                continue;
-
-            // spawn
-            GameObject newEnemy = Instantiate(enemyPrefab, pos, Quaternion.identity);
+            GameObject newEnemy = Instantiate(enemyPrefab, customSpawnPos.Value, Quaternion.identity);
             existingEnemies.Add(newEnemy);
-
-            Debug.Log($"[ENEMY] Spawned {enemyPrefab.name} at {pos}");
+            Debug.Log($"[ENEMY] Spawned {enemyPrefab.name} at {customSpawnPos.Value} (custom spawn)");
             return;
         }
 
-        Debug.Log("[ENEMY] Failed to find valid spawn point after attempts");
+        // Base spawn algorithm: try to find valid position within room bounds and distance constraints
+        for (int attempt = 0; attempt < maxSpawnAttempts; attempt++)
+        {
+            // Pick random room and point within bounds
+            int index = Random.Range(0, roomBounds.Count);
+            Bounds b = roomBounds[index];
+            Vector3 candidatePos = GetRandomPointInsideRoom(b);
+
+            // Check base distance validation (horizontal, vertical, direction)
+            if (!IsBaseDistanceValid(playerPos, playerForward, candidatePos, enemyRules))
+                continue;
+
+            // Check environment (ground exists, no obstacles)
+            if (!IsEnvironmentClear(candidatePos))
+                continue;
+
+            // Check enemy-specific filtering (e.g., must be near player, must be in certain areas, etc.)
+            if (!enemyRules.IsAcceptableSpawnLocation(playerPos, playerForward, candidatePos))
+                continue;
+
+            // All validations passed - spawn the enemy
+            GameObject newEnemy = Instantiate(enemyPrefab, candidatePos, Quaternion.identity);
+            existingEnemies.Add(newEnemy);
+            Debug.Log($"[ENEMY] Spawned {enemyPrefab.name} at {candidatePos}");
+            return;
+        }
+
+        Debug.Log($"[ENEMY] Failed to find valid spawn point for {enemyPrefab.name} after {maxSpawnAttempts} attempts");
     }
 
     /// <summary>

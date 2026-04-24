@@ -113,10 +113,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.80078125
-  m_Height: 2.3049893
+  m_Radius: 0.35724664
+  m_Height: 1.6649663
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.055131793, z: -0.0024049282}
 --- !u!114 &2846662253118365836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,21 +132,21 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: ac38fa094017a274791c2a52e57d8075, type: 3}
   spawnSound: {fileID: 8300000, guid: 8ab30d1f66225aa4b976bfea279743c6, type: 3}
   deathSound: {fileID: 8300000, guid: 9f1e813674d709d48a787898619a00d1, type: 3}
-  playerCam: {fileID: 0}
-  peeMeter: {fileID: 4436666588249333562, guid: 22ca746f4d6fd432981400090fd6e040, type: 3}
+  scareAmount: 10
   minHorizontalDistance: 10
   maxHorizontalDistance: 20
   minVerticalDistance: -10
   maxVerticalDistance: 10
   minDirectionDot: -1
   maxDirectionDot: 0
-  minBehindDistance: 4
-  maxBehindDistance: 7
-  maxAllowedDistance: 18
+  scareAmountOnCollide: 20
   lookThreshold: 0.8
   jumpSpeed: 10
   horizontalOffset: 2
   tpTime: 3
+  minBehindDistance: 4
+  maxBehindDistance: 7
+  maxAllowedDistance: 18
 --- !u!82 &-7540952855276986694
 AudioSource:
   m_ObjectHideFlags: 0
@@ -251,7 +251,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63164046888599622}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3730e86ef153b0e47ab9687fa29c5384, type: 3}
   m_Name: 
@@ -259,18 +259,18 @@ MonoBehaviour:
   passiveSound: {fileID: 0}
   spawnSound: {fileID: 0}
   deathSound: {fileID: 0}
-  playerCam: {fileID: 0}
-  peeMeter: {fileID: 0}
+  scareAmount: 10
   minHorizontalDistance: 5
   maxHorizontalDistance: 20
   minVerticalDistance: -2
   maxVerticalDistance: 3
   minDirectionDot: -1
   maxDirectionDot: 1
-  minBehindDistance: 4
-  maxBehindDistance: 7
-  maxAllowedDistance: 10
+  scareAmountOnCollide: 20
   lookThreshold: 0.8
   jumpSpeed: 10
   horizontalOffset: 2
   tpTime: 3
+  minBehindDistance: 4
+  maxBehindDistance: 7
+  maxAllowedDistance: 10

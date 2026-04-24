@@ -4,16 +4,17 @@ public class GhostScript : Enemy
 {
     private bool playerLooking = false;
 
-    [Header("Distances")]
-    public float minBehindDistance = 4f;
-    public float maxBehindDistance = 7f;
-    public float maxAllowedDistance = 18f;
-
     [Header("Behavior Settings")]
+    [SerializeField] private float scareAmountOnCollide = 20f;
     public float lookThreshold = 0.8f; // dot product threshold
     public float jumpSpeed = 10f;
     public float horizontalOffset = 2f;
     public int tpTime = 3;
+
+    [Header("Distances")]
+    public float minBehindDistance = 4f;
+    public float maxBehindDistance = 7f;
+    public float maxAllowedDistance = 18f;
 
     protected override void Update()
     {
@@ -65,9 +66,8 @@ public class GhostScript : Enemy
 
     void OnCollisionEnter(Collision collision){
         //If the Ghost collided with the player
-        if (collision.gameObject.tag == "Player"){
-            //Jump scare sound needed
-            PeeMeterManager.Instance.Scare(20.0f);
+        if (collision.gameObject.CompareTag("Player")){
+            PeeMeterManager.Instance.Scare(scareAmountOnCollide);
             EnemyDeath();
         }
     }
