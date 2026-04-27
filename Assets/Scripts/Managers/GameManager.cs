@@ -90,7 +90,7 @@ public class GameManager : Singleton<GameManager>
         }
         ResetGame();
         PlaySceneMusic();
-        UIManager.Instance.PlayFadeIn(2f);
+        UIManager.Instance.PlayFadeIn(4f);
     }
 
     /// <summary>

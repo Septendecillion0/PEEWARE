@@ -5,6 +5,13 @@ using System.Collections;
 public class ScreenFade : MonoBehaviour
 {
     public Image fadeImage;
+
+    public void SetAlpha(float alpha)
+    {
+        Color c = fadeImage.color;
+        c.a = alpha;
+        fadeImage.color = c;
+    }
     
     // fades out the SCREEN, drawing the image
     public void FadeOut(float duration, System.Action onComplete = null)
@@ -22,24 +29,32 @@ public class ScreenFade : MonoBehaviour
 
     private IEnumerator FadeInHelper(float duration, System.Action onComplete)
     {
-        yield return StartCoroutine(Fade(1f, 0.95f, Mathf.Clamp(duration, 0f, duration - 0.5f), onComplete));
-        yield return StartCoroutine(Fade(0.95f, 0f, 0.5f, null)); // smooth out the last 5% of the fade
+        // yield return StartCoroutine(Fade(1f, 0.95f, Mathf.Clamp(duration, 0f, duration - 0.5f), null));
+        // yield return StartCoroutine(Fade(0.95f, 0f, 0.5f, onComplete)); // smooth out the last 5% of the fade
+        yield return StartCoroutine(Fade(1f, 0f, duration, onComplete));
     }
 
     private IEnumerator Fade(float from, float to, float duration, System.Action onComplete)
     {
         float elapsed = 0f;
         Color c = fadeImage.color;
+
         while (elapsed < duration)
         {
             elapsed += Time.unscaledDeltaTime;
-            c.a = Mathf.Lerp(from, to, elapsed / duration);
+
+            float t = Mathf.Clamp01(elapsed / duration);
+            t = Mathf.SmoothStep(0f, 1f, t); // or fadeCurve.Evaluate(t)
+
+            c.a = Mathf.Lerp(from, to, t);
             fadeImage.color = c;
+
             yield return null;
         }
+
         c.a = to;
         fadeImage.color = c;
-        
+
         onComplete?.Invoke();
     }
 }

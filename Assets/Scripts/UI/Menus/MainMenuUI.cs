@@ -3,6 +3,7 @@ using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using System.Collections;
 // TODO: controls a screen fade, should be delegated elsewhere
+// TODO: replace scene loading with scene types, not string
 public class MainMenuUI : MonoBehaviour
 {
     [SerializeField] private Button startButton;

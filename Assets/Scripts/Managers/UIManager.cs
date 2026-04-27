@@ -174,10 +174,32 @@ public class UIManager : Singleton<UIManager>
     // OVERLAYS
     // =========================
 
-    public void PlayFadeIn(float duration)
+    /// <summary>
+    /// Plays a fade in animation using the fadeOverlay (black fullscreen image)
+    /// </summary>
+    /// <remarks>
+    /// uses realtime, not scaled
+    /// TODO: replace with real scene transition animations
+    /// ^NOTE: delay is built in here rather than in sceenfade since it is a temporary solution
+    /// TODO: have MainMenuUI call this function instead of its own fade
+    /// NOTE: delay is used by default since fade may begin before rendering
+    /// </remarks>
+    /// <param name="duration"> length of fade animation</param>
+    /// <param name="delay"> delay before starting the fade animation </param>
+    public void PlayFadeIn(float duration, float delay = 1f)
     {
-        Debug.Log("playing fade in");
-        fadeOverlay.FadeIn(duration);
+        Debug.Log("FadeIn init");
+        fadeOverlay.SetAlpha(1f); // ensure fade starts fully opaque
+
+        StartCoroutine(DelayedFadeIn());
+        IEnumerator DelayedFadeIn()
+        {
+            Debug.Log("FadeIn wait");
+            yield return new WaitForSecondsRealtime(delay);
+            Debug.Log("FadeIn start");
+            fadeOverlay.FadeIn(duration);
+            Debug.Log("FadeIn end");
+        }
     }
 
     // public void SetFade(float alpha)
@@ -189,7 +211,7 @@ public class UIManager : Singleton<UIManager>
 
     // plays the blind animation
     // TODO: replace with the animation instead of image fade
-    //   
+    // NOTE: uses scaled time since the effect occurs in game
     public void PlayBlind()
     {
         StartCoroutine(BlindBuff());
@@ -206,6 +228,7 @@ public class UIManager : Singleton<UIManager>
 
     // plays the hurt animation
     // TODO: replace with the animation instead of image fade
+    // NOTE: uses scaled time since the effect occurs in game
     public void PlayHurt()
     {
         StartCoroutine(HurtBuff());
@@ -220,8 +243,9 @@ public class UIManager : Singleton<UIManager>
 
         
     // event safety function
-    private void OnDestroy()
-    {
+    protected override void OnDestroy()
+    {   
+        base.OnDestroy();
         if (GameManager.Instance != null)
             GameManager.Instance.OnGameStateChanged -= HandleGameStateChange;
     }
