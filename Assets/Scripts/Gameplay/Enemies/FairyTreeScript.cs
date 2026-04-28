@@ -3,10 +3,15 @@ using System.Collections.Generic;
 
 public class FairyTreeScript : Enemy
 {
+    // overrides written out explicitly for clarity
+    public override int id => 5;
+    public override bool IsGrounded => true;
+    protected override bool naturallyDespawns => false;
+    public override bool uniqueEnemy => true;
+
     [Header("Fairy Tree Spawning")]
     [SerializeField] private GameObject fairyPrefab;
     [SerializeField] private int maxPathDistanceForTree = 5;
-    public override bool IsGrounded => true;
     private GameObject spawnedFairy;
 
     /// <summary>
@@ -29,8 +34,9 @@ public class FairyTreeScript : Enemy
         return accessibleRooms.Contains(candidateRoom);
     }
 
-    void Start()
-    {
+    protected override void Start()
+    {   
+        base.Start();
         // Spawn fairy in front of player
         if (EnemyManager.Instance != null && EnemyManager.Instance.playerCam != null)
         {

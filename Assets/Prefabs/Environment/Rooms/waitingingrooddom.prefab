@@ -2970,10 +2970,10 @@ MonoBehaviour:
   exits:
   - transform: {fileID: 7351869903480011305}
     doorType: 0
-    isConnected: 0
+    room: {fileID: 0}
   - transform: {fileID: 3139592434928235451}
     doorType: 0
-    isConnected: 0
+    room: {fileID: 0}
   maxSpawnCount: -1
   preferredNeighbors: []
   bottleSpawnChance: 0.473
@@ -3129,7 +3129,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6339809477654702880, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.7887
+      value: -1.793
       objectReference: {fileID: 0}
     - target: {fileID: 6339809477654702880, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_LocalPosition.z
@@ -3191,11 +3191,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6339809477654702880, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.4153166
+      value: -1.2482
       objectReference: {fileID: 0}
     - target: {fileID: 6339809477654702880, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.4672241
+      value: -2.4672
       objectReference: {fileID: 0}
     - target: {fileID: 6339809477654702880, guid: 5f58fd91ce6cefe459d1c81786a5285a, type: 3}
       propertyPath: m_LocalRotation.w

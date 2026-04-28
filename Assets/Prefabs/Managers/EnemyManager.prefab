@@ -46,14 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
   player: {fileID: 0}
   playerCam: {fileID: 0}
-  peeMeter: {fileID: 0}
   existingEnemies: []
   enemyPrefabs:
-  - {fileID: 3216914794022235752, guid: fa6ef60f4c3c8e440aa728ce448544ef, type: 3}
   - {fileID: 3381633526987363447, guid: 52d9b3d2322743449bdd5c74abacdbce, type: 3}
-  - {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
-  - {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
   - {fileID: 2094668390991299439, guid: abdccf77dfdffa2418aced9715901ae2, type: 3}
+  - {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
+  - {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
+  - {fileID: 4784436105486175168, guid: a37422f7056348e4082a3dbd56b8751c, type: 3}
   SpawnInterval: 10
-  spawnRadius: 3
-  maxSpawnAttempts: 50
+  maxSpawnAttempts: 200

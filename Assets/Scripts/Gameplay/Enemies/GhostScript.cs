@@ -2,11 +2,16 @@ using UnityEngine;
 
 public class GhostScript : Enemy
 {
+    // overrides written out explicitly for clarity
+    public override int id => 4;
     public override bool IsGrounded => false; // Ghost (TODO) has a spawn override but specify groundedness for clarity
+    protected override bool naturallyDespawns => true;
+    protected override float scareAmount => 20f;
+    public override bool uniqueEnemy => true;
+
     private bool playerLooking = false;
 
     [Header("Behavior Settings")]
-    [SerializeField] private float scareAmountOnCollide = 20f;
     public float lookThreshold = 0.8f; // dot product threshold
     public float jumpSpeed = 10f;
     public float horizontalOffset = 2f;
@@ -65,10 +70,11 @@ public class GhostScript : Enemy
         }
     }
 
-    void OnCollisionEnter(Collision collision){
+    void OnTriggerEnter(Collider collision){
         //If the Ghost collided with the player
+        // TODO: use something other than tags (layers)
         if (collision.gameObject.CompareTag("Player")){
-            PeeMeterManager.Instance.Scare(scareAmountOnCollide);
+            PeeMeterManager.Instance.Scare(scareAmount);
             EnemyDeath();
         }
     }

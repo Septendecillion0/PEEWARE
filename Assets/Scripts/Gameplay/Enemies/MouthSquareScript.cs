@@ -23,7 +23,13 @@ using UnityEngine;
 /// </remarks>
 public class MouthSquareScript : Enemy
 {
+    // overrides written out explicitly for clarity
+    public override int id => 1;
     public override bool IsGrounded => false;
+    protected override bool naturallyDespawns => true;
+    protected override float scareAmount => 15f;
+    public override bool uniqueEnemy => false;
+    
     [Header("MouthSquare Aggro Behavior")]
     [SerializeField] private float lookThreshold = 0.95f; // dot product threshold
     [SerializeField] private float attackMoveSpeed = 15f;
@@ -33,14 +39,12 @@ public class MouthSquareScript : Enemy
     [SerializeField] private float aggroLevel = 0f;
     [SerializeField] private float aggroBuildSpeed = 2f;
     [SerializeField] private float aggroDecaySpeed = 0.3f;
-    [SerializeField] private float naturalDespawnTime = 30.0f;
     [SerializeField] private Vector3 initialPosition;
-    [SerializeField] private float scareAmountOnCollide = 5f; // TODO write this into enemy base class
     
-    void Start()
+    protected override void Start()
     {   
+        base.Start();
         initialPosition = transform.position;
-        base.NaturallyDespawn(naturalDespawnTime);
     }
 
     protected override void Update()
@@ -69,8 +73,10 @@ public class MouthSquareScript : Enemy
         }
 
         // line-of-sight check (layer mask to only hit enemies and environment)
+        // TODO: update layer mask with final layers
         int layerMask = LayerMask.GetMask("Default"); // Adjust if using specific layers for enemies
-        if (Physics.Raycast(playerCam.position, direction, out RaycastHit hit, 100f, layerMask))
+        // Cast ray from player camera towards enemy; collides with environment and physical (non-trigger) enemies, but not triggers
+        if (Physics.Raycast(playerCam.position, direction, out RaycastHit hit, 100f, layerMask, QueryTriggerInteraction.Ignore))
         {
             if (hit.transform == transform)
             {
@@ -137,9 +143,11 @@ public class MouthSquareScript : Enemy
     /// ^also must have enough aggro
     /// </summary>
     /// <param name="collision"></param>
-    private void OnCollisionEnter(Collision collision){
-        if (collision.gameObject.CompareTag("Player") && aggroLevel >= aggroThreshold){
-            PeeMeterManager.Instance.Scare(scareAmountOnCollide);
+    public override void OnTriggerDetected(Collider collision)
+    {
+        if (collision.gameObject.CompareTag("Player") && aggroLevel >= aggroThreshold)
+        {
+            PeeMeterManager.Instance.Scare(scareAmount);
             EnemyManager.Instance.Hurt();
             EnemyDeath();
         }

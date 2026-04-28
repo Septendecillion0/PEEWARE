@@ -16,6 +16,7 @@ using TMPro;
 /// Visual effects (blind/hurt) are called by enemy subclasses, then outsourced to UIManager
 /// 
 /// TODO: confirm audio implementation and reorganize to make sense
+/// TODO: implement player manager and get references from there
 /// </remarks>
 public class EnemyManager : Singleton<EnemyManager>
 {
@@ -28,14 +29,17 @@ public class EnemyManager : Singleton<EnemyManager>
     }
 
     [Header("Player Settings")]
-    public GameObject player;
-    public Camera playerCam;
+    [HideInInspector] public GameObject player;
+    [HideInInspector] public Camera playerCam;
+
+    [Tooltip("List of existing enemies; READ-ONLY")]
     public List<GameObject> existingEnemies = new List<GameObject>();
 
     [Header("Enemy Class Settings")]
-    public List<GameObject> enemyPrefabs; // prefabs that each contain Enemy.cs with spawn rules
+    public List<GameObject> enemyPrefabs;
+    List<GameObject> validPrefabsList;
+    List<GameObject> enemyPrefabDict;
     public float SpawnInterval = 10f;
-    public float spawnRadius = 5f;
     public int maxSpawnAttempts = 30; // attempts per spawn
 
     [Header("Map Related")]
@@ -43,10 +47,21 @@ public class EnemyManager : Singleton<EnemyManager>
     private List<Bounds> roomBounds;
 
     /// <summary>
+    /// Initialize the validPrefabsList (pulled from when spawning) and enemyPrefabDict (reference holder for all prefabs by id)
     /// Begins the startup coroutine that waits for the player and camera before starting the spawn loop.
+    /// 
+    /// TODO: can change prefabdict to dictionary
     /// </summary>
     void Start()
     {
+        validPrefabsList = new List<GameObject>(enemyPrefabs);
+        enemyPrefabDict = new List<GameObject>(new GameObject[10]);
+        foreach (GameObject enemyPrefab in enemyPrefabs)
+        {
+            Enemy enemy = enemyPrefab.GetComponent<Enemy>();
+            enemyPrefabDict[enemy.id] = enemyPrefab;
+        }
+
         StartCoroutine(FindPlayerAndStartSpawning());
     }
 
@@ -128,14 +143,14 @@ public class EnemyManager : Singleton<EnemyManager>
     void SpawnRandomEnemy()
     {
         if (GameManager.Instance.IsGameOver) return;
-        if (enemyPrefabs.Count == 0 || player == null || roomBounds == null || roomBounds.Count == 0)
+        if (validPrefabsList.Count == 0 || player == null || roomBounds == null || roomBounds.Count == 0)
             return;
 
         Vector3 playerPos = player.transform.position;
         Vector3 playerForward = playerCam != null ? playerCam.transform.forward : player.transform.forward;
 
         // Pick a random enemy type
-        GameObject enemyPrefab = enemyPrefabs[Random.Range(0, enemyPrefabs.Count)];
+        GameObject enemyPrefab = validPrefabsList[Random.Range(0, validPrefabsList.Count)];
         Enemy enemy = enemyPrefab.GetComponent<Enemy>();
 
         // Check if this enemy type has a full custom spawn override
@@ -171,6 +186,10 @@ public class EnemyManager : Singleton<EnemyManager>
             // All validations passed - spawn the enemy
             GameObject newEnemy = Instantiate(enemyPrefab, candidatePos, Quaternion.identity);
             existingEnemies.Add(newEnemy);
+            if (enemy.uniqueEnemy)
+            {
+                validPrefabsList.Remove(enemyPrefab);
+            }
             Debug.Log($"[ENEMY] Spawned {enemyPrefab.name} at {candidatePos}");
             return;
         }
@@ -180,11 +199,19 @@ public class EnemyManager : Singleton<EnemyManager>
 
     /// <summary>
     /// Removes the enemy from the tracked list and destroys its GameObject.
-    /// Called by individual enemies when they are done (e.g. walked past the player).
+    /// Called by individual enemies based on their despawning/death behavior
+    /// Not called on scene resets
     /// </summary>
     public void EnemyVanish(GameObject enemy)
     {
-        if (existingEnemies.Contains(enemy))
+        Enemy enemyType = enemy.gameObject.GetComponent<Enemy>();
+        if (enemyType.uniqueEnemy)
+        {   
+            GameObject enemyPrefab = enemyPrefabDict[enemyType.id];
+            validPrefabsList.Add(enemyPrefab);
+        }
+        
+        if (existingEnemies.Contains(enemy)) // cannot assert bc of enemies like Fairy
             existingEnemies.Remove(enemy);
 
         Destroy(enemy);

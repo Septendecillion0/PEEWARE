@@ -15,12 +15,15 @@ public class Crouch : MonoBehaviour
     public Transform headToLower;
     [HideInInspector]
     public float? defaultHeadYLocalPosition;
-    public float crouchYHeadPosition = 1;
+    [Tooltip("Height fraction when crouched (0-1, where 1 is standing height).")]
+    public float crouchHeightFraction = 0.6f;
 
-    [Tooltip("Collider to lower when crouched.")]
-    public CapsuleCollider colliderToLower;
+    [Tooltip("CharacterController to lower when crouched.")]
+    public CharacterController controller;
     [HideInInspector]
-    public float? defaultColliderHeight;
+    public float? defaultControllerHeight;
+    [HideInInspector]
+    public Vector3? defaultControllerCenter;
 
     public bool IsCrouched { get; private set; }
     public event System.Action CrouchStart, CrouchEnd;
@@ -34,49 +37,43 @@ public class Crouch : MonoBehaviour
         // Try to get components.
         movement = GetComponentInParent<FirstPersonMovement>();
         headToLower = movement.GetComponentInChildren<Camera>().transform;
-        colliderToLower = movement.GetComponentInChildren<CapsuleCollider>();
+        controller = movement.GetComponent<CharacterController>();
     }
 
     void LateUpdate()
     {
         if (Input.GetKey(key) && canCrouch && (!groundCheck || groundCheck.isGrounded))
         {
-            // Enforce a low head.
-            if (headToLower)
+            // Save original values on first crouch.
+            if (!defaultHeadYLocalPosition.HasValue)
             {
-                // If we don't have the defaultHeadYLocalPosition, get it now.
-                if (!defaultHeadYLocalPosition.HasValue)
-                {
-                    defaultHeadYLocalPosition = headToLower.localPosition.y;
-                }
-
-                // Lower the head.
-                headToLower.localPosition = new Vector3(headToLower.localPosition.x, crouchYHeadPosition, headToLower.localPosition.z);
+                defaultHeadYLocalPosition = headToLower.localPosition.y;
+                defaultControllerHeight = controller.height;
+                defaultControllerCenter = controller.center;
             }
 
-            // Enforce a low colliderToLower.
-            if (colliderToLower)
+            // Calculate crouch height.
+            float newHeight = defaultControllerHeight.Value * crouchHeightFraction;
+            float heightDifference = defaultControllerHeight.Value - newHeight;
+
+            // Move camera down by the same amount that the collider height is reducing.
+            // This keeps the camera aligned with where the collider's top surface has moved to.
+            if (headToLower)
             {
-                // If we don't have the defaultColliderHeight, get it now.
-                if (!defaultColliderHeight.HasValue)
-                {
-                    defaultColliderHeight = colliderToLower.height;
-                }
+                float newCameraY = defaultHeadYLocalPosition.Value - heightDifference;
+                headToLower.localPosition = new Vector3(headToLower.localPosition.x, newCameraY, headToLower.localPosition.z);
+            }
 
-                // Get lowering amount.
-                float loweringAmount;
-                if (defaultHeadYLocalPosition.HasValue)
-                {
-                    loweringAmount = defaultHeadYLocalPosition.Value - crouchYHeadPosition;
-                }
-                else
-                {
-                    loweringAmount = defaultColliderHeight.Value * .5f;
-                }
-
-                // Lower the colliderToLower.
-                colliderToLower.height = Mathf.Max(defaultColliderHeight.Value - loweringAmount, 0);
-                colliderToLower.center = Vector3.up * colliderToLower.height * .5f;
+            // Adjust controller height while maintaining the original center offset.
+            if (controller && defaultControllerCenter.HasValue)
+            {
+                float originalCenterOffset = defaultControllerCenter.Value.y;
+                float originalBottomY = originalCenterOffset - (defaultControllerHeight.Value * 0.5f);
+                
+                // New center: keep bottom at same position, shrink from top.
+                float newCenterY = originalBottomY + (newHeight * 0.5f);
+                controller.height = newHeight;
+                controller.center = new Vector3(defaultControllerCenter.Value.x, newCenterY, defaultControllerCenter.Value.z);
             }
 
             // Set IsCrouched state.
@@ -89,19 +86,19 @@ public class Crouch : MonoBehaviour
         }
         else
         {
-            if (IsCrouched)
+            if (IsCrouched && CanStand())
             {
-                // Rise the head back up.
-                if (headToLower)
+                // Restore head position.
+                if (headToLower && defaultHeadYLocalPosition.HasValue)
                 {
                     headToLower.localPosition = new Vector3(headToLower.localPosition.x, defaultHeadYLocalPosition.Value, headToLower.localPosition.z);
                 }
 
-                // Reset the colliderToLower's height.
-                if (colliderToLower)
+                // Restore controller height and center.
+                if (controller && defaultControllerHeight.HasValue && defaultControllerCenter.HasValue)
                 {
-                    colliderToLower.height = defaultColliderHeight.Value;
-                    colliderToLower.center = Vector3.up * colliderToLower.height * .5f;
+                    controller.height = defaultControllerHeight.Value;
+                    controller.center = defaultControllerCenter.Value;
                 }
 
                 // Reset IsCrouched.
@@ -110,6 +107,27 @@ public class Crouch : MonoBehaviour
                 CrouchEnd?.Invoke();
             }
         }
+    }
+
+    /// <summary>
+    /// Check for overhead obstacles
+    /// </summary>
+    /// <returns>true if there is room to stand up.</returns>
+    private bool CanStand()
+    {
+        float standingHeight = defaultControllerHeight.Value; // set this to your full stand height
+
+        Vector3 center = transform.position + defaultControllerCenter.Value;
+
+        float radius = 0.01f;
+
+        float halfHeight = standingHeight / 2f;
+
+        Vector3 bottom = center + Vector3.down * (halfHeight - radius);
+        Vector3 top    = center + Vector3.up * (halfHeight - radius);
+
+        int mask = ~LayerMask.GetMask("Player");
+        return !Physics.CheckCapsule(bottom, top, radius, mask);
     }
 
 

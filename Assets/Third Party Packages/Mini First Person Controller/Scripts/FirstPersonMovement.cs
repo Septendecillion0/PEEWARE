@@ -3,42 +3,59 @@ using UnityEngine;
 
 public class FirstPersonMovement : MonoBehaviour
 {
-    public float speed = 5;
+    public float walkSpeed;
 
     [Header("Running")]
     public bool canRun = true;
     public bool IsRunning { get; private set; }
-    public float runSpeed = 9;
+    public float runSpeed;
     public KeyCode runningKey = KeyCode.LeftShift;
 
-    Rigidbody rb;
+    [Header("CharacterController Settings")]
+    public float gravity;
+
+    CharacterController controller;
     /// <summary> Functions to override movement speed. Will use the last added override. </summary>
     public List<System.Func<float>> speedOverrides = new List<System.Func<float>>();
 
+    /// <summary> Current vertical velocity for gravity and jumping. Can be modified by Jump script. </summary>
+    public float verticalVelocity { get; set; }
 
 
     void Awake()
     {
-        // Get the rigidbody on this.
-        rb = GetComponent<Rigidbody>();
+        // Get the CharacterController on this.
+        controller = GetComponent<CharacterController>();
     }
 
-    void FixedUpdate()
+    void Update()
     {
         // Update IsRunning from input.
         IsRunning = canRun && Input.GetKey(runningKey);
 
         // Get targetMovingSpeed.
-        float targetMovingSpeed = IsRunning ? runSpeed : speed;
+        float targetMovingSpeed = IsRunning ? runSpeed : walkSpeed;
         if (speedOverrides.Count > 0)
         {
             targetMovingSpeed = speedOverrides[speedOverrides.Count - 1]();
         }
 
         // Get targetVelocity from input.
-        Vector2 targetVelocity =new Vector2( Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
+        Vector2 targetVelocity = new Vector2(Input.GetAxis("Horizontal") * targetMovingSpeed, Input.GetAxis("Vertical") * targetMovingSpeed);
 
-        // Apply movement.
-        rb.linearVelocity = transform.rotation * new Vector3(targetVelocity.x, rb.linearVelocity.y, targetVelocity.y);
+        // Apply gravity.
+        if (!controller.isGrounded)
+        {
+            verticalVelocity -= gravity * Time.deltaTime;
+        }
+        else if (verticalVelocity < 0)
+        {
+            verticalVelocity = 0;
+        }
+
+        // Build movement vector and apply it.
+        Vector3 movementDirection = transform.rotation * new Vector3(targetVelocity.x, 0, targetVelocity.y);
+        Vector3 finalVelocity = new Vector3(movementDirection.x, verticalVelocity, movementDirection.z);
+        controller.Move(finalVelocity * Time.deltaTime);
     }
 }

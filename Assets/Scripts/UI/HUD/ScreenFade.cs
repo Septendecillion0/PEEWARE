@@ -12,26 +12,27 @@ public class ScreenFade : MonoBehaviour
         c.a = alpha;
         fadeImage.color = c;
     }
-    
+
     // fades out the SCREEN, drawing the image
-    public void FadeOut(float duration, System.Action onComplete = null)
+    // TODO: names are confusing
+    public void FadeOut(float duration, float currentAlpha = 0f, System.Action onComplete = null)
     {
         StopAllCoroutines();
-        StartCoroutine(Fade(0f, 1f, duration, onComplete));
+        StartCoroutine(Fade(currentAlpha, 1f, duration, onComplete));
     }
     // fades in the SCREEN, hiding the image
     // note: fade in is separated into 2 phases bc the first 5% alpha change is very noticeable
-    public void FadeIn(float duration, System.Action onComplete = null)
+    public void FadeIn(float duration, float currentAlpha = 1f, System.Action onComplete = null)
     {
         StopAllCoroutines();
-        StartCoroutine(FadeInHelper(duration, onComplete));
+        StartCoroutine(FadeInHelper(duration, currentAlpha, onComplete));
     }
 
-    private IEnumerator FadeInHelper(float duration, System.Action onComplete)
+    private IEnumerator FadeInHelper(float duration, float currentAlpha, System.Action onComplete)
     {
         // yield return StartCoroutine(Fade(1f, 0.95f, Mathf.Clamp(duration, 0f, duration - 0.5f), null));
         // yield return StartCoroutine(Fade(0.95f, 0f, 0.5f, onComplete)); // smooth out the last 5% of the fade
-        yield return StartCoroutine(Fade(1f, 0f, duration, onComplete));
+        yield return StartCoroutine(Fade(currentAlpha, 0f, duration, onComplete));
     }
 
     private IEnumerator Fade(float from, float to, float duration, System.Action onComplete)

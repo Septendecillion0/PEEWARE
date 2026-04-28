@@ -2,7 +2,7 @@
 
 public class Jump : MonoBehaviour
 {
-    private Rigidbody rb;
+    private FirstPersonMovement movement;
     public float jumpStrength = 2;
     public event System.Action Jumped;
 
@@ -19,8 +19,8 @@ public class Jump : MonoBehaviour
 
     void Awake()
     {
-        // Get rigidbody.
-        rb = GetComponent<Rigidbody>();
+        // Get FirstPersonMovement component.
+        movement = GetComponent<FirstPersonMovement>();
     }
 
     void LateUpdate()
@@ -28,7 +28,7 @@ public class Jump : MonoBehaviour
         // Jump when the Jump button is pressed and we are on the ground.
         if (Input.GetButtonDown("Jump") && canJump && (!groundCheck || groundCheck.isGrounded))
         {
-            rb.AddForce(Vector3.up * 100 * jumpStrength);
+            movement.verticalVelocity = Mathf.Sqrt(jumpStrength * 2f * movement.gravity);
             Jumped?.Invoke();
         }
     }

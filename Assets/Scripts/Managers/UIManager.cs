@@ -188,42 +188,47 @@ public class UIManager : Singleton<UIManager>
     /// <param name="delay"> delay before starting the fade animation </param>
     public void PlayFadeIn(float duration, float delay = 1f)
     {
-        Debug.Log("FadeIn init");
         fadeOverlay.SetAlpha(1f); // ensure fade starts fully opaque
 
         StartCoroutine(DelayedFadeIn());
         IEnumerator DelayedFadeIn()
         {
-            Debug.Log("FadeIn wait");
             yield return new WaitForSecondsRealtime(delay);
-            Debug.Log("FadeIn start");
             fadeOverlay.FadeIn(duration);
-            Debug.Log("FadeIn end");
         }
     }
-
-    // public void SetFade(float alpha)
-    // {
-    //     Color c = fadeOverlay.color;
-    //     c.a = 1f - alpha;
-    //     fadeOverlay.color = c;
-    // }
 
     // plays the blind animation
     // TODO: replace with the animation instead of image fade
     // NOTE: uses scaled time since the effect occurs in game
     public void PlayBlind()
-    {
+    {   
+        activeBlind = true;
         StartCoroutine(BlindBuff());
         
         IEnumerator BlindBuff()
         {
-            enemyBlind.FadeOut(0.1f);
-            yield return new WaitForSeconds(3.0f);
+            enemyBlind.SetAlpha(1f); // ensure blind starts fully opaque (should be here due to darkness value)
+            yield return new WaitForSeconds(2.0f);
             enemyBlind.FadeIn(2.0f);
+            darkness = 0f;
+            activeBlind = false;
             // uses ScreenFade.cs to edit alpha of the image
             // replace this when adding animation
         }
+    }
+
+    // Used by ShadowDoodle to set the darkness of the screen based on its darkness value
+    // Implemented as Update rather than Set to ensure smooth value change
+    // TODO: we temporarily store a global darkness value here; should be put in playerAttributes or similar data object
+    // TODO: shadows have weird behavior bc they can overlap fields -> currently separating visuals and behavior slightly but should be reworked
+    public float darkness;
+    public bool activeBlind;
+    public void UpdateDarkness(float delta)
+    {   
+        if (activeBlind) return;
+        darkness = Mathf.Clamp(darkness + delta, 0f, 1f);
+        enemyBlind.SetAlpha(darkness);
     }
 
     // plays the hurt animation

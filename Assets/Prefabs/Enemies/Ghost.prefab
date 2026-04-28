@@ -10,10 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 4549844077233238344}
   - component: {fileID: 378201515555015063}
-  - component: {fileID: 8731114524487016187}
+  - component: {fileID: 2571403275975979790}
   - component: {fileID: 2846662253118365836}
   - component: {fileID: -7540952855276986694}
-  - component: {fileID: 1660715931149788625}
   m_Layer: 0
   m_Name: Ghost
   m_TagString: Untagged
@@ -33,7 +32,8 @@ Transform:
   m_LocalPosition: {x: -4.69, y: 1.54, z: 5.20932}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 5338277211315403604}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &378201515555015063
@@ -94,29 +94,33 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!136 &8731114524487016187
-CapsuleCollider:
+--- !u!54 &2571403275975979790
+Rigidbody:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 63164046888599622}
-  m_Material: {fileID: 0}
+  serializedVersion: 5
+  m_Mass: 1
+  m_LinearDamping: 0
+  m_AngularDamping: 0.05
+  m_CenterOfMass: {x: 0, y: 0, z: 0}
+  m_InertiaTensor: {x: 1, y: 1, z: 1}
+  m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
   m_ExcludeLayers:
     serializedVersion: 2
     m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.35724664
-  m_Height: 1.6649663
-  m_Direction: 1
-  m_Center: {x: 0, y: 0.055131793, z: -0.0024049282}
+  m_ImplicitCom: 1
+  m_ImplicitTensor: 1
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!114 &2846662253118365836
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -132,14 +136,13 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: ac38fa094017a274791c2a52e57d8075, type: 3}
   spawnSound: {fileID: 8300000, guid: 8ab30d1f66225aa4b976bfea279743c6, type: 3}
   deathSound: {fileID: 8300000, guid: 9f1e813674d709d48a787898619a00d1, type: 3}
-  scareAmount: 10
+  despawnTime: 30
   minHorizontalDistance: 10
   maxHorizontalDistance: 20
   minVerticalDistance: -10
   maxVerticalDistance: 10
-  minDirectionDot: -1
-  maxDirectionDot: 0
-  scareAmountOnCollide: 20
+  viewAngleCenter: 180
+  viewAngleWidth: 90
   lookThreshold: 0.8
   jumpSpeed: 10
   horizontalOffset: 2
@@ -244,33 +247,71 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &1660715931149788625
+--- !u!1 &4789777033949984730
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5338277211315403604}
+  - component: {fileID: 5558405010333786414}
+  - component: {fileID: 1686854013692389512}
+  m_Layer: 0
+  m_Name: TriggerCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5338277211315403604
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4789777033949984730}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4549844077233238344}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &5558405010333786414
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4789777033949984730}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.35724664
+  m_Height: 1.6649663
+  m_Direction: 1
+  m_Center: {x: 0, y: 0.055131793, z: -0.0024049282}
+--- !u!114 &1686854013692389512
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 63164046888599622}
-  m_Enabled: 0
+  m_GameObject: {fileID: 4789777033949984730}
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3730e86ef153b0e47ab9687fa29c5384, type: 3}
+  m_Script: {fileID: 11500000, guid: c7da327b87eaefc4cba6280343d5da7c, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GhostScript
-  passiveSound: {fileID: 0}
-  spawnSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  scareAmount: 10
-  minHorizontalDistance: 5
-  maxHorizontalDistance: 20
-  minVerticalDistance: -2
-  maxVerticalDistance: 3
-  minDirectionDot: -1
-  maxDirectionDot: 1
-  scareAmountOnCollide: 20
-  lookThreshold: 0.8
-  jumpSpeed: 10
-  horizontalOffset: 2
-  tpTime: 3
-  minBehindDistance: 4
-  maxBehindDistance: 7
-  maxAllowedDistance: 10
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyTriggerRelay

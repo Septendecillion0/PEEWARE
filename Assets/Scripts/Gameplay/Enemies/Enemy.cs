@@ -7,16 +7,25 @@ using UnityEngine.Audio;
 /// Base class for all enemies.
 /// Handles audio setup, basic player rotation, despawning, and spawn position validation.
 /// </summary>
-public class Enemy : MonoBehaviour
-{
+public abstract class Enemy : MonoBehaviour
+{   
+
+    // TODO: separate audio in EnemyAudio component
+
     [Header("Audio")]
     private AudioSource thisAudio;
     public AudioClip passiveSound;
     public AudioClip spawnSound;
     public AudioClip deathSound;
 
-    [Header("Behavior")]
-    [SerializeField] protected float scareAmount = 10f;
+    // TODO: properties and spawn properties can be separated into ScriptableObject data
+
+    [Header("Base Properties")]
+    [SerializeField] public virtual int id => 0;
+    [SerializeField] protected virtual float despawnTime => 30f;
+    [SerializeField] protected virtual bool naturallyDespawns => true;
+    [SerializeField] protected virtual float scareAmount => 99f; // default should be overridden in all enemies
+    [SerializeField] public virtual bool uniqueEnemy => false;
 
     [Header("Spawn Constraints")]
     // Indicator for whether the enemy stays on the ground
@@ -44,12 +53,36 @@ public class Enemy : MonoBehaviour
     // How wide the allowed cone is (half-angle)
     [Range(0f, 180f)]
     public float viewAngleWidth = 180f; // default to any direction (no constraint)
-    void Awake()
+
+    // currently just used to configure audio
+    // TODO: separate into helper method and/or refactor to separate component
+    protected virtual void Awake()
+    {
+        InitializeAudio();
+    }
+
+    // TODO: separate into audio component
+    protected virtual void InitializeAudio()
     {
         thisAudio = GetComponent<AudioSource>();
         if (thisAudio == null)
-            throw new System.InvalidOperationException($"[{GetType().Name}] AudioSource component not found on enemy prefab");
+        {
+            thisAudio = gameObject.AddComponent<AudioSource>();
+        }
+    }
 
+    protected virtual void Start()
+    {
+        StartAudio();
+        if (naturallyDespawns)
+        {
+            StartCoroutine(NaturallyDespawnCoroutine(despawnTime));
+        }
+    }
+
+    // TODO: separate into audio component
+    protected virtual void StartAudio()
+    {
         if (spawnSound != null) thisAudio.PlayOneShot(spawnSound);
         if (passiveSound != null)
         {
@@ -59,32 +92,55 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    // Base Update that always orients toward player
+    // Base Update
+    // Enforces looking at the player
+    // NOTE: should only be overridden for special behavior OR if 3D enemies are added
     protected virtual void Update()
     {
         // Always look at the player
-        if (EnemyManager.Instance != null && EnemyManager.Instance.player != null)
+        if (EnemyManager.Instance != null && EnemyManager.Instance.playerCam != null)
         {
-            Vector3 direction = EnemyManager.Instance.player.transform.position - transform.position;
-            direction.y = 0;
+            Vector3 direction = EnemyManager.Instance.playerCam.transform.position - transform.position;
+            if (IsGrounded)
+            {
+                direction.y = 0;
+            }
             transform.rotation = Quaternion.LookRotation(direction);
         }
     }
 
-    public void EnemyDeath(){
+    /// <summary>
+    /// Automatically despawn the enemy after a certain amount of time has passed.
+    /// Note: uses TimeScale, so will correctly pause/unpause with game state changes.
+    /// </summary> <remarks>
+    /// Called by base class Start if naturallyDespawns is true
+    /// </remarks>
+    /// <param name="lifetime"></param>
+    /// <returns></returns>
+    private IEnumerator NaturallyDespawnCoroutine(float lifetime)
+    {
+        yield return new WaitForSeconds(lifetime);
+        EnemyManager.Instance.EnemyVanish(this.gameObject);
+    }
+
+    /// <summary>
+    /// Handle enemy death behavior
+    /// </summary>
+    /// <remarks>
+    /// NOTE: distinct from despawning or disappearing; enemy death is specifically for enemies that can "die"
+    protected virtual void EnemyDeath(){
         if (deathSound != null) AudioSource.PlayClipAtPoint(deathSound, transform.position, 1f);
         EnemyManager.Instance.EnemyVanish(this.gameObject);
     }
-
-    public void NaturallyDespawn(float age)
+    
+    public virtual void OnTriggerDetected(Collider other)
     {
-        StartCoroutine(Nd(age));
+        // Default implementation does nothing; override in child classes for specific trigger behavior
     }
 
-    private IEnumerator Nd(float age)
+    public virtual void OnTriggerExitDetected(Collider other)
     {
-        yield return new WaitForSeconds(age);
-        EnemyManager.Instance.EnemyVanish(this.gameObject);
+        // Default implementation does nothing; override in child classes for specific trigger behavior
     }
 
     /// -------------------------------------

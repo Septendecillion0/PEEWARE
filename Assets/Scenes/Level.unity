@@ -207,6 +207,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7585641121208191581, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 9018857415070332078, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
       propertyPath: m_Name
       value: HUDCanvas
@@ -576,11 +580,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94a13c1b27d983449a07f14d3e77167d, type: 3}
---- !u!1 &1447322215 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 2920323335950813468, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
-  m_PrefabInstance: {fileID: 204082003}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1661018354
 GameObject:
   m_ObjectHideFlags: 0
@@ -848,6 +847,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: UIManager
       objectReference: {fileID: 0}
+    - target: {fileID: 1696594381801788667, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1701221234957861781, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2217035246640529551, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6155383848119136230, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6458427602068119869, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 13.83794
@@ -886,6 +901,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6458427602068119869, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6488532890180737626, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7252730075981131773, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9028368778829350320, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9084243191764178171, guid: 7ea0054c11d258749aaa9b52978cf4e5, type: 3}
+      propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
@@ -986,38 +1017,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: peeMeter
-      value: 
-      objectReference: {fileID: 1447322215}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: maxSpawnAttempts
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: enemyPrefabs.Array.size
-      value: 5
-      objectReference: {fileID: 0}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: 'enemyPrefabs.Array.data[0]'
-      value: 
-      objectReference: {fileID: 4784436105486175168, guid: a37422f7056348e4082a3dbd56b8751c, type: 3}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: 'enemyPrefabs.Array.data[1]'
-      value: 
-      objectReference: {fileID: 2094668390991299439, guid: abdccf77dfdffa2418aced9715901ae2, type: 3}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: 'enemyPrefabs.Array.data[2]'
-      value: 
-      objectReference: {fileID: 3381633526987363447, guid: 52d9b3d2322743449bdd5c74abacdbce, type: 3}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: 'enemyPrefabs.Array.data[3]'
-      value: 
-      objectReference: {fileID: 6552444836095272542, guid: 84abc0f539bf03f4a9c0408a1e6cd033, type: 3}
-    - target: {fileID: 6776223913475800741, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-      propertyPath: 'enemyPrefabs.Array.data[4]'
-      value: 
-      objectReference: {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
     - target: {fileID: 6921079755364561768, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
       propertyPath: m_Name
       value: EnemyManager

@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 3773155674142425351}
   - component: {fileID: 584676102093668775}
   - component: {fileID: 6814242546728190072}
-  - component: {fileID: 7878463144349027098}
   - component: {fileID: 1064114851140700812}
   - component: {fileID: -3799533408021954938}
   m_Layer: 0
@@ -34,7 +33,8 @@ Transform:
   m_LocalPosition: {x: -7.38801, y: 2.47, z: -1.94864}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 6254125652386513890}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!212 &3773155674142425351
@@ -110,15 +110,16 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: 9ee9e7de4d6a58746a34ffa49e62056c, type: 3}
   spawnSound: {fileID: 0}
   deathSound: {fileID: 8300000, guid: 30d1210fdbb7da243995da0888b09b39, type: 3}
-  scareAmount: 10
+  despawnTime: 30
   minHorizontalDistance: 5
   maxHorizontalDistance: 30
   minVerticalDistance: -20
   maxVerticalDistance: 20
   viewAngleCenter: 0
   viewAngleWidth: 180
-  scareAmountOnTrigger: 10
-  naturalDespawnTime: 30
+  playerInside: 0
+  darkness: 0
+  darknessRate: 0.4
 --- !u!54 &6814242546728190072
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -146,29 +147,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!136 &7878463144349027098
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2094668390991299439}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 1
-  m_Height: 2.1136346
-  m_Direction: 1
-  m_Center: {x: 0, y: -0.056817293, z: 0}
 --- !u!136 &1064114851140700812
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -186,12 +164,12 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.80078125
-  m_Height: 2.3049893
+  m_Radius: 0.2
+  m_Height: 2.2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0.1, y: 0, z: 0}
 --- !u!82 &-3799533408021954938
 AudioSource:
   m_ObjectHideFlags: 0
@@ -289,3 +267,71 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!1 &8167176084161370761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 6254125652386513890}
+  - component: {fileID: 728246977673317031}
+  - component: {fileID: 5734347124132976222}
+  m_Layer: 0
+  m_Name: TriggerCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &6254125652386513890
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167176084161370761}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 173310445825840022}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!136 &728246977673317031
+CapsuleCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167176084161370761}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Height: 2
+  m_Direction: 1
+  m_Center: {x: 0.1, y: 0, z: 0}
+--- !u!114 &5734347124132976222
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8167176084161370761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c7da327b87eaefc4cba6280343d5da7c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyTriggerRelay
