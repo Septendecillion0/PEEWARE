@@ -136,7 +136,6 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: ac38fa094017a274791c2a52e57d8075, type: 3}
   spawnSound: {fileID: 8300000, guid: 8ab30d1f66225aa4b976bfea279743c6, type: 3}
   deathSound: {fileID: 8300000, guid: 9f1e813674d709d48a787898619a00d1, type: 3}
-  despawnTime: 30
   minHorizontalDistance: 10
   maxHorizontalDistance: 20
   minVerticalDistance: -10

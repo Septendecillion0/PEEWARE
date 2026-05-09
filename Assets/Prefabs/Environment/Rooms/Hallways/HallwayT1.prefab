@@ -41,7 +41,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5227638168341098853}
-  m_Mesh: {fileID: 7526972070035058711, guid: 5b3dbb0e954d0f44f903bb8af7c10e0b, type: 3}
+  m_Mesh: {fileID: 1525954333543322355, guid: 1dd878d2ee8c7274f89ea5bde79775e1, type: 3}
 --- !u!23 &4262245628597660453
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -111,7 +111,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 7526972070035058711, guid: 5b3dbb0e954d0f44f903bb8af7c10e0b, type: 3}
+  m_Mesh: {fileID: 1525954333543322355, guid: 1dd878d2ee8c7274f89ea5bde79775e1, type: 3}
 --- !u!1 &5424920513983461328
 GameObject:
   m_ObjectHideFlags: 0
@@ -153,7 +153,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5424920513983461328}
-  m_Mesh: {fileID: -5627304274226745843, guid: 5b3dbb0e954d0f44f903bb8af7c10e0b, type: 3}
+  m_Mesh: {fileID: 1525954333543322355, guid: 1dd878d2ee8c7274f89ea5bde79775e1, type: 3}
 --- !u!23 &7995811188290817639
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -223,7 +223,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: -5627304274226745843, guid: 5b3dbb0e954d0f44f903bb8af7c10e0b, type: 3}
+  m_Mesh: {fileID: 1525954333543322355, guid: 1dd878d2ee8c7274f89ea5bde79775e1, type: 3}
 --- !u!1 &6882083927515953023
 GameObject:
   m_ObjectHideFlags: 0
@@ -265,7 +265,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6882083927515953023}
-  m_Mesh: {fileID: 6935516964632751914, guid: 5b3dbb0e954d0f44f903bb8af7c10e0b, type: 3}
+  m_Mesh: {fileID: 1525954333543322355, guid: 1dd878d2ee8c7274f89ea5bde79775e1, type: 3}
 --- !u!23 &4718835296353049034
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -335,7 +335,7 @@ MeshCollider:
   serializedVersion: 5
   m_Convex: 0
   m_CookingOptions: 30
-  m_Mesh: {fileID: 6935516964632751914, guid: 5b3dbb0e954d0f44f903bb8af7c10e0b, type: 3}
+  m_Mesh: {fileID: 1525954333543322355, guid: 1dd878d2ee8c7274f89ea5bde79775e1, type: 3}
 --- !u!1 &8553113629999830056
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,15 +450,16 @@ MonoBehaviour:
   exits:
   - transform: {fileID: 9128568681837064882}
     doorType: 1
-    isConnected: 0
+    room: {fileID: 0}
   - transform: {fileID: 4814766141865489915}
     doorType: 1
-    isConnected: 0
+    room: {fileID: 0}
   - transform: {fileID: 3510728133798420592}
     doorType: 1
-    isConnected: 0
+    room: {fileID: 0}
   maxSpawnCount: -1
   preferredNeighbors: []
+  bottleSpawnChance: 0.5
 --- !u!64 &5959611634499221441
 MeshCollider:
   m_ObjectHideFlags: 0
