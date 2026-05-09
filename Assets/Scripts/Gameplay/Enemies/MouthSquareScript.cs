@@ -4,20 +4,25 @@ using UnityEngine;
 /// </summary>
 /// <remarks>
 /// INTENDED behaviors are as follows:
-/// - spawns close to or on walls (TODO)
+/// - begin: make sound; no movement
 /// 
-/// - passive: produces sound, no movement
+/// - player looking: build aggro, move
+/// - player not looking: reduce aggro, move
 /// 
-/// - activated when player looks at the mouth square
-/// - aggro system: build up when the enemy is ANYWHERE on screen
-///                 rate is based on how centered the enemy is (player looking directly at or indirectly at)
-///                 decrease when enemy is not on screen
-/// - active + aggro: rapidly move towards player camera
-///                   stop moving when not being looked at
-///                   slowly move back to starting position if aggro decreases enough
-/// - upon reaching player, trigger hurt animation + sound, increase pee meter, despawn
+/// - aggro system: build up while MouthSquare is on screen
+///                 rate scales off how "centered" MouthSquare is on the screen
+///                 aggro > threshold : enter "active" state
+///                 aggro < threshold : exit "active" state
+///                 aggro decreases when MouthSquare is not on screen
+/// - active:       rapidly move towards player
+///                 if player reached, trigger jumpscare, increase pee, despawn
+///                 stop moving when not being looked at
+/// - inactive:     slowly return to spawn position
 /// 
-/// potential future expansions: 
+/// - despawns on scare or naturally after some time
+/// 
+/// future features: 
+/// - spawning: spawn close to or on walls (especially on "portrait" props)
 /// - change movement speed based on aggro or other params
 /// - change behavior to cause guaranteed "hover" state (linger close to player for amount of time)
 /// </remarks>
@@ -58,9 +63,9 @@ public class MouthSquareScript : Enemy
 
     private void DetectPlayerSight()
     {
-        Transform playerCam = EnemyManager.Instance.playerCam.transform;
-        Vector3 direction = (transform.position - playerCam.position).normalized;
-        float dot = Vector3.Dot(playerCam.forward, direction);
+        Transform playerCamTransform = EnemyManager.Instance.playerCam.transform;
+        Vector3 direction = (transform.position - playerCamTransform.position).normalized;
+        float dot = Vector3.Dot(playerCamTransform.forward, direction);
 
         // base intensity from how centered on the screen MouthSquare is
         float intensity = Mathf.InverseLerp(lookThreshold, 1f, dot);
@@ -76,7 +81,7 @@ public class MouthSquareScript : Enemy
         // TODO: update layer mask with final layers
         int layerMask = LayerMask.GetMask("Default"); // Adjust if using specific layers for enemies
         // Cast ray from player camera towards enemy; collides with environment and physical (non-trigger) enemies, but not triggers
-        if (Physics.Raycast(playerCam.position, direction, out RaycastHit hit, 100f, layerMask, QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(playerCamTransform.position, direction, out RaycastHit hit, 100f, layerMask, QueryTriggerInteraction.Ignore))
         {
             if (hit.transform == transform)
             {
@@ -112,14 +117,14 @@ public class MouthSquareScript : Enemy
 
     private void UpdatePosition()
     {   
-        Transform playerCam = EnemyManager.Instance.playerCam.transform;
+        Transform playerCamTransform = EnemyManager.Instance.playerCam.transform;
         
         // aggro + player looking -> move to player
         if (aggroLevel >= aggroThreshold && lookIntensity > 0f)
         {
             transform.position = Vector3.MoveTowards(
                 transform.position, 
-                playerCam.position, 
+                playerCamTransform.position, 
                 attackMoveSpeed * Time.deltaTime);
         }
         // aggro + player not looking -> no movement (hover in place)

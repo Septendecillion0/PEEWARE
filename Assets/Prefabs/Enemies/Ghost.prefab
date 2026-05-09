@@ -142,13 +142,12 @@ MonoBehaviour:
   maxVerticalDistance: 10
   viewAngleCenter: 180
   viewAngleWidth: 90
-  lookThreshold: 0.8
-  jumpSpeed: 10
-  horizontalOffset: 2
-  tpTime: 3
-  minBehindDistance: 4
-  maxBehindDistance: 7
-  maxAllowedDistance: 18
+  moveSpeed: 1
+  maxAllowedDistance: 12
+  teleportCount: 0
+  maxTeleports: 3
+  teleportRadius: 5
+  teleportRadiusOffset: 1
 --- !u!82 &-7540952855276986694
 AudioSource:
   m_ObjectHideFlags: 0
