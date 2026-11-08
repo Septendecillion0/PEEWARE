@@ -6,6 +6,7 @@ public class ScreenFade : MonoBehaviour
 {
     public Image fadeImage;
 
+    // ranges from 0-1: fully transparent / fully opaque
     public void SetAlpha(float alpha)
     {
         Color c = fadeImage.color;

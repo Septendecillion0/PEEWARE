@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
-
+/// <summary>
+/// Shows/hides the interaction UI text
+/// Responds to GameState changes so text doesn't linger on screen in some situations
+/// </summary>
 public class InteractionUI : MonoBehaviour
 {
     // Singleton instance

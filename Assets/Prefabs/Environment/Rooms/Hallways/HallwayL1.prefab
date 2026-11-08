@@ -220,7 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Hallway WL
   complexity: 2
-  isDoor: 0
+  roomType: 2
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 2731452510352839746}

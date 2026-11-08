@@ -226,17 +226,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Waiting Room
   complexity: 1
-  isDoor: 0
+  roomType: 2
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 921967382946167275}
     doorType: 0
-    isConnected: 0
+    room: {fileID: 0}
   - transform: {fileID: 8983407529464846354}
     doorType: 0
-    isConnected: 0
+    room: {fileID: 0}
   maxSpawnCount: -1
   preferredNeighbors: []
+  bottleSpawnChance: 0.5
 --- !u!1 &5948147439653484193
 GameObject:
   m_ObjectHideFlags: 0

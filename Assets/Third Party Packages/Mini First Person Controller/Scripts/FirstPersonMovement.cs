@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class FirstPersonMovement : MonoBehaviour
 {
+    [SerializeField] PlayerController playerController;
+
     public float walkSpeed;
 
     [Header("Running")]
@@ -29,7 +31,10 @@ public class FirstPersonMovement : MonoBehaviour
     }
 
     void Update()
-    {
+    {   
+        if (!playerController.canMove)
+            return;
+
         // Update IsRunning from input.
         IsRunning = canRun && Input.GetKey(runningKey);
 

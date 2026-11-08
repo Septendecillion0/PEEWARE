@@ -7,6 +7,8 @@ using UnityEngine;
 /// </summary>
 public class PlayerInteractionController : MonoBehaviour
 {
+    [SerializeField] PlayerController playerController;
+
     [SerializeField] private float interactRange = 1.5f;
     [SerializeField] private LayerMask interactableMask;
     [SerializeField] private Camera playerCamera;
@@ -14,6 +16,7 @@ public class PlayerInteractionController : MonoBehaviour
 
     void Update()
     {
+        if (!playerController.canInput) return;
         DetectInteractable();
         HandleInput();
     }

@@ -1017,7 +1017,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Great Hall
   complexity: 6
-  isDoor: 0
+  roomType: 2
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 5883392868628790}

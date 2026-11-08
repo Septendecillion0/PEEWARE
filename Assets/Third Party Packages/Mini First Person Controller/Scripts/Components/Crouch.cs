@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class Crouch : MonoBehaviour
 {
+    [SerializeField] PlayerController playerController;
+
     public KeyCode key = KeyCode.LeftControl;
 
     [Header("Slow Movement")]
@@ -42,6 +44,7 @@ public class Crouch : MonoBehaviour
 
     void LateUpdate()
     {
+        if (!playerController.canMove) return;
         if (Input.GetKey(key) && canCrouch && (!groundCheck || groundCheck.isGrounded))
         {
             // Save original values on first crouch.

@@ -368,6 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec72980442fddac4d86e75ab24b4d027, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 7597814968205145857}
   character: {fileID: 4207293392497186}
   sensitivity: 2
   smoothing: 1.5
@@ -402,6 +403,7 @@ GameObject:
   - component: {fileID: 114497868231759342}
   - component: {fileID: 114762042097486276}
   - component: {fileID: 3966144457947309906}
+  - component: {fileID: 7597814968205145857}
   m_Layer: 10
   m_Name: First Person Controller
   m_TagString: Player
@@ -464,6 +466,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 97fca36bd81de7c4cafce7bbf02ca611, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 7597814968205145857}
   walkSpeed: 2.5
   canRun: 1
   runSpeed: 4.5
@@ -481,6 +484,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f977f53412d81140ab13b3fca57cca2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 7597814968205145857}
   jumpStrength: 1
   groundCheck: {fileID: 114503055206606986}
 --- !u!114 &114762042097486276
@@ -495,6 +499,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 27b67ddb3d23b8340b125aede56d7e8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerController: {fileID: 7597814968205145857}
   key: 306
   movement: {fileID: 114963311885979670}
   movementSpeed: 1.2
@@ -514,11 +519,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fd4969725c144156a4afd4efab2ad01, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteractionController
+  playerController: {fileID: 7597814968205145857}
   interactRange: 2
   interactableMask:
     serializedVersion: 2
     m_Bits: 129
   playerCamera: {fileID: 20437472682476688}
+--- !u!114 &7597814968205145857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1773623360729482}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a7b9842181bcee4478d3a45a9a50b4c6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerController
+  canMove: 0
+  canInput: 0
+  canLook: 0
+  canSee: 0
+  canHear: 0
 --- !u!1 &1963958859065967600
 GameObject:
   m_ObjectHideFlags: 0

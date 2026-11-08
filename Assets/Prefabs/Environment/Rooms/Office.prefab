@@ -419,7 +419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Office
   complexity: 3
-  isDoor: 0
+  roomType: 2
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 186836966628906484}

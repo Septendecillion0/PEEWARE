@@ -26,8 +26,10 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public enum GameState
     {
-        Start,
+        MainMenu,
+        Loading,
         Playing,
+        Cutscene,
         Paused,
         InSettings,
         GameOver,
@@ -42,9 +44,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// The current game state. Read-only externally, call SetState() to change.
     /// </summary>
-    /// 
-    /// TODO: revisit and understand what this does. Don't set state to playing if we are in the main menu
-    public GameState State { get; private set; } = GameState.Playing;
+    public GameState State;// { get; private set; } = GameState.Playing;
 
     /// <summary>
     /// Backwards-compatible boolean (read-only). Convenience property for scripts not yet migrated to GameState.
@@ -80,17 +80,18 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name == MainMenu)
-        {
-            SetState(GameState.Start);
-        }
-        else if (scene.name == Level)
-        {
-            SetState(GameState.Playing);
-        }
         ResetGame();
         PlaySceneMusic();
         UIManager.Instance.PlayFadeIn(4f);
+        if (scene.name == MainMenu)
+        {
+            SetState(GameState.MainMenu);
+        }
+        else if (scene.name == Level)
+        {
+            SetState(GameState.Loading);
+        }
+        
     }
 
     /// <summary>
@@ -112,24 +113,7 @@ public class GameManager : Singleton<GameManager>
     public void ResetGame()
     {
         foundToilet = false;
-        if (State == GameState.Start)
-        {
-            Time.timeScale = 0f;
-
-            Jump.canJump = false;
-            Crouch.canCrouch = false;
-
-            FirstPersonLook.canLook = false;
-        }
-        else
-        {
-            Time.timeScale = 1f;
-
-            Jump.canJump = true;
-            Crouch.canCrouch = true;
-
-            FirstPersonLook.canLook = true;
-        }
+        //MapData.ClearMap();
 
         if (firstPersonAudio != null) firstPersonAudio.SetActive(true);
     }
@@ -152,22 +136,14 @@ public class GameManager : Singleton<GameManager>
                 Time.timeScale = 1f;
                 Cursor.lockState = CursorLockMode.Locked;
 
-                Jump.canJump = true;
-                Crouch.canCrouch = true;
-                FirstPersonLook.canLook = true;
-
                 if (firstPersonAudio != null)
                     firstPersonAudio.SetActive(true);
                 break;
 
-            case GameState.Paused:
+            case GameState.Paused: // TODO add default state?
             case GameState.InSettings:
                 Time.timeScale = 0f;
                 Cursor.lockState = CursorLockMode.None;
-
-                Jump.canJump = false;
-                Crouch.canCrouch = false;
-                FirstPersonLook.canLook = false;
 
                 if (firstPersonAudio != null)
                     firstPersonAudio.SetActive(false);
@@ -193,10 +169,6 @@ public class GameManager : Singleton<GameManager>
     {
         Time.timeScale = 0f;
         Cursor.lockState = CursorLockMode.None;
-
-        Jump.canJump = false;
-        Crouch.canCrouch = false;
-        FirstPersonLook.canLook = false;
     }
 
     /// <summary>
@@ -219,13 +191,14 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
-    /// Restarts the current scene from the beginning. Only valid when game is over.
+    /// Restarts (rebuilds) the current scene
+    /// Only called from the gameover screen
     /// </summary>
     public void RestartGame()
     {
-        SetState(GameState.Playing);
-
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        SetState(GameState.Loading);
     }
 
     /// <summary>

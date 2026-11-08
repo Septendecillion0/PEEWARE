@@ -81,15 +81,12 @@ public class UIManager : Singleton<UIManager>
     // GAME STATE ENTRY POINT (FUTURE EVENT HOOK)
     // =========================================================
 
-    // TODO: update GameManager to use events, update UIManager to listen for events
-    //       remove any calls to HandleGameStateChange in other managers
-
     public void HandleGameStateChange(GameManager.GameState state)
     {
         switch (state)
         {
-            case GameManager.GameState.Start:
-                StateStart();
+            case GameManager.GameState.Loading:
+                StateLoading();
                 break;
 
             case GameManager.GameState.Playing:
@@ -111,6 +108,9 @@ public class UIManager : Singleton<UIManager>
             case GameManager.GameState.Victory:
                 StateVictory();
                 break;
+            default:
+                HideAllScreens();
+                break;
         }
     }
 
@@ -118,9 +118,11 @@ public class UIManager : Singleton<UIManager>
     // =========================================================
     // STATE HANDLERS
     // =========================================================
-    private void StateStart()
+    private void StateLoading()
     {
         HideAllScreens();
+        // fadeOverlay.Show();
+        // fadeOverlay.SetAlpha(1f);
     }
     private void StatePlaying()
     {

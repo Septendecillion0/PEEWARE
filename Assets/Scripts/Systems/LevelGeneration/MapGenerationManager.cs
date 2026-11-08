@@ -1,8 +1,13 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+/// <summary>
+/// Generates the level map based on preset parameters, stores info as map
+/// Also holds helper functions for helping with enemy spawn position-finding
+/// </summary>
 public class MapGenerationManager : Singleton<MapGenerationManager>
 {
+    [SerializeField] CutsceneController cutsceneController;
+
     [Header("Map Seed (set -1 for random)")]
     public int seed = -1;
 
@@ -13,21 +18,24 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
     [Header("Max Path Complexity Allowed")]
     public int maxPathComplexity;
 
-    [Header("Room Prefabs (index 0 = Start, 1 = End)")]
-    public List<Room> rooms;
-
     private int totalComplexity = 0; // count successfully placed rooms
     private List<Bounds> placedBounds = new List<Bounds>(); // used for collision checks
     private List<Room> placedRooms = new List<Room>(); // parallel list so we can name which room overlaps
 
+    [SerializeField] private MapData map;
+    [SerializeField] private MapSettings mapSettings;
+    private List<Room> roomPrefabs = new List<Room>();
+
     private bool endRoomPlaced = false;
     private GameObject generationRoot;
-    private const int maxGenerationRetries = 100;
+    private const int maxGenerationRetries = 1000;
 
     private Dictionary<Room, int> spawnCounts = new Dictionary<Room, int>();
 
     void Start()
     {
+        roomPrefabs = mapSettings.roomCatalogue;
+
         if (seed >= 0)
             Random.InitState(seed);
         else
@@ -42,6 +50,8 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             if (success) {
                 Debug.Log($"Map generation succeeded after {attempts} attempt(s).");
                 BottleSpawner.Instance.SpawnBottles(placedRooms);
+
+                cutsceneController.PlayCutscene();
                 return;
             }
             else {
@@ -68,14 +78,12 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
         generationRoot = new GameObject("GeneratedRooms");
 
         // Place start room (assume index 0)
-        Room startRoom = Instantiate(rooms[0], transform.position, Quaternion.identity, generationRoot.transform);
+        Room startRoom = Instantiate(roomPrefabs[0], transform.position, Quaternion.identity, generationRoot.transform);
 
         Bounds startBounds = GetRoomBounds(startRoom);
         placedBounds.Add(startBounds);
         placedRooms.Add(startRoom);
         totalComplexity += startRoom.complexity;
-
-        Debug.Log($"[GEN] Placed start room '{startRoom.roomName}' at {startRoom.transform.position}. Bounds center {startBounds.center}, size {startBounds.size}");
 
         // Expand outward from start room exits
         foreach (var exit in startRoom.GetAvailableExits())
@@ -83,6 +91,12 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             Generate(exit, 0);
             if (totalComplexity >= maxRoomComplexity) break;
         }
+
+        // Save data to Map
+        map.startRoom = startRoom;
+        //map.endRoom = map.FindRoomsOfType(Room.RoomType.End)[0];
+        map.rooms = placedRooms;
+
 
         return endRoomPlaced && totalComplexity >= minRoomComplexity;
     }
@@ -100,7 +114,7 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
         // Try end room first if required
         if (mustPlaceEndRoom)
         {
-            Room endRoomPrefab = rooms[1];
+            Room endRoomPrefab = roomPrefabs[1];
             if (TryPlaceRoom(fromExit, endRoomPrefab, pathComplexity))
             {
                 endRoomPlaced = true;
@@ -145,12 +159,12 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
 
         Room fromRoom = fromExit.transform.GetComponentInParent<Room>();
 
-        for (int i = 0; i < rooms.Count; i++)
+        for (int i = 0; i < roomPrefabs.Count; i++)
         {
             if (i == 0) continue;                // never place start room again
             if (i == 1 && !mustPlaceEndRoom) continue; // end room only when needed
 
-            Room r = rooms[i];
+            Room r = roomPrefabs[i];
             
             // Check spawn limits on special rooms
             if (r.maxSpawnCount >= 0 && GetSpawnCount(r) >= r.maxSpawnCount) {
@@ -211,15 +225,19 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
 
             // SUCCESS
             Debug.Log($"[GEN] Placed room '{candidate.roomName}' at depth {pathComplexity}, total complexity {totalComplexity}");
+            
             // update room bounds
             placedRooms.Add(candidate);
             placedBounds.Add(candidateBounds);
+            
             // connect exits
             fromExit.connectedExit = instantiatedExit;
             instantiatedExit.connectedExit = fromExit;
+            
             // remove placeholder doors
             Destroy(fromExit.transform.gameObject);
             Destroy(instantiatedExit.transform.gameObject);
+            
             // increase totalComplexity
             totalComplexity += candidate.complexity;
             IncrementSpawnCount(prefab);

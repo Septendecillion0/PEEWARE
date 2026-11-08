@@ -24,10 +24,18 @@ public class Room : MonoBehaviour
         Hallway
     }
 
+    public enum RoomType
+    {
+        None,
+        Start,
+        End,
+        Generic
+    }
+
     [Header("Room Settings")]
     public string roomName;
     public int complexity = 1; // default complexity = 1
-    public bool isDoor = false;
+    public RoomType roomType;
     public Vector3 size;                // optional if you want to use bounding boxes
     [Header("Room Exits")]
     public List<Exit> exits = new List<Exit>();
@@ -36,7 +44,7 @@ public class Room : MonoBehaviour
 
     public List<Room> preferredNeighbors = new List<Room>(); 
 
-    [Header("Bottle Spawning")]
+    [Header("Prop Spawning")]
     [Range(0f, 1f)]
     public float bottleSpawnChance = 0.5f; // 0-1, probability that each bottle in room spawns
 
@@ -71,6 +79,16 @@ public class Room : MonoBehaviour
 
         if (available.Count == 0) return null;
         return available[Random.Range(0, available.Count)];
+    }
+
+    public List<Room> GetConnectedRooms()
+    {   
+        List<Room> rooms = new List<Room>();
+        foreach (var e in exits) {
+            if (e.connectedExit != null)
+                rooms.Add(e.connectedExit.room);
+        }
+        return rooms;
     }
 
 }
