@@ -13,62 +13,55 @@ public class MapData : ScriptableObject
     public Room startRoom;
     public Room endRoom;
     public List<Room> rooms;
+    public List<Bounds> roomBounds;
 
+    // Find every room matching the requested type
     public List<Room> FindRoomsOfType(Room.RoomType roomType)
     {
         List<Room> foundRooms = new List<Room>();
 
-        HashSet<Room> visited = new HashSet<Room>();
-        List<Room> path = new List<Room>();
+        if (rooms == null)
+            return foundRooms;
 
-        while (Search(startRoom, null, visited, path, roomType))
+        foreach (Room room in rooms)
         {
-            Debug.Assert(path[path.Count - 1].roomType == roomType);
-            foundRooms.Add(path[path.Count - 1]);
+            if (room != null && room.roomType == roomType)
+                foundRooms.Add(room);
         }
 
         return foundRooms;
     }
 
+    // Find a path between two rooms
     public List<Room> FindPath(Room start, Room target)
     {
         HashSet<Room> visited = new HashSet<Room>();
         List<Room> path = new List<Room>();
 
         if (Search(start, target, visited, path))
-        {
             return path;
-        }
 
         return null;
     }
 
-    // Searches for a given room or roomType
-    // returns true if found, false if not
-    // dynamically modifies path to contain the path to the target room
+    // Depth-first search for a specific target room
     private bool Search(
         Room current,
         Room target,
         HashSet<Room> visited,
-        List<Room> path,
-        Room.RoomType roomType = Room.RoomType.None)
+        List<Room> path)
     {
-        // Prevent revisiting rooms
-        if (!visited.Add(current))
+        if (current == null || !visited.Add(current))
             return false;
 
-        // Add current room to path
         path.Add(current);
 
         // Destination reached
         if (current == target)
             return true;
-        if (current.roomType == roomType)
-            return true;
 
         // Explore connected rooms
-        List<Room> neighbors = current.GetConnectedRooms();
-        foreach (Room neighbor in neighbors)
+        foreach (Room neighbor in current.GetConnectedRooms())
         {
             if (Search(neighbor, target, visited, path))
                 return true;
@@ -99,6 +92,10 @@ public class MapData : ScriptableObject
     {
         startRoom = null;
         endRoom = null;
-        rooms.Clear();
+
+        if (rooms == null)
+            rooms = new List<Room>();
+        else
+            rooms.Clear();
     }
 }

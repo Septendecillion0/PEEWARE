@@ -1627,7 +1627,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3106386445734365558}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -0.38961697, y: -1.975629, z: 2.9737408}
   m_LocalScale: {x: 1.01, y: 1.01, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2965,7 +2965,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Waiting Room
   complexity: 1
-  roomType: 2
+  roomType: 3
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 7351869903480011305}
@@ -2975,6 +2975,7 @@ MonoBehaviour:
     doorType: 0
     room: {fileID: 0}
   maxSpawnCount: -1
+  waypoint: {fileID: 0}
   preferredNeighbors: []
   bottleSpawnChance: 0.473
 --- !u!64 &39041440721661960

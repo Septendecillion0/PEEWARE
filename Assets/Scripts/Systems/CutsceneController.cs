@@ -1,24 +1,44 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.Playables;
 
 public class CutsceneController : MonoBehaviour
 {
-    public void PlayCutscene()
+    [SerializeField] private GameObject cutsceneCam;
+    public Camera playerCam;
+
+    [SerializeField] private LevelPreviewCutscene levelPreviewCutscene;
+
+    void Awake()
     {
-        StartCoroutine(PlayCutsceneRoutine());
+        cutsceneCam.SetActive(false);
     }
 
-    private IEnumerator PlayCutsceneRoutine()
+    // TODO: add support for different cutscenes
+    public IEnumerator PlayCutscene(bool playerVisible)
     {
         GameManager.Instance.SetState(GameManager.GameState.Cutscene);
 
         // Switch camera
+        if (playerVisible) playerCam.enabled = false;
+        else playerCam.gameObject.SetActive(false);
+        cutsceneCam.SetActive(true);
+        
 
-        yield return null;
-        //yield return StartCoroutine();
+        yield return StartCoroutine(levelPreviewCutscene.PlayCutscene1(cutsceneCam));
+        gameObject.transform.position = cutsceneCam.transform.position; // orient self (cutscene root position)
+        cutsceneCam.GetComponent<Camera>().fieldOfView = playerCam.fieldOfView; // construct better "cutscene" settings system in the future
+        yield return StartCoroutine(levelPreviewCutscene.PlayCutscene2(cutsceneCam));
+
+        // Show pee text
+        UIManager.Instance.ShowWakeUpText();
+        yield return new WaitForSecondsRealtime(3f);
 
         // Restore player camera
+        if (playerVisible) playerCam.enabled = true;
+        else playerCam.gameObject.SetActive(true);
+        cutsceneCam.SetActive(false);
 
         GameManager.Instance.SetState(GameManager.GameState.Playing);
     }

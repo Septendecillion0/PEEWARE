@@ -324,7 +324,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5490f08bedffdee4f8779c48f313d2fa, type: 2}
+  - {fileID: 2100000, guid: bf5ac45eba290da42901560f75f3bdf6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -419,7 +419,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Office
   complexity: 3
-  roomType: 2
+  roomType: 3
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 186836966628906484}
@@ -432,6 +432,7 @@ MonoBehaviour:
     doorType: 2
     room: {fileID: 0}
   maxSpawnCount: -1
+  waypoint: {fileID: 0}
   preferredNeighbors:
   - {fileID: 9057399955984057516, guid: 1bb0e2372e1111942928969bc476ae71, type: 3}
   - {fileID: 6685377742650555503, guid: 47a9558a160a0de4cb4df52ca59bb5b3, type: 3}
@@ -505,7 +506,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 92253142dfc34a74388e9c9c9aa57544, type: 2}
+  - {fileID: 2100000, guid: 70404bc9b015bcc4c942c85fbb5ac4a9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -703,7 +704,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5138896371430234614}
-  m_Mesh: {fileID: 8829246453336113423, guid: ce845b38518cdd04f96b5f2d33824d65, type: 3}
+  m_Mesh: {fileID: 8829246453336113423, guid: ce327da0d71dee4498a54c7652566da3, type: 3}
 --- !u!23 &3601886207730804690
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -841,7 +842,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 2481cbd391143a4498d7c9a126238ebf, type: 2}
+  - {fileID: -8771166627424403242, guid: 53f9a65cd2379e34a8a14ae98b11bc79, type: 3}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -963,7 +964,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7321702136611799259}
-  m_Mesh: {fileID: -4617538167708492622, guid: ce845b38518cdd04f96b5f2d33824d65, type: 3}
+  m_Mesh: {fileID: 8829246453336113423, guid: ce327da0d71dee4498a54c7652566da3, type: 3}
 --- !u!23 &5970636422937950178
 MeshRenderer:
   m_ObjectHideFlags: 0

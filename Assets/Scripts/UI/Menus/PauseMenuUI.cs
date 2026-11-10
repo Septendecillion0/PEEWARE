@@ -17,6 +17,10 @@ public class PauseMenuUI : UIHandler
     [SerializeField] private Sprite[] animationFrames;  // Frame sprites
     [SerializeField] private float frameRate = 10f;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource rollSFX;
+    [SerializeField] private AudioSource buttonSFX;
+
     protected override void ValidateReferences()
     {
         if (resumeButton == null)
@@ -41,6 +45,10 @@ public class PauseMenuUI : UIHandler
         resumeButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.Playing));
         settingsButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.InSettings));
         quitButton.onClick.AddListener(() => GameManager.Instance.QuitToMainMenu());
+
+        resumeButton.onClick.AddListener(() => PlayButtonSFX());
+        settingsButton.onClick.AddListener(() => PlayButtonSFX());
+        quitButton.onClick.AddListener(() => PlayButtonSFX());
     }
 
     protected override void SetButtonsVisible(bool visible)
@@ -65,5 +73,23 @@ public class PauseMenuUI : UIHandler
             yield return new WaitForSecondsRealtime(frameDuration);
         }
         SetButtonsVisible(true);
+    }
+
+    // AUDIO
+    public override void Show()
+    {
+        base.Show();
+        rollSFX.Play();
+    }
+
+    // public override void Hide()
+    // {
+    //     base.Hide();
+    //     rollSFX.Play();
+    // }
+
+    private void PlayButtonSFX()
+    {
+        buttonSFX.PlayOneShot(buttonSFX.clip);
     }
 }

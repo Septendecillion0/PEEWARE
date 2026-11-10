@@ -108,7 +108,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Hallway D3
   complexity: 1
-  roomType: 2
+  roomType: 3
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 5741225224092333559}
@@ -118,6 +118,7 @@ MonoBehaviour:
     doorType: 0
     room: {fileID: 0}
   maxSpawnCount: -1
+  waypoint: {fileID: 0}
   preferredNeighbors:
   - {fileID: 9057399955984057516, guid: 1bb0e2372e1111942928969bc476ae71, type: 3}
   bottleSpawnChance: 0.5

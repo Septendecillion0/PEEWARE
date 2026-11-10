@@ -6,12 +6,23 @@ public class PeeMeterUI : MonoBehaviour
 {
     public Slider peeMeter;
     public AudioClip deathSound;
+    [SerializeField] private CanvasGroup canvasGroup;
 
     private Image fillImage;
 
     // Colors for the pee meter
     private Color32 startPee = new Color32(255, 255, 165, 255);
     private Color32 endPee = new Color32(255, 208, 20, 255);
+
+    public void Show()
+    {
+        canvasGroup.alpha = 1f;
+    }
+
+    public void Hide()
+    {
+        canvasGroup.alpha = 0f;
+    }
 
     private void Start()
     {
@@ -22,9 +33,12 @@ public class PeeMeterUI : MonoBehaviour
 
     private void Update()
     {
+        if (GameManager.Instance.State != GameManager.GameState.Playing)
+            return;
+
+        // Trigger global game over
         if (!GameManager.Instance.IsGameOver && PeeMeterManager.Instance.IsFull())
         {
-            // Trigger global game over
             AudioManager.Instance.FadeOutMusic(0.2f);
             AudioManager.Instance.PlaySFX(deathSound);
             GameManager.Instance.SetState(GameManager.GameState.GameOver);

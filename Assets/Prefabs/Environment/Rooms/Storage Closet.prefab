@@ -49,13 +49,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: Storage
   complexity: 1
-  roomType: 2
+  roomType: 3
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 2353321337991530063}
     doorType: 0
     room: {fileID: 0}
   maxSpawnCount: -1
+  waypoint: {fileID: 0}
   preferredNeighbors: []
   bottleSpawnChance: 0.5
 --- !u!1 &4605823647458213947
@@ -237,7 +238,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8773368217548898763, guid: ce327da0d71dee4498a54c7652566da3, type: 3}
+  - {fileID: 2100000, guid: 4ce498b1ae3838543a0c7591a8954e46, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -349,7 +350,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 8773368217548898763, guid: ce327da0d71dee4498a54c7652566da3, type: 3}
+  - {fileID: 2100000, guid: 4ce498b1ae3838543a0c7591a8954e46, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

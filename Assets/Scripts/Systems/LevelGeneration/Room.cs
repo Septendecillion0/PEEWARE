@@ -42,6 +42,9 @@ public class Room : MonoBehaviour
     public int exitCount => exits.Count;
     public int maxSpawnCount = -1;
 
+    [Header ("Camera Preview")]
+    [SerializeField] public Transform waypoint;
+
     public List<Room> preferredNeighbors = new List<Room>(); 
 
     [Header("Prop Spawning")]
@@ -89,6 +92,20 @@ public class Room : MonoBehaviour
                 rooms.Add(e.connectedExit.room);
         }
         return rooms;
+    }
+
+    public Exit GetExitTo(Room targetRoom)
+    {
+        foreach (var exit in exits)
+        {
+            if (exit.connectedExit != null &&
+                exit.connectedExit.room == targetRoom)
+            {
+                return exit;
+            }
+        }
+
+        return null;
     }
 
 }

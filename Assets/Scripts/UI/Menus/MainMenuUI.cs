@@ -12,12 +12,17 @@ public class MainMenuUI : MonoBehaviour
     public GameObject settingsCanvas;
     public ScreenFade screenFade;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource startSFX;
+
     private void Start()
     {
         startButton.onClick.AddListener(StartGame);
         settingButton.onClick.AddListener(OpenSettings);
         exitButton.onClick.AddListener(ExitGame);
         settingsCanvas.SetActive(false);
+
+        startButton.onClick.AddListener(PlayStartSFX);
     }
 
     public void StartGame()
@@ -27,7 +32,7 @@ public class MainMenuUI : MonoBehaviour
 
     private IEnumerator Loading(string sceneName)
     {
-        float duration = 2.0f;
+        float duration = 4.0f;
 
         // Kick off both fades at the same time
         
@@ -54,5 +59,10 @@ public class MainMenuUI : MonoBehaviour
     public void CloseSettings()
     {
         settingsCanvas.SetActive(false);
+    }
+
+    private void PlayStartSFX()
+    {
+        startSFX.PlayOneShot(startSFX.clip);
     }
 }

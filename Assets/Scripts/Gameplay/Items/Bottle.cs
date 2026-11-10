@@ -10,6 +10,8 @@ public class Bottle : MonoBehaviour, IInteractable
     [SerializeField] private float peeAmount; // Amount to reduce from the pee meter when filled]
     private bool isFilled = false;
 
+    [SerializeField] private AudioSource bottleSFX;
+
     private void Start()
     {
         // Set default pee amount if not assigned
@@ -51,6 +53,7 @@ public class Bottle : MonoBehaviour, IInteractable
             isFilled = true;
 
             PeeMeterManager.Instance.Pee(peeAmount);
+            bottleSFX.Play();
 
             // Hide UI since the bottle is now filled and no longer interactable
             InteractionUI.Instance.Hide();

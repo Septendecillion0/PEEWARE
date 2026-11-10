@@ -9,6 +9,9 @@ public class SettingsMenuUI : UIHandler
     [SerializeField] private Slider brightnessSlider;
     [SerializeField] private Button backButton;
 
+    [Header("Audio")]
+    [SerializeField] private AudioSource buttonSFX;
+
     protected override void ValidateReferences()
     {
         if (volumeSlider == null)
@@ -27,6 +30,8 @@ public class SettingsMenuUI : UIHandler
     {
         // Back button listener, returns to pause menu
         backButton.onClick.AddListener(() => GameManager.Instance.SetState(GameManager.GameState.Paused));
+
+        backButton.onClick.AddListener(() => PlayButtonSFX());
     }
 
     protected override void SetButtonsVisible(bool visible)
@@ -65,5 +70,11 @@ public class SettingsMenuUI : UIHandler
         brightnessSlider.value = b;
         SettingsManager.Instance.SetBrightness(b);
         brightnessSlider.onValueChanged.AddListener(SettingsManager.Instance.SetBrightness);
+    }
+
+    // AUDIO
+    private void PlayButtonSFX()
+    {
+        buttonSFX.PlayOneShot(buttonSFX.clip);
     }
 }

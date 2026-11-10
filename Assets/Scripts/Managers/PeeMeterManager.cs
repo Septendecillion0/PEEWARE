@@ -18,6 +18,9 @@ public class PeeMeterManager : Singleton<PeeMeterManager>
 
     private void Update()
     {
+        if (GameManager.Instance.State != GameManager.GameState.Playing)
+            return;
+
         currentPee += deltaPee * Time.deltaTime;
         ClampPee();
         OnPeeValueChanged?.Invoke(currentPee);

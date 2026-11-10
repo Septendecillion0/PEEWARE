@@ -18,8 +18,9 @@ public class FairyTreeScript : Enemy
     /// Additional spawn location filtering: only accept tree spawns within pathable rooms from player
     /// </summary>
     public override bool CheckSpecialSpawnRules(Vector3 playerPos, Vector3 playerForward, Vector3 candidatePos)
-    {
-        MapGenerationManager mapGen = MapGenerationManager.Instance;
+    {   
+        // TODO: put helper functions in MapData
+        MapGenerator mapGen = MapGenerator.Instance;
 
         // Get player's current room
         Room playerRoom = mapGen.GetRoomAtPosition(playerPos);

@@ -81,11 +81,12 @@ public class GameManager : Singleton<GameManager>
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         ResetGame();
-        PlaySceneMusic();
+
         UIManager.Instance.PlayFadeIn(4f);
         if (scene.name == MainMenu)
         {
             SetState(GameState.MainMenu);
+            PlaySceneMusic();
         }
         else if (scene.name == Level)
         {
@@ -139,6 +140,10 @@ public class GameManager : Singleton<GameManager>
                 if (firstPersonAudio != null)
                     firstPersonAudio.SetActive(true);
                 break;
+            case GameState.Cutscene:
+                Time.timeScale = 1f;
+                Cursor.lockState = CursorLockMode.Locked;
+                break;
 
             case GameState.Paused: // TODO add default state?
             case GameState.InSettings:
@@ -176,7 +181,7 @@ public class GameManager : Singleton<GameManager>
     /// 
     /// TODO: remove audio sources and make calls to AudioManager instead.
     /// </summary>
-    private void PlaySceneMusic()
+    public void PlaySceneMusic()
     {
         string sceneName = UnityEngine.SceneManagement.SceneManager.GetActiveScene().name;
 

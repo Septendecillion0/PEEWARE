@@ -24,7 +24,8 @@ public class PlayerController : MonoBehaviour
 
     private void OnDisable()
     {
-        GameManager.Instance.OnGameStateChanged -= HandleGameStateChange;
+        if (GameManager.Instance != null)
+            GameManager.Instance.OnGameStateChanged -= HandleGameStateChange;
     }
 
     private void HandleGameStateChange(GameManager.GameState newState)

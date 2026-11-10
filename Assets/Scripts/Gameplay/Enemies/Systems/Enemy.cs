@@ -153,7 +153,7 @@ public abstract class Enemy : MonoBehaviour
     /// </summary>
     /// <returns>True if the position is valid, false otherwise</returns>
     /// 
-    /// note: max spawn distance check is redundant with MapGenerationManager.GetRoomsWithinDistance
+    /// note: max spawn distance check is redundant with MapGenerator.GetRoomsWithinDistance
     /// TODO: spawn direction overrides are not added to enemies
     /// TODO: add some sort of visibility parameter to define enemy spawning based on whether the player can see them
     ///       ^ revisit spawn direction to define if enemies should spawn based on visibility or direction

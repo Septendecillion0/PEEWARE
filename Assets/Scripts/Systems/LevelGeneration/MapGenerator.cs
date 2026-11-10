@@ -1,12 +1,15 @@
 using UnityEngine;
+using System.Collections;
 using System.Collections.Generic;
 /// <summary>
 /// Generates the level map based on preset parameters, stores info as map
 /// Also holds helper functions for helping with enemy spawn position-finding
 /// </summary>
-public class MapGenerationManager : Singleton<MapGenerationManager>
+public class MapGenerator : Singleton<MapGenerator>
 {
     [SerializeField] CutsceneController cutsceneController;
+    private GameObject playerRef;
+    public GameObject player => playerRef;
 
     [Header("Map Seed (set -1 for random)")]
     public int seed = -1;
@@ -22,8 +25,8 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
     private List<Bounds> placedBounds = new List<Bounds>(); // used for collision checks
     private List<Room> placedRooms = new List<Room>(); // parallel list so we can name which room overlaps
 
-    [SerializeField] private MapData map;
     [SerializeField] private MapSettings mapSettings;
+    private MapData mapData;
     private List<Room> roomPrefabs = new List<Room>();
 
     private bool endRoomPlaced = false;
@@ -32,8 +35,10 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
 
     private Dictionary<Room, int> spawnCounts = new Dictionary<Room, int>();
 
-    void Start()
+    public IEnumerator GenerateMap(MapData map)
     {
+        mapData = map;
+
         roomPrefabs = mapSettings.roomCatalogue;
 
         if (seed >= 0)
@@ -51,12 +56,17 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
                 Debug.Log($"Map generation succeeded after {attempts} attempt(s).");
                 BottleSpawner.Instance.SpawnBottles(placedRooms);
 
-                cutsceneController.PlayCutscene();
-                return;
+                // Save info to mapData on success
+                mapData.rooms = placedRooms;
+                mapData.roomBounds = placedBounds;
+                mapData.endRoom = mapData.FindRoomsOfType(Room.RoomType.End)[0];
+
+                yield break;
             }
             else {
                 Debug.LogWarning($"Generation attempt {attempts} FAILED — restarting.");
             }
+            yield return null;
         }
         Debug.LogError("Map generation failed after maximum retries.");
     }
@@ -80,6 +90,9 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
         // Place start room (assume index 0)
         Room startRoom = Instantiate(roomPrefabs[0], transform.position, Quaternion.identity, generationRoot.transform);
 
+        // assign player reference
+        playerRef = startRoom.GetComponentInChildren<PlayerController>().gameObject;
+
         Bounds startBounds = GetRoomBounds(startRoom);
         placedBounds.Add(startBounds);
         placedRooms.Add(startRoom);
@@ -92,11 +105,8 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             if (totalComplexity >= maxRoomComplexity) break;
         }
 
-        // Save data to Map
-        map.startRoom = startRoom;
-        //map.endRoom = map.FindRoomsOfType(Room.RoomType.End)[0];
-        map.rooms = placedRooms;
-
+        // Save data to MapData
+        mapData.startRoom = startRoom;
 
         return endRoomPlaced && totalComplexity >= minRoomComplexity;
     }
@@ -234,9 +244,9 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
             fromExit.connectedExit = instantiatedExit;
             instantiatedExit.connectedExit = fromExit;
             
-            // remove placeholder doors
-            Destroy(fromExit.transform.gameObject);
-            Destroy(instantiatedExit.transform.gameObject);
+            // disable placeholder doors
+            fromExit.transform.gameObject.SetActive(false);
+            instantiatedExit.transform.gameObject.SetActive(false);
             
             // increase totalComplexity
             totalComplexity += candidate.complexity;
@@ -312,15 +322,7 @@ public class MapGenerationManager : Singleton<MapGenerationManager>
     }
 
     //Function returning all room bounds and all rooms for enemy generation reference
-    public List<Bounds> GetAllRoomBounds()
-    {
-        return placedBounds;
-    }
-
-    public List<Room> GetAllPlacedRooms()
-    {
-        return placedRooms;
-    }
+    // TODO: remove and have refernces use MapData
 
     private int GetSpawnCount(Room prefab)
     {

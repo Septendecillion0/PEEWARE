@@ -209,6 +209,7 @@ Transform:
   m_Children:
   - {fileID: 6586711927126614821}
   - {fileID: 6710688497952950645}
+  - {fileID: 4700650230434535218}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &3593470112852656898
@@ -225,16 +226,48 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Room
   roomName: End Room
   complexity: 1
-  roomType: 1
+  roomType: 2
   size: {x: 0, y: 0, z: 0}
   exits:
   - transform: {fileID: 7926302068056394733}
     doorType: 0
     room: {fileID: 0}
   maxSpawnCount: -1
+  waypoint: {fileID: 4700650230434535218}
   preferredNeighbors:
   - {fileID: 2938284635973783088, guid: 14712958f8229c14fb523e192f510a28, type: 3}
   bottleSpawnChance: 0.5
+--- !u!1 &8197395865846169187
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4700650230434535218}
+  m_Layer: 0
+  m_Name: Waypoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4700650230434535218
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8197395865846169187}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: 0.9866869, z: -0.16263177, w: 0}
+  m_LocalPosition: {x: 0, y: 0.148, z: -0.587}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4068837570279439233}
+  m_LocalEulerAnglesHint: {x: 18.719, y: 180, z: 0}
 --- !u!1 &8634876762348937276
 GameObject:
   m_ObjectHideFlags: 0

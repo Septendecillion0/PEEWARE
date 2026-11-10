@@ -19,6 +19,10 @@ public class UIManager : Singleton<UIManager>
     [SerializeField] private SettingsMenuUI settingsMenuUI;
     [SerializeField] private VictoryUI victoryUI;
     [SerializeField] private GameOverUI gameOverUI;
+    [SerializeField] private PeeMeterUI peeMeterUI;
+
+    [SerializeField] private ScreenFade iNeedToPeeBG;
+    [SerializeField] private ScreenFade iNeedToPeeText;
 
     [Header("Screen Overlays")]
     [SerializeField] private ScreenFade fadeOverlay;   // black image for screen fades
@@ -75,6 +79,30 @@ public class UIManager : Singleton<UIManager>
         settingsMenuUI.Hide();
         victoryUI.Hide();
         gameOverUI.Hide();
+        peeMeterUI.Hide();
+        iNeedToPeeBG.SetAlpha(0f);
+        iNeedToPeeText.SetAlpha(0f);
+    }
+
+    public void ShowWakeUpText()
+    {
+        StartCoroutine(INeedToPee());
+        StartCoroutine(AnimatePeeMeter());
+    }
+
+    private IEnumerator INeedToPee()
+    {
+        iNeedToPeeText.FadeOut(3f);
+        iNeedToPeeBG.FadeOut(3f);
+        yield return new WaitForSecondsRealtime(4f);
+        iNeedToPeeText.FadeIn(2f);
+        iNeedToPeeBG.FadeIn(2f);
+    }
+
+    private IEnumerator AnimatePeeMeter()
+    {   
+        // placeholder
+        yield return null;
     }
 
     // =========================================================
@@ -127,23 +155,27 @@ public class UIManager : Singleton<UIManager>
     private void StatePlaying()
     {
         HideAllScreens();
+        peeMeterUI.Show();
     }
 
     private void StatePaused()
     {
         HideAllScreens();
         pauseMenuUI.Show();
+        peeMeterUI.Show();
     }
 
     private void StateSettings()
     {
         HideAllScreens();
         settingsMenuUI.Show();
+        peeMeterUI.Show();
     }
 
     private void StateGameOver()
     {
         HideAllScreens();
+        peeMeterUI.Show();
         gameOverUI.Show();
     }
 
@@ -181,7 +213,6 @@ public class UIManager : Singleton<UIManager>
     /// </summary>
     /// <remarks>
     /// uses realtime, not scaled
-    /// TODO: replace with real scene transition animations
     /// ^NOTE: delay is built in here rather than in sceenfade since it is a temporary solution
     /// TODO: have MainMenuUI call this function instead of its own fade
     /// NOTE: delay is used by default since fade may begin before rendering
