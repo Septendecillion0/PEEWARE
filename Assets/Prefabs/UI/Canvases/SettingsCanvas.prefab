@@ -1296,11 +1296,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8110936a2805046ea8009454a9b37669, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SettingsMenuUI
+  canvasGroup: {fileID: 0}
   volumeSlider: {fileID: 356338267166049648}
   musicSlider: {fileID: 4822032733498498684}
   sfxSlider: {fileID: 3889096436725194956}
   brightnessSlider: {fileID: 3236618885311943540}
   backButton: {fileID: 8276604658707441315}
+  buttonSFX: {fileID: 0}
 --- !u!1 &5298041440440448380
 GameObject:
   m_ObjectHideFlags: 0

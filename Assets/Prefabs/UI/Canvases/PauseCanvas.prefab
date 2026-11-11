@@ -464,9 +464,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7108fe9a4c0bf41cda60a03a717bf830, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PauseMenuUI
+  canvasGroup: {fileID: 0}
   resumeButton: {fileID: 1578676884785957856}
   settingsButton: {fileID: 6731538607153387966}
   quitButton: {fileID: 1373997990472859932}
+  animationImage: {fileID: 0}
+  animationFrames: []
+  frameRate: 10
+  rollSFX: {fileID: 0}
+  buttonSFX: {fileID: 0}
 --- !u!1 &7334909605673602535
 GameObject:
   m_ObjectHideFlags: 0

@@ -3297,6 +3297,7 @@ MonoBehaviour:
   exitButton: {fileID: 6157633458021738714}
   settingsCanvas: {fileID: 1512337162}
   screenFade: {fileID: 1747207562}
+  startSFX: {fileID: 0}
 --- !u!224 &3664436048741165883
 RectTransform:
   m_ObjectHideFlags: 0

@@ -129,7 +129,7 @@ SpriteRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9dfc825aed78fcd4ba02077103263b40, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -177,7 +177,6 @@ MonoBehaviour:
   passiveSound: {fileID: 8300000, guid: 50a199e23b4ca65458b7ebd191230183, type: 3}
   spawnSound: {fileID: 8300000, guid: 0c817d466d2218545be3791e5a385e6b, type: 3}
   deathSound: {fileID: 8300000, guid: e677ac68e9d1a064d8d01d22efeeac9d, type: 3}
-  despawnTime: 30
   minHorizontalDistance: 2
   maxHorizontalDistance: 3
   minVerticalDistance: -2

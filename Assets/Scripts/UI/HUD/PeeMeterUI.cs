@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Audio;
+using System.Collections;
 
 public class PeeMeterUI : MonoBehaviour
 {
@@ -27,8 +28,6 @@ public class PeeMeterUI : MonoBehaviour
     private void Start()
     {
         fillImage = peeMeter.fillRect.GetComponent<Image>();
-        PeeMeterManager.Instance.OnPeeValueChanged += UpdateUI;
-        UpdateUI(PeeMeterManager.Instance.currentPee);
     }
 
     private void Update()
@@ -54,9 +53,22 @@ public class PeeMeterUI : MonoBehaviour
     private void UpdateUI(float value)
     {
         peeMeter.value = value;
+        Debug.Log("pee value changed" + value);
     }
 
-    private void OnDestroy()
+    private void OnEnable()
+    {
+        StartCoroutine(WaitForManager());
+    }
+
+    private IEnumerator WaitForManager()
+    {
+        while (PeeMeterManager.Instance == null)
+            yield return null;
+        PeeMeterManager.Instance.OnPeeValueChanged += UpdateUI;
+    }
+
+    private void OnDisable()
     {
         if (PeeMeterManager.Instance != null)
         {

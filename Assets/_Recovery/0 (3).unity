@@ -743,7 +743,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1449331209}
-  - {fileID: 1536444199}
+  - {fileID: 1191767508}
   - {fileID: 552884836}
   - {fileID: 1034825348}
   - {fileID: 1871874574}
@@ -810,6 +810,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+--- !u!4 &1191767508 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5202695099937156033, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
+  m_PrefabInstance: {fileID: 1191767507}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1270367912
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -929,11 +934,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 152495641844485131, guid: 2aa59cd187d974786a54a2eb571c7444, type: 3}
   m_PrefabInstance: {fileID: 699973571}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1536444199 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 4237451584678384413, guid: c74c8278cc625ac43af708933ee6b11c, type: 3}
-  m_PrefabInstance: {fileID: 1191767507}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1661018354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1044,6 +1044,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 474bcb49853aa07438625e644c072ee6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.UniversalAdditionalLightData
+  m_UsePipelineSettings: 1
+  m_AdditionalLightsShadowResolutionTier: 2
+  m_CustomShadowLayers: 0
+  m_LightCookieSize: {x: 1, y: 1}
+  m_LightCookieOffset: {x: 0, y: 0}
+  m_SoftShadowQuality: 1
+  m_RenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_ShadowRenderingLayersMask:
+    serializedVersion: 0
+    m_Bits: 1
+  m_Version: 4
+  m_LightLayerMask: 1
+  m_ShadowLayerMask: 1
+  m_RenderingLayers: 1
+  m_ShadowRenderingLayers: 1
 --- !u!224 &1871874574 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 546513975097528866, guid: 1acf779e811d54f0c88c9d44df7dbbbd, type: 3}
@@ -1168,7 +1185,8 @@ MonoBehaviour:
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_fontSharedMaterials: []
+  m_fontSharedMaterials:
+  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:

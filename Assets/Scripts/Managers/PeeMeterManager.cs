@@ -11,7 +11,8 @@ public class PeeMeterManager : Singleton<PeeMeterManager>
     public event PeeValueChanged OnPeeValueChanged;
 
     private void Start()
-    {
+    {   
+        DontDestroyOnLoad(gameObject);
         currentPee = 0f;
         OnPeeValueChanged?.Invoke(currentPee);
     }

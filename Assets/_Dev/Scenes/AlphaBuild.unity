@@ -460,6 +460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Draggable Cube (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 8885165002388448403, guid: 9412dfcbad49f4c6c97faa44b782a42f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 9210771316840848906, guid: 9412dfcbad49f4c6c97faa44b782a42f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 10
@@ -567,6 +571,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Draggable Cube
       objectReference: {fileID: 0}
+    - target: {fileID: 8885165002388448403, guid: 9412dfcbad49f4c6c97faa44b782a42f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 9210771316840848906, guid: 9412dfcbad49f4c6c97faa44b782a42f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -683,7 +691,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -821,6 +829,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Draggable Cube (2)
       objectReference: {fileID: 0}
+    - target: {fileID: 8885165002388448403, guid: 9412dfcbad49f4c6c97faa44b782a42f, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 31321ba15b8f8eb4c954353edc038b1d, type: 2}
     - target: {fileID: 9210771316840848906, guid: 9412dfcbad49f4c6c97faa44b782a42f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 8
@@ -1142,17 +1154,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
---- !u!114 &2633210346859456759 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7364173396655537233, guid: fbe03ebdf903e3c488b94f0ce98faa0b, type: 3}
-  m_PrefabInstance: {fileID: 1547929897832690403}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Image
 --- !u!1001 &2995862345335395044
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1164,7 +1165,7 @@ PrefabInstance:
     - target: {fileID: 1784142537212655572, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: YOU_PEED
       value: 
-      objectReference: {fileID: 2633210346859456759}
+      objectReference: {fileID: 0}
     - target: {fileID: 1925310853587164085, guid: c9428f88488fbb1498fac223ae6d331f, type: 3}
       propertyPath: firstPersonAudio
       value: 
