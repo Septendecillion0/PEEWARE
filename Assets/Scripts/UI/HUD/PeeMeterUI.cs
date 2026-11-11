@@ -46,6 +46,9 @@ public class PeeMeterUI : MonoBehaviour
         // Update color and volume based on current pee
         float normalizedPee = PeeMeterManager.Instance.currentPee / PeeMeterManager.Instance.maxPee;
         fillImage.color = Color.Lerp(startPee, endPee, normalizedPee);
+
+        // ramp music volume as pee increases
+        // TODO: move to audio script
         float dB = Mathf.Lerp(-20f, 0f, normalizedPee);
         AudioManager.Instance.ChangeMusicVolume(dB);
     }
@@ -53,7 +56,6 @@ public class PeeMeterUI : MonoBehaviour
     private void UpdateUI(float value)
     {
         peeMeter.value = value;
-        Debug.Log("pee value changed" + value);
     }
 
     private void OnEnable()

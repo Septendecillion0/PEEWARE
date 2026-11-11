@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PeeMeterManager : Singleton<PeeMeterManager>
 {
@@ -15,6 +16,15 @@ public class PeeMeterManager : Singleton<PeeMeterManager>
         DontDestroyOnLoad(gameObject);
         currentPee = 0f;
         OnPeeValueChanged?.Invoke(currentPee);
+
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    // reset value when reloading level
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        currentPee = 0f;
     }
 
     private void Update()

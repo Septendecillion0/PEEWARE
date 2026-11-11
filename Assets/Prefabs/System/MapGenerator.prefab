@@ -48,8 +48,8 @@ MonoBehaviour:
   cutsceneController: {fileID: 0}
   seed: -1
   maxRoomComplexity: 100
-  minRoomComplexity: 80
-  maxPathComplexity: 25
+  minRoomComplexity: 60
+  maxPathComplexity: 20
   mapSettings: {fileID: 11400000, guid: 4d7b12baa3a3a1141a182ba49cea2019, type: 2}
 --- !u!114 &6920706656290262405
 MonoBehaviour:

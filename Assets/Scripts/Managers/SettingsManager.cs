@@ -39,11 +39,13 @@ public class SettingsManager : Singleton<SettingsManager>
     /// Callers should clamp input to a small positive minimum (e.g. 0.0001) to avoid this.
     /// </remarks>
     private void SetAudioVolume(string parameterName, float value)
-    {
+    {   
+        PlayerPrefs.SetFloat(parameterName, value);
+
         // Convert slider 0-1 to dB scale (-80 to 0 dB)
         float volumeInDb = Mathf.Log10(value) * 20;
-        audioMixer.SetFloat(parameterName, volumeInDb);
-        PlayerPrefs.SetFloat(parameterName, value);
+        if (parameterName == "BGMVolume") AudioManager.Instance.ChangeMusicVolume(volumeInDb);
+        else audioMixer.SetFloat(parameterName, volumeInDb);
     }
 
     /// <summary>
@@ -55,10 +57,11 @@ public class SettingsManager : Singleton<SettingsManager>
     }
 
     /// <summary>
-    /// Sets the background music volume. Expects a linear value in the range 0-1.
+    /// Saves the background music volume setting
+    /// Actual music volume will be scaled by the value 0-1
     /// </summary>
     public void SetMusicVolume(float value)
-    {
+    {   
         SetAudioVolume("BGMVolume", value);
     }
 

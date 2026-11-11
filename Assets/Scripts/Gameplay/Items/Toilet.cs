@@ -44,6 +44,8 @@ public class Toilet : MonoBehaviour, IInteractable
 
 	IEnumerator PlaySFX()
 	{
+		AudioManager.Instance.StopAllAudio();
+
 		flushSFX.Play();
 
 		yield return new WaitForSecondsRealtime(2f);

@@ -44,8 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7812e908a057d684db817c1860795015, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyManager
-  player: {fileID: 0}
-  playerCam: {fileID: 0}
   existingEnemies: []
   enemyPrefabs:
   - {fileID: 3381633526987363447, guid: 52d9b3d2322743449bdd5c74abacdbce, type: 3}
@@ -54,4 +52,7 @@ MonoBehaviour:
   - {fileID: 63164046888599622, guid: 0afa35a9342c8774ab2d45ccff8712f9, type: 3}
   - {fileID: 4784436105486175168, guid: a37422f7056348e4082a3dbd56b8751c, type: 3}
   SpawnInterval: 10
-  maxSpawnAttempts: 200
+  maxSpawnAttempts: 500
+  map: {fileID: 0}
+  player: {fileID: 0}
+  playerCam: {fileID: 0}

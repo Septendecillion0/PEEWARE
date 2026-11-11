@@ -186,37 +186,4 @@ public class EnemyManager : Singleton<EnemyManager>
     {
         UIManager.Instance.PlayHurt();
     }
-
-
-
-    // /// <summary>
-    // /// Validates that a spawn position is within acceptable distance ranges from the player.
-    // /// Checks horizontal distance, vertical distance, and direction relative to player forward.
-    // /// 
-    // /// DEPRECATED METHOD - using MapGenerator methods for validation checks
-    // /// </summary>
-    // private bool IsBaseDistanceValid(Vector3 playerPos, Vector3 playerForward, Vector3 spawnPos, Enemy enemyRules)
-    // {
-    //     // Flat distances on XZ plane
-    //     Vector3 flatPlayerPos = new Vector3(playerPos.x, 0, playerPos.z);
-    //     Vector3 flatSpawnPos = new Vector3(spawnPos.x, 0, spawnPos.z);
-
-    //     float horizontalDist = Vector3.Distance(flatPlayerPos, flatSpawnPos);
-    //     if (horizontalDist < enemyRules.minHorizontalDistance || horizontalDist > enemyRules.maxHorizontalDistance)
-    //         return false;
-
-    //     // Vertical distance
-    //     float verticalDelta = spawnPos.y - playerPos.y;
-    //     if (verticalDelta < enemyRules.minVerticalDistance || verticalDelta > enemyRules.maxVerticalDistance)
-    //         return false;
-
-    //     // Direction relative to player looking direction
-    //     Vector3 dirToSpawn = (flatSpawnPos - flatPlayerPos).normalized;
-    //     float dot = Vector3.Dot(playerForward.normalized, dirToSpawn);
-
-    //     if (dot < enemyRules.minDirectionDot || dot > enemyRules.maxDirectionDot)
-    //         return false;
-
-    //     return true;
-    // }
 }

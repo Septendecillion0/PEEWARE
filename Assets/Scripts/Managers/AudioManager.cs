@@ -18,7 +18,7 @@ public class AudioManager : Singleton<AudioManager>
     }
 
     [Header("Mixer and Sources")]
-    public AudioMixer mixer;          // Your existing mixer with SFX/Music groups
+    public AudioMixer mixer;          // Mixer with SFX/Music groups
     public AudioSource musicSource;   // For background music
     public AudioSource sfxSource;     // Optional: dedicated SFX source
     private float pauseVolume = -10f; // how much music volume decreases when game is paused 
@@ -41,7 +41,15 @@ public class AudioManager : Singleton<AudioManager>
         {
             p = 0f;
         }
-        mixer.SetFloat("BGMVolume", volume + p);
+        
+        float volumeScale = PlayerPrefs.GetFloat("BGMVolume", 1f);
+
+        // Convert linear volume scale to decibels
+        float volumeScaleDb = volumeScale > 0f
+            ? Mathf.Log10(volumeScale) * 20f
+            : -80f;
+
+        mixer.SetFloat("BGMVolume", Mathf.Max(-80f, volume + p + volumeScaleDb));
     }
 
     public void StopMusic()
@@ -75,7 +83,15 @@ public class AudioManager : Singleton<AudioManager>
         }
     }
 
-    
+    public void StopAllAudio()
+    {
+        AudioSource[] sources = FindObjectsByType<AudioSource>(FindObjectsSortMode.None);
+
+        foreach (AudioSource source in sources)
+        {
+            source.Stop();
+        }
+    }
 
     // ---------- SFX ----------
     public void PlaySFX(AudioClip clip, float volume = 1f)
