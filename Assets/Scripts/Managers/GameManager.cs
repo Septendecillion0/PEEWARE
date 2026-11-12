@@ -161,6 +161,10 @@ public class GameManager : Singleton<GameManager>
             case GameState.Victory:
                 EnterEndingCommon();
                 break;
+            case GameState.Loading:
+                // temporarily disable player mouse inputs - TODO: improve this restriction
+                Cursor.lockState = CursorLockMode.Locked;
+                break;
         }
 
         // invoke the state change event AFTER all game state logic has been executed locally

@@ -42,4 +42,23 @@ public class CutsceneController : MonoBehaviour
 
         GameManager.Instance.SetState(GameManager.GameState.Playing);
     }
+
+    void LateUpdate()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape) && GameManager.Instance.State == GameManager.GameState.Cutscene)
+        {
+            // Restore player camera
+            if (playerCam.enabled == false)
+                playerCam.enabled = true;
+            playerCam.gameObject.SetActive(true);
+            cutsceneCam.SetActive(false);
+
+            // Stop cutscenes
+            StopAllCoroutines();
+
+            // Restore gamestate
+            GameManager.Instance.SetState(GameManager.GameState.Playing);
+            //Cursor.lockState = CursorLockMode.Locked;
+        }
+    }
 }

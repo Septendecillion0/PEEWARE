@@ -34,6 +34,8 @@ public class MainMenuUI : MonoBehaviour
     {
         float duration = 4.0f;
 
+        GameManager.Instance.SetState(GameManager.GameState.Loading);
+
         // Kick off both fades at the same time
         
         screenFade.FadeOut(duration);  

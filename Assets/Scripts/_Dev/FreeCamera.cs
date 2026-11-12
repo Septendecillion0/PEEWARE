@@ -27,6 +27,9 @@ public class FreeCamera : MonoBehaviour
     {
         float speed = moveSpeed;
 
+        if (Input.GetKey(KeyCode.LeftShift))
+            speed *= sprintMultiplier;
+
         Vector3 direction = new Vector3(
             Input.GetAxis("Horizontal"), 
             0f,
@@ -39,7 +42,7 @@ public class FreeCamera : MonoBehaviour
         // Up/down movement with Q/E
         if (Input.GetKey(KeyCode.Space))
             transform.Translate(Vector3.up * speed * Time.deltaTime, Space.Self);
-        if (Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetKey(KeyCode.LeftControl))
             transform.Translate(Vector3.down * speed * Time.deltaTime, Space.Self);
     }
 
